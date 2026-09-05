@@ -1,0 +1,444 @@
+.quan-ly-du-an-admin {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quan-ly-du-an-admin__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.quan-ly-du-an-admin__title {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #111827;
+}
+
+.quan-ly-du-an-admin__subtitle {
+  margin: 0.5rem 0 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.quan-ly-du-an-admin__primary-btn,
+.quan-ly-du-an-admin__secondary-btn,
+.quan-ly-du-an-admin__link-btn {
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.quan-ly-du-an-admin__primary-btn {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: #fff;
+  padding: 0.85rem 1.5rem;
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
+}
+
+.quan-ly-du-an-admin__primary-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.quan-ly-du-an-admin__secondary-btn {
+  background: #f3f4f6;
+  color: #111827;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid #e5e7eb;
+}
+
+.quan-ly-du-an-admin__secondary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quan-ly-du-an-admin__link-btn {
+  background: transparent;
+  color: #4f46e5;
+  padding: 0.25rem 0.5rem;
+}
+
+.quan-ly-du-an-admin__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.quan-ly-du-an-admin__stat-card {
+  border-radius: 14px;
+  padding: 1.25rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quan-ly-du-an-admin__stat-card--hoatdong {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.quan-ly-du-an-admin__stat-card--luutru {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.quan-ly-du-an-admin__stat-card--ngunghoatdong {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+}
+
+.quan-ly-du-an-admin__stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+.quan-ly-du-an-admin__stat-label {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.quan-ly-du-an-admin__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.quan-ly-du-an-admin__input {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  min-width: 200px;
+  font-size: 0.95rem;
+}
+
+.quan-ly-du-an-admin__alert {
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.quan-ly-du-an-admin__alert--error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.quan-ly-du-an-admin__table-wrapper {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.quan-ly-du-an-admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.quan-ly-du-an-admin__table th {
+  text-align: left;
+  padding: 0.85rem 1rem;
+  background: #f9fafb;
+  color: #6b7280;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.quan-ly-du-an-admin__table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  max-width: 270px;
+}
+
+.quan-ly-du-an-admin__table th,
+.quan-ly-du-an-admin__table td {
+  vertical-align: middle;
+}
+
+/* Align Action columns to center for better visual balance */
+.quan-ly-du-an-admin__table th:last-child,
+.quan-ly-du-an-admin__table td:last-child {
+  text-align: center;
+}
+
+.quan-ly-du-an-admin__cell-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quan-ly-du-an-admin__owner-cell {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.quan-ly-du-an-admin__owner-name {
+  font-weight: 600;
+  color: #111827;
+}
+
+.quan-ly-du-an-admin__owner-contact {
+  font-size: 0.85rem;
+  color: #6b7280;
+  word-break: break-all;
+}
+
+.quan-ly-du-an-admin__cell-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+.quan-ly-du-an-admin__cell-sub {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.quan-ly-du-an-admin__badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.quan-ly-du-an-admin__badge--hoatdong {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.quan-ly-du-an-admin__badge--luutru {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.quan-ly-du-an-admin__badge--ngunghoatdong {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.quan-ly-du-an-admin__hoa-hong-cell {
+  min-width: 180px;
+}
+
+.quan-ly-du-an-admin__hoa-hong-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.quan-ly-du-an-admin__hoa-hong-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 0.35rem 0.5rem;
+}
+
+.quan-ly-du-an-admin__hoa-hong-month {
+  color: #111827;
+  font-weight: 600;
+}
+
+.quan-ly-du-an-admin__hoa-hong-rate {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.quan-ly-du-an-admin__hoa-hong-empty {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.quan-ly-du-an-admin__table-empty {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.quan-ly-du-an-admin__pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
+}
+
+.quan-ly-du-an-admin__modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.quan-ly-du-an-admin__modal {
+  width: min(800px, 100%);
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.75rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+}
+
+.quan-ly-du-an-admin__modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quan-ly-du-an-admin__modal-title {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.quan-ly-du-an-admin__icon-btn {
+  border: none;
+  background: transparent;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.quan-ly-du-an-admin__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.quan-ly-du-an-admin__form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.quan-ly-du-an-admin__form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.quan-ly-du-an-admin__form-field input,
+.quan-ly-du-an-admin__form-field select,
+.quan-ly-du-an-admin__form-field textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+.quan-ly-du-an-admin__form-field--full {
+  grid-column: 1 / -1;
+}
+
+.quan-ly-du-an-admin__form-field--checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quan-ly-du-an-admin__hoa-hong-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.quan-ly-du-an-admin__hoa-hong-editor-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  background: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px dashed #d1d5db;
+}
+
+.quan-ly-du-an-admin__hoa-hong-editor-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.quan-ly-du-an-admin__hoa-hong-editor-field input {
+  border: 1px solid #cbd5f5;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+}
+
+.quan-ly-du-an-admin__hoa-hong-remove {
+  border: none;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+}
+
+.quan-ly-du-an-admin__hoa-hong-remove:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.quan-ly-du-an-admin__hoa-hong-add {
+  width: fit-content;
+  border: 1px dashed #8b5cf6;
+  background: #f5f3ff;
+  color: #6d28d9;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quan-ly-du-an-admin__form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .quan-ly-du-an-admin {
+    padding: 1.25rem;
+  }
+
+  .quan-ly-du-an-admin__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .quan-ly-du-an-admin__filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quan-ly-du-an-admin__input {
+    width: 100%;
+  }
+
+  .quan-ly-du-an-admin__table {
+    font-size: 0.85rem;
+  }
+}
+

@@ -1,0 +1,103 @@
+<?xml version="1.0" standalone="no"?>
+<svg id="svg-hommy-lockup-transparent"
+     width="220" height="260"
+     viewBox="0 0 200 260"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <defs>
+    <!-- Gold gradient -->
+    <linearGradient id="goldSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F7D774"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#B88912"/>
+    </linearGradient>
+
+    <!-- Soft overall shadow for floating effect -->
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.28"/>
+      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+
+    <!-- Extra subtle border depth -->
+    <filter id="borderShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- ===== ICON AREA (transparent background) ===== -->
+  <g filter="url(#softShadow)">
+
+    <!-- Outer big border -->
+    <rect x="10" y="10" width="180" height="180"
+          rx="40" ry="40"
+          fill="none"
+          stroke="url(#goldSheen)"
+          stroke-width="2.6"
+          filter="url(#borderShadow)"/>
+
+    <!-- Inner border -->
+    <rect x="18" y="18" width="164" height="164"
+          rx="34" ry="34"
+          fill="none"
+          stroke="url(#goldSheen)"
+          stroke-width="1.1"
+          stroke-opacity="0.55"/>
+
+    <!-- Soft highlight to suggest raised edge -->
+    <rect x="12.5" y="12.5" width="175" height="175"
+          rx="38" ry="38"
+          fill="none"
+          stroke="#FFFFFF"
+          stroke-opacity="0.08"
+          stroke-width="1.1"/>
+
+    <!-- Monogram group: slightly lowered + scaled -->
+    <g transform="translate(0,15)">
+      <g transform="translate(100 100) scale(2.05) translate(-100 -100)">
+
+        <!-- H shadow -->
+        <path d="M80 80 V120 M120 80 V120 M80 100 H120"
+              stroke="#000"
+              stroke-opacity="0.22"
+              stroke-width="4"
+              stroke-linecap="square"
+              transform="translate(0,1)"/>
+
+        <!-- H main -->
+        <path d="M80 80 V120 M120 80 V120 M80 100 H120"
+              stroke="#FFFFFF"
+              stroke-width="5"
+              stroke-linecap="square"/>
+
+        <!-- Roof shadow -->
+        <path d="M80 80 L100 65 L120 80"
+              stroke="#000"
+              stroke-opacity="0.20"
+              stroke-width="4"
+              fill="none"
+              stroke-linecap="square"
+              transform="translate(0,1)"/>
+
+        <!-- Roof main -->
+        <path d="M78 80 L100 65 L122 80"
+              stroke="url(#goldSheen)"
+              stroke-width="7"
+              fill="none"
+              stroke-linecap="square"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ===== WORDMARK ===== -->
+  <text x="100" y="235"
+        text-anchor="middle"
+        font-family="system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif"
+        font-size="28"
+        font-weight="400"
+        letter-spacing="7"
+        fill="url(#goldSheen)">
+    HOMMY
+  </text>
+
+</svg>

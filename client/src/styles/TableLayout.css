@@ -1,0 +1,240 @@
+/* 
+ * Table Layout - Figma Design Principles
+ * Fixed layout, proper spacing, no shift on hover
+ */
+
+/* === Table Container === */
+.cda-table-fixed-layout {
+  table-layout: fixed !important;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Ensure consistent sizing between header and body cells */
+.cda-table-fixed-layout th,
+.cda-table-fixed-layout td {
+  box-sizing: border-box;
+}
+
+/* Header cells: match paddings with body cells to avoid misalignment */
+.cda-table-fixed-layout thead th {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.12);
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.06) 0%, rgba(59, 130, 246, 0.03) 100%);
+}
+
+/* Visually align first column header with body rows (3px row stripe) */
+.cda-table-fixed-layout thead th:first-child {
+  padding-left: 19px; /* 16px base + 3px stripe */
+}
+
+/* === Table Cells === */
+.cda-table-row {
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.cda-table-row:hover {
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.04) 0%, transparent 100%);
+}
+
+.cda-table-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.cda-table-row:hover::before {
+  background: linear-gradient(180deg, #14532D, #3b82f6);
+}
+
+/* === Cell Types === */
+.cda-table-cell-img,
+.cda-table-cell-content,
+.cda-table-cell-text,
+.cda-table-cell-price,
+.cda-table-cell-fees,
+.cda-table-cell-status,
+.cda-table-cell-date,
+.cda-table-cell-actions {
+  padding: 12px 16px;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+/* === Image Cell === */
+.cda-table-cell-img {
+  padding: 8px;
+}
+
+.cda-table-img-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cda-table-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cda-table-img-placeholder {
+  font-size: 1.5rem;
+  color: rgba(139, 92, 246, 0.4);
+}
+
+/* === Content Cell === */
+.cda-table-cell-content {
+  max-width: 0; /* Force width from colgroup */
+}
+
+.cda-table-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cda-table-desc {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cda-table-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.cda-badge-sm {
+  display: inline-block;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  background: rgba(139, 92, 246, 0.1);
+  color: #14532D;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.cda-badge-more {
+  font-size: 0.65rem;
+  color: #9ca3af;
+}
+
+/* === Text Cell === */
+.cda-table-cell-text {
+  font-size: 0.875rem;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.cda-text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cda-text-muted {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* === Price Cell === */
+.cda-table-cell-price {
+  font-size: 0.875rem;
+}
+
+.cda-price {
+  font-weight: 600;
+  color: #059669;
+  white-space: nowrap;
+}
+
+/* === Fees Cell === */
+.cda-table-cell-fees {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.cda-fee-item {
+  color: #6b7280;
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+
+.cda-fee-item:last-child {
+  margin-bottom: 0;
+}
+
+/* === Status Cell === */
+.cda-table-cell-status {
+  text-align: center;
+}
+
+/* === Date Cell === */
+.cda-table-cell-date {
+  font-size: 0.875rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+/* === Actions Cell === */
+.cda-table-cell-actions {
+  text-align: center;
+}
+
+.cda-table-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+}
+
+.cda-table-actions .cda-btn {
+  flex-shrink: 0;
+}
+
+/* === Responsive === */
+@media (max-width: 1400px) {
+  .cda-table-fixed-layout {
+    min-width: 1200px; /* Enable horizontal scroll */
+  }
+  
+  .cda-table-container {
+    overflow-x: auto;
+  }
+}
+

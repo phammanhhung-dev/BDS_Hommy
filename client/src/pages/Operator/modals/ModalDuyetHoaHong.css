@@ -1,0 +1,206 @@
+/* Modal Duyệt Hoa hồng - BEM Naming */
+
+.modal-duyet-hoa-hong__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== Info Section ===== */
+.modal-duyet-hoa-hong__info {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-duyet-hoa-hong__info-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-duyet-hoa-hong__info-label {
+  font-weight: 600;
+  color: var(--operator-text-secondary);
+  min-width: 120px;
+}
+
+.modal-duyet-hoa-hong__info-value {
+  color: var(--operator-text-primary);
+  font-weight: 500;
+}
+
+/* ===== Hoa Hong Info ===== */
+.modal-duyet-hoa-hong__hoa-hong-info {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.modal-duyet-hoa-hong__section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  margin: 0 0 1rem 0;
+}
+
+.modal-duyet-hoa-hong__hoa-hong-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-duyet-hoa-hong__detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.modal-duyet-hoa-hong__detail-label {
+  font-weight: 500;
+  color: var(--operator-text-secondary);
+}
+
+.modal-duyet-hoa-hong__detail-value {
+  font-weight: 600;
+  color: var(--operator-primary);
+}
+
+/* ===== Warning ===== */
+.modal-duyet-hoa-hong__warning {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid var(--operator-warning);
+  border-radius: 8px;
+  padding: 1rem;
+  color: var(--operator-text-primary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.modal-duyet-hoa-hong__warning strong {
+  color: var(--operator-warning);
+}
+
+/* ===== Form ===== */
+.modal-duyet-hoa-hong__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-duyet-hoa-hong__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-duyet-hoa-hong__label {
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  font-size: 0.95rem;
+}
+
+.modal-duyet-hoa-hong__required {
+  color: var(--operator-danger);
+}
+
+/* ===== Action Buttons ===== */
+.modal-duyet-hoa-hong__action-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal-duyet-hoa-hong__action-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.modal-duyet-hoa-hong__action-btn--active {
+  transform: scale(1.02);
+  box-shadow: var(--operator-shadow-md);
+}
+
+/* ===== Textarea ===== */
+.modal-duyet-hoa-hong__textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(10px);
+  color: var(--operator-text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.modal-duyet-hoa-hong__textarea:focus {
+  outline: none;
+  border-color: var(--operator-primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.modal-duyet-hoa-hong__textarea.has-error {
+  border-color: var(--operator-danger);
+}
+
+.modal-duyet-hoa-hong__textarea-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.modal-duyet-hoa-hong__hint {
+  color: var(--operator-text-secondary);
+}
+
+/* ===== Error ===== */
+.modal-duyet-hoa-hong__error {
+  color: var(--operator-danger);
+  font-size: 0.85rem;
+}
+
+/* ===== Actions ===== */
+.modal-duyet-hoa-hong__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--operator-glass-border);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .modal-duyet-hoa-hong__action-buttons {
+    flex-direction: column;
+  }
+
+  .modal-duyet-hoa-hong__actions {
+    flex-direction: column;
+  }
+
+  .modal-duyet-hoa-hong__actions .operator-btn {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+

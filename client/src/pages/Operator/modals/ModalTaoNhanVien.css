@@ -1,0 +1,215 @@
+/* Modal Tạo Nhân viên - Shared styles for Employee Modals */
+
+.modal-tao-nv__content,
+.modal-chinh-sua-nv__content,
+.modal-chi-tiet-nv__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== Info Section ===== */
+.modal-tao-nv__info {
+  padding: 1rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid var(--operator-primary);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ===== Form ===== */
+.modal-tao-nv__form,
+.modal-chinh-sua-nv__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-tao-nv__form-group,
+.modal-chinh-sua-nv__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-tao-nv__label,
+.modal-chinh-sua-nv__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+}
+
+.modal-tao-nv__required,
+.modal-chinh-sua-nv__required {
+  color: var(--operator-danger);
+}
+
+/* Input & Select */
+.modal-tao-nv__input,
+.modal-tao-nv__select,
+.modal-chinh-sua-nv__input,
+.modal-chinh-sua-nv__select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.modal-tao-nv__select option,
+.modal-chinh-sua-nv__select option {
+  color: #1a1a1a !important;
+  background-color: #ffffff !important;
+}
+
+/* Class này kế thừa style của .modal-tao-nv__input nhưng chỉnh lại một chút */
+.modal-tao-nv__input.modal-tao-nv__input--readonly {
+  /* Màu nền xám nhẹ */
+  border: 1px solid #e0e0e0;
+  /* Viền nhạt hơn chút */
+  display: flex;
+  align-items: center;
+  /* Căn giữa nội dung theo chiều dọc */
+  color: #333;
+  font-weight: 500;
+  cursor: default;
+  /* Con trỏ chuột bình thường */
+  padding-left: 12px;
+  /* Đảm bảo padding giống input */
+}
+
+/* Container bên trong để căn chỉnh icon và text */
+.kv-display-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  /* Cắt chữ nều quá dài */
+}
+
+.kv-icon {
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
+.kv-text {
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+.kv-separator {
+  color: #999;
+  margin: 0 6px;
+  font-size: 12px;
+}
+
+.modal-tao-nv__input:focus,
+.modal-tao-nv__select:focus,
+.modal-chinh-sua-nv__input:focus,
+.modal-chinh-sua-nv__select:focus {
+  outline: none;
+  border-color: var(--operator-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-tao-nv__input.has-error,
+.modal-chinh-sua-nv__input.has-error {
+  border-color: var(--operator-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.modal-tao-nv__input:disabled,
+.modal-tao-nv__select:disabled,
+.modal-chinh-sua-nv__input:disabled,
+.modal-chinh-sua-nv__select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-tao-nv__select option,
+.modal-chinh-sua-nv__select option {
+  background: #1a1a2e;
+  color: var(--operator-text-primary);
+}
+
+.modal-tao-nv__error,
+.modal-chinh-sua-nv__error {
+  color: var(--operator-danger);
+  font-size: 0.85rem;
+}
+
+/* ===== Khu Vực Info ===== */
+.modal-tao-nv__khu-vuc-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--operator-glass-white);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.modal-tao-nv__khu-vuc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.modal-tao-nv__khu-vuc-label {
+  font-weight: 600;
+  color: var(--operator-text-secondary);
+  min-width: 130px;
+  font-size: 0.9rem;
+}
+
+.modal-tao-nv__khu-vuc-value {
+  color: var(--operator-primary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 4px;
+}
+
+/* ===== Actions ===== */
+.modal-tao-nv__actions,
+.modal-chinh-sua-nv__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--operator-glass-border);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+
+  .modal-tao-nv__actions,
+  .modal-chinh-sua-nv__actions {
+    flex-direction: column;
+  }
+
+  .modal-tao-nv__actions .operator-btn,
+  .modal-chinh-sua-nv__actions .operator-btn {
+    width: 100%;
+  }
+
+  .modal-tao-nv__khu-vuc-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-tao-nv__khu-vuc-label {
+    min-width: auto;
+  }
+}

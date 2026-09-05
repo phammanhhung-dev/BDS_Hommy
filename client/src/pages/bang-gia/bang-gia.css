@@ -1,0 +1,147 @@
+.bang-gia {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bang-gia__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  flex: 1;
+}
+
+.bang-gia__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.bang-gia__title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 15px;
+}
+
+.bang-gia__subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.bang-gia__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.bang-gia__tab {
+  padding: 12px 30px;
+  border: 2px solid #667eea;
+  background: none;
+  color: #667eea;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bang-gia__tab:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.bang-gia__tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+.bang-gia__content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.bang-gia__table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+
+.bang-gia__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bang-gia__table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.bang-gia__table th,
+.bang-gia__table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.bang-gia__table th {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.bang-gia__table tbody tr:hover {
+  background: #f8f9ff;
+}
+
+.bang-gia__khu-vuc {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.bang-gia__note {
+  background: #f8f9ff;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.bang-gia__note h3 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.bang-gia__note ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #666;
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .bang-gia__title {
+    font-size: 2rem;
+  }
+  
+  .bang-gia__tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .bang-gia__tab {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .bang-gia__content {
+    padding: 20px;
+  }
+  
+  .bang-gia__table th,
+  .bang-gia__table td {
+    padding: 12px 8px;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,143 @@
+/* Modal Chi tiết Biên bản */
+
+.modal-chi-tiet-bb__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-chi-tiet-bb__loading,
+.modal-chi-tiet-bb__error {
+  padding: 3rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.modal-chi-tiet-bb__error {
+  color: var(--operator-danger);
+}
+
+/* ===== Sections ===== */
+.modal-chi-tiet-bb__section {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.modal-chi-tiet-bb__section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--operator-glass-border);
+}
+
+/* ===== Info Grid ===== */
+.modal-chi-tiet-bb__info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.modal-chi-tiet-bb__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modal-chi-tiet-bb__info-item label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--operator-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-chi-tiet-bb__info-item span {
+  font-size: 0.95rem;
+  color: var(--operator-text-primary);
+  word-break: break-word;
+}
+
+/* ===== Ghi chú ===== */
+.modal-chi-tiet-bb__ghi-chu {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  line-height: 1.6;
+}
+
+/* ===== Chữ ký ===== */
+.modal-chi-tiet-bb__chu-ky-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.modal-chi-tiet-bb__chu-ky-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+}
+
+.modal-chi-tiet-bb__chu-ky-item label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--operator-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-chi-tiet-bb__chu-ky {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 1.8rem;
+  color: var(--operator-primary);
+  font-weight: 700;
+  padding: 1rem 0;
+  text-align: center;
+  border-bottom: 2px solid var(--operator-glass-border);
+}
+
+.modal-chi-tiet-bb__chu-ky-time {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ===== Actions ===== */
+.modal-chi-tiet-bb__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--operator-glass-border);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .modal-chi-tiet-bb__info-grid,
+  .modal-chi-tiet-bb__chu-ky-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-chi-tiet-bb__actions {
+    flex-direction: column;
+  }
+
+  .modal-chi-tiet-bb__actions .operator-btn {
+    width: 100%;
+  }
+}
+
+
+
+
+
+

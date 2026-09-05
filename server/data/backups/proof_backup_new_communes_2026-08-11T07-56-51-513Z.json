@@ -1,0 +1,47 @@
+[
+  {
+    "CommuneID": 1,
+    "ProvinceID": 1,
+    "CommuneCode": "1",
+    "CommuneName": "Phường Phúc Xá (Quận Ba Đình)",
+    "CommuneType": "phường",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "CommuneID": 2,
+    "ProvinceID": 1,
+    "CommuneCode": "4",
+    "CommuneName": "Phường Trúc Bạch (Quận Ba Đình)",
+    "CommuneType": "phường",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "CommuneID": 3,
+    "ProvinceID": 1,
+    "CommuneCode": "6",
+    "CommuneName": "Phường Vĩnh Phúc (Quận Ba Đình)",
+    "CommuneType": "phường",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "CommuneID": 4,
+    "ProvinceID": 1,
+    "CommuneCode": "7",
+    "CommuneName": "Phường Cống Vị (Quận Ba Đình)",
+    "CommuneType": "phường",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "CommuneID": 5,
+    "ProvinceID": 1,
+    "CommuneCode": "8",
+    "CommuneName": "Phường Liễu Giai (Quận Ba Đình)",
+    "CommuneType": "phường",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  }
+]

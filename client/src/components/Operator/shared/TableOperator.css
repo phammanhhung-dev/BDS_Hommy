@@ -1,0 +1,186 @@
+/**
+ * TableOperator CSS - Premium Editorial Glass Morphism
+ */
+.operator-table {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--op-glass-border, rgba(122, 62, 46, 0.12));
+  border-radius: var(--op-radius-lg, 16px);
+  box-shadow: var(--op-glass-shadow, 0 12px 40px rgba(122, 62, 46, 0.12));
+  overflow: hidden;
+}
+
+/* Scroll container handles both vertical and horizontal scroll */
+.operator-table__scroll {
+  width: 100%;
+  max-height: 60vh;
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Premium Thin Scrollbar styling */
+.operator-table__scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.operator-table__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.operator-table__scroll::-webkit-scrollbar-thumb {
+  background: rgba(122, 62, 46, 0.2);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+.operator-table__scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 62, 46, 0.4);
+}
+
+/* CSS Table Layout */
+.operator-table__table-el {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.operator-table__header {
+  display: table-header-group;
+  background: rgba(122, 62, 46, 0.04);
+}
+
+.operator-table__header-row {
+  display: table-row;
+}
+
+.operator-table__header-cell {
+  display: table-cell;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--op-text-secondary, #5B5A57);
+  border-bottom: 2px solid var(--op-glass-border, rgba(122, 62, 46, 0.12));
+  background: rgba(255, 255, 255, 0.98);
+  /* Sticky header alignment */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.operator-table__body {
+  display: table-row-group;
+}
+
+.operator-table__row {
+  display: table-row;
+  border-bottom: 1px solid rgba(122, 62, 46, 0.08);
+  transition: background-color 0.20s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.operator-table__row:last-child {
+  border-bottom: none;
+}
+
+/* Row Hover styling */
+.operator-table--hoverable .operator-table__row:not(.operator-table__row--empty):hover {
+  background-color: rgba(122, 62, 46, 0.03);
+}
+
+/* Striped styling */
+.operator-table--striped .operator-table__row:nth-child(even):not(.operator-table__row--empty) {
+  background-color: rgba(122, 62, 46, 0.01);
+}
+
+.operator-table__cell {
+  display: table-cell;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: var(--op-text-primary, #1B1B1B);
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(122, 62, 46, 0.08);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+.operator-table__cell--actions {
+  /* Không dùng display: flex vì ô này đang là display: table-cell */
+  vertical-align: middle;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Empty State row behaves as a block to fill width */
+.operator-table__row--empty {
+  display: block;
+  width: 100%;
+}
+
+.operator-table__cell--empty {
+  display: block;
+  width: 100%;
+  border-bottom: none;
+}
+
+.operator-table__empty {
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.operator-table__empty-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.operator-table__empty-text {
+  font-size: 1rem;
+  color: var(--op-text-secondary, #5B5A57);
+}
+
+.operator-table__loading-more {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  color: var(--op-text-secondary, #5B5A57);
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: var(--op-radius-md, 12px);
+  margin: 8px 16px;
+  display: inline-block;
+  width: calc(100% - 32px);
+  box-sizing: border-box;
+}
+
+.operator-table__footer {
+  padding: var(--op-spacing-md, 16px) var(--op-spacing-lg, 24px);
+  border-top: 1px solid var(--op-glass-border, rgba(122, 62, 46, 0.12));
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.operator-table__pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.operator-table__pagination-info {
+  font-size: 0.875rem;
+  color: var(--op-text-secondary, #5B5A57);
+}
+
+.operator-table__pagination-total {
+  margin-left: 0.5rem;
+  color: var(--op-text-muted, #8B8B8B);
+}

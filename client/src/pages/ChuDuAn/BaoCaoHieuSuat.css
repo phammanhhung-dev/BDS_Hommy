@@ -1,0 +1,524 @@
+/* BaoCaoHieuSuat.css - Liquid Glass Design System */
+
+/* ==================== CONTAINER ==================== */
+.baocao-container {
+  max-width: none;
+  margin: 0;
+  padding: 24px;
+}
+
+
+/* Tokens màu sắc */
+.trang.roleChuDuAn {
+  --mau-chu-dao: #1a1a1a;
+  --mau-chu-phu: #666;
+  --mau-chu-nhe: #888;
+  --mau-nen-chinh: #ffffff;
+  --mau-nen-phu: #f8f9fa;
+  --mau-vien: rgba(255, 255, 255, 0.2);
+  --mau-bong: rgba(0, 0, 0, 0.1);
+  --mau-accent: #007bff;
+  --mau-thanh-cong: #28a745;
+  --mau-canh-bao: #ffc107;
+  --mau-loi: #dc3545;
+  --mau-thong-tin: #17a2b8;
+
+  /* Glass effects */
+  --glass-blur: blur(12px);
+  --glass-opacity: 0.8;
+  --glass-border: rgba(255, 255, 255, 0.18);
+
+  /* Gradient backgrounds */
+  --gradient-primary: linear-gradient(135deg, #14532D 0%, #0F766E 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  --gradient-success: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  --gradient-warning: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  --gradient-info: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+
+  /* Layout */
+  min-height: 100vh;
+  background: var(--gradient-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Header trang */
+/* .header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+} */
+
+.tieuDe {
+  color: var(--mau-chu-dao);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px var(--mau-bong);
+}
+
+.thanhTacVu {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Content container */
+.noiDung {
+  max-width: none;
+  margin: 0;
+  padding: 24px;
+}
+
+.card {
+  background: var(--gradient-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Filter section */
+.boLoc {
+  margin-bottom: 2rem;
+}
+
+.boLoc h3 {
+  color: var(--mau-chu-dao);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid var(--mau-accent);
+}
+
+.boLocGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.nhomNhap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nhomNhap label {
+  color: var(--mau-chu-dao);
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: capitalize;
+}
+
+.nhomNhap input,
+.nhomNhap select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: var(--mau-chu-dao);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.nhomNhap input:focus,
+.nhomNhap select:focus {
+  outline: none;
+  border-color: var(--mau-accent);
+  box-shadow:
+    0 0 0 3px rgba(0, 123, 255, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Statistics grid */
+.luoiThongKe {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.thongKeItem {
+  background: var(--gradient-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.thongKeItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+}
+
+.thongKeItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.thongKeItem.thanh-cong::before {
+  background: var(--gradient-success);
+}
+
+.thongKeItem.canh-bao::before {
+  background: var(--gradient-warning);
+}
+
+.thongKeItem.thong-tin::before {
+  background: var(--gradient-info);
+}
+
+.thongKeIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.thongKeItem.thanh-cong .thongKeIcon {
+  color: var(--mau-thanh-cong);
+}
+
+.thongKeItem.canh-bao .thongKeIcon {
+  color: var(--mau-canh-bao);
+}
+
+.thongKeItem.thong-tin .thongKeIcon {
+  color: var(--mau-thong-tin);
+}
+
+.thongKeItem.accent .thongKeIcon {
+  color: var(--mau-accent);
+}
+
+.thongKeSo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--mau-chu-dao);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.thongKeNhan {
+  color: var(--mau-chu-phu);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Chart container */
+.bienDoContainer {
+  background: var(--gradient-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.bienDoContainer h3 {
+  color: var(--mau-chu-dao);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid var(--mau-accent);
+}
+
+.bienDoArea {
+  min-height: 300px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mau-chu-phu);
+  font-style: italic;
+}
+
+/* Table styles */
+.bangBaoCao {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.bangBaoCao table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bangBaoCao th,
+.bangBaoCao td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.bangBaoCao th {
+  background: rgba(0, 123, 255, 0.1);
+  color: var(--mau-chu-dao);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bangBaoCao td {
+  color: var(--mau-chu-dao);
+  font-size: 0.875rem;
+}
+
+.bangBaoCao tr:hover {
+  background: rgba(0, 123, 255, 0.05);
+}
+
+/* Status badges */
+.trangThai {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trangThai.daDang {
+  background: rgba(40, 167, 69, 0.1);
+  color: var(--mau-thanh-cong);
+  border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.trangThai.choDuyet {
+  background: rgba(255, 193, 7, 0.1);
+  color: var(--mau-canh-bao);
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.trangThai.tuChoi {
+  background: rgba(220, 53, 69, 0.1);
+  color: var(--mau-loi);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+.trangThai.nhap {
+  background: rgba(108, 117, 125, 0.1);
+  color: var(--mau-chu-phu);
+  border: 1px solid rgba(108, 117, 125, 0.2);
+}
+
+/* Buttons */
+.nut {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mau-chu-dao);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 120px;
+}
+
+.nut:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.nutChinh {
+  background: var(--gradient-primary);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.nutChinh:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6b5b95 100%);
+  color: white;
+}
+
+.nutThongTin {
+  background: var(--gradient-info);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.nutThongTin:hover {
+  background: linear-gradient(135deg, #138496 0%, #5a189a 100%);
+  color: white;
+}
+
+/* Loading state */
+.taiDang {
+  text-align: center;
+  padding: 3rem;
+  color: var(--mau-chu-phu);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid var(--mau-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Empty state */
+.truongRong {
+  text-align: center;
+  padding: 3rem;
+  color: var(--mau-chu-phu);
+}
+
+.truongRong h3 {
+  color: var(--mau-chu-dao);
+  margin-bottom: 1rem;
+}
+
+.truongRong p {
+  margin-bottom: 1.5rem;
+}
+
+/* Export section */
+.xuatBaoCao {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+}
+
+/* Period selector */
+.chonKyBaoCao {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.chonKyBaoCao .nhomNhap {
+  min-width: 150px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    margin: 0.5rem;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .thanhTacVu {
+    justify-content: center;
+  }
+
+  .luoiThongKe {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .boLocGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    margin: 0.5rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .xuatBaoCao {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chonKyBaoCao {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .noiDung {
+    padding: 0 0.5rem 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .luoiThongKe {
+    grid-template-columns: 1fr;
+  }
+
+  .thongKeItem {
+    padding: 1rem;
+  }
+
+  .thongKeSo {
+    font-size: 1.5rem;
+  }
+
+  .thongKeIcon {
+    font-size: 2rem;
+  }
+
+  .bangBaoCao th,
+  .bangBaoCao td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+}

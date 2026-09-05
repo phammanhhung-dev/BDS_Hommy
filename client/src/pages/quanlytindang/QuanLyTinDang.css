@@ -1,0 +1,371 @@
+/* Listing Management Container */
+.quanlytd-wrapper {
+  padding: 1rem 0;
+}
+
+.quanlytd-container {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.quanlytd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.quanlytd-header h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quanlytd-header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Filters Bar */
+.quanlytd-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.quanlytd-search-input {
+  flex: 1;
+  min-width: 260px;
+  position: relative;
+}
+
+.quanlytd-search-input input {
+  width: 100%;
+  padding: 0.625rem 1rem 0.625rem 2.5rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.quanlytd-search-input input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.quanlytd-search-icon {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.quanlytd-select-filter {
+  padding: 0.625rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-size: 0.875rem;
+  color: #334155;
+  outline: none;
+  min-width: 150px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quanlytd-select-filter:focus {
+  border-color: #3b82f6;
+}
+
+/* Table styling */
+.quanlytd-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.quanlytd-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.quanlytd-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.quanlytd-table td {
+  padding: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.quanlytd-table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.quanlytd-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Badges */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.badge-status--nhap {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.badge-status--choduyet {
+  background-color: #ffedd5;
+  color: #ea580c;
+}
+
+.badge-status--daduyet {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-status--dadang {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-status--tamngung {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+.badge-status--tuchoi {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge-status--luutru {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.badge-type {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+
+.badge-type--thue {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.badge-type--ban {
+  background-color: #fce7f3;
+  color: #be185d;
+}
+
+/* Actions list */
+.quanlytd-actions-col {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-premium {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-premium--primary {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-premium--primary:hover {
+  background-color: #059669;
+}
+
+.btn-premium--info {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-premium--info:hover {
+  background-color: #2563eb;
+}
+
+.btn-premium--danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-premium--danger:hover {
+  background-color: #dc2626;
+}
+
+.btn-premium--secondary {
+  background-color: white;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+.btn-premium--secondary:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+/* Empty list state */
+.quanlytd-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* Modal styling */
+.quanlytd-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.quanlytd-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 550px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: modalEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.quanlytd-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.quanlytd-modal-header h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.quanlytd-modal-body {
+  padding: 1.5rem;
+}
+
+.quanlytd-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.quanlytd-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.quanlytd-form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.quanlytd-form-group input,
+.quanlytd-form-group select,
+.quanlytd-form-group textarea {
+  padding: 0.625rem 0.875rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.quanlytd-form-group input:focus,
+.quanlytd-form-group select:focus,
+.quanlytd-form-group textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.quanlytd-modal-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: #f8fafc;
+}

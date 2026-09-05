@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><title>Login Operator</title></head>
+<body>
+<h2>Redirecting to Operator Dashboard...</h2>
+<script>
+  fetch('http://localhost:5000/api/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email: 'dieuhanhtest@example.com', password: '123456'})
+  })
+  .then(r => r.json())
+  .then(data => {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    window.location.href = '/nvdh/dashboard';
+  });
+</script>
+</body>
+</html>

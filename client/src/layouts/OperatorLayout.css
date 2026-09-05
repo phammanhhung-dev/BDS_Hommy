@@ -1,0 +1,189 @@
+/**
+ * Operator Layout CSS
+ * Glass Morphism Theme với BEM naming
+ */
+
+/* ==================== LAYOUT STRUCTURE ==================== */
+.operator-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #FFFBF5;
+  font-family: var(--op-font-family-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+}
+
+/* Prevent the entire page from developing a horizontal scrollbar due to
+   wide inner elements (tables, floating buttons). Allow inner blocks to
+   scroll horizontally when needed. */
+.operator-layout {
+  overflow-x: hidden;
+}
+
+/* Animated background pattern */
+.operator-layout::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(122, 62, 46, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(201, 162, 39, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(91, 90, 87, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.operator-layout__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px;
+  position: relative;
+  z-index: 1;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+}
+
+.operator-layout__content {
+  flex: 1;
+  padding: 1.75rem;
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  animation: operator-fade-in-up 0.5s ease-out;
+  overflow-x: visible;
+  overflow-y: auto;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Allow inner content to wrap and prevent page-level overflow. */
+.operator-layout__main,
+.operator-layout__content {
+  min-width: 0;
+}
+
+/* ==================== TOPBAR (MOBILE) ==================== */
+.operator-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--op-glass-border);
+  box-shadow: var(--op-glass-shadow);
+  display: none;
+  align-items: center;
+  padding: 0 1rem;
+  gap: 1rem;
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.operator-topbar__burger {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--op-glass-border);
+  border-radius: 8px;
+  color: var(--op-text-primary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.operator-topbar__burger:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: scale(1.05);
+}
+
+.operator-topbar__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--op-text-primary);
+  font-family: var(--op-font-family-heading);
+  letter-spacing: var(--op-letter-spacing-tight);
+  line-height: var(--op-line-height-tight);
+}
+
+.operator-topbar--hide {
+  transform: translateY(-100%);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .operator-topbar {
+    display: flex;
+  }
+
+  .operator-layout__main {
+    margin-left: 0;
+    padding-top: 64px;
+  }
+
+  .operator-layout__content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .operator-layout__content {
+    padding: 1rem;
+  }
+}
+
+/* ==================== SIDEBAR TOGGLE STATE (MOBILE) ==================== */
+@media (max-width: 1024px) {
+  .operator-layout--sidebar-open .operator-nav {
+    transform: translateX(0);
+  }
+  
+  .operator-layout--sidebar-open::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 998;
+  }
+}
+
+/* ==================== SCROLLBAR STYLING ==================== */
+.operator-layout__content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.operator-layout__content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.operator-layout__content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.operator-layout__content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+
+
+
+
+

@@ -1,0 +1,237 @@
+/* UC-OPER-01: Duyệt Tin đăng - Glass Morphism Theme */
+
+.duyet-tin-dang {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.duyet-tin-dang__header {
+  flex-wrap: wrap;
+}
+
+.duyet-tin-dang__stats {
+  flex-wrap: wrap;
+}
+
+.duyet-tin-dang__content {
+  overflow-x: hidden;
+}
+
+/* ===== Header ===== */
+.duyet-tin-dang__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.duyet-tin-dang__title-section {
+  flex: 1;
+}
+
+.duyet-tin-dang__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--operator-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.duyet-tin-dang__subtitle {
+  font-size: 0.95rem;
+  color: var(--operator-text-secondary);
+  margin: 0;
+}
+
+/* ===== Quick Stats ===== */
+.duyet-tin-dang__stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.duyet-tin-dang__stat-item {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  min-width: 120px;
+}
+
+.duyet-tin-dang__stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--operator-primary);
+  margin-bottom: 0.25rem;
+}
+
+.duyet-tin-dang__stat-label {
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Content ===== */
+.duyet-tin-dang__content {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--operator-shadow-lg);
+}
+
+.duyet-tin-dang__cell-center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.duyet-tin-dang__cell-id {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+
+
+.duyet-tin-dang__tieu-de,
+.duyet-tin-dang__du-an,
+.duyet-tin-dang__chu-du-an {
+  width: 100%;
+}
+
+.duyet-tin-dang__error {
+  text-align: center;
+  padding: 3rem;
+  color: var(--operator-danger);
+  font-size: 1.1rem;
+}
+
+/* ===== Table Cell Custom Renders ===== */
+.duyet-tin-dang__tieu-de {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.duyet-tin-dang__tieu-de-text {
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.duyet-tin-dang__so-phong {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+}
+
+.duyet-tin-dang__du-an {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.duyet-tin-dang__ten-du-an {
+  font-weight: 500;
+  color: var(--operator-text-primary);
+}
+
+.duyet-tin-dang__khu-vuc {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+}
+
+.duyet-tin-dang__ten-du-an {
+  padding-right: 0.75rem;
+}
+
+.duyet-tin-dang__chu-du-an {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.duyet-tin-dang__ten-chu {
+  font-weight: 500;
+  color: var(--operator-text-primary);
+}
+
+.duyet-tin-dang__email {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+}
+
+.duyet-tin-dang__hoa-hong-empty {
+  color: var(--operator-text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ===== Actions ===== */
+.duyet-tin-dang__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: stretch;
+  width: 100%;
+}
+
+.duyet-tin-dang__actions .operator-btn {
+  width: 100%;
+  white-space: nowrap;
+  text-align: center;
+  justify-content: center;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .duyet-tin-dang__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .duyet-tin-dang__stats {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .duyet-tin-dang {
+    padding: 1rem;
+  }
+  
+  .duyet-tin-dang__title {
+    font-size: 1.5rem;
+  }
+  
+  .duyet-tin-dang__actions {
+    flex-direction: column;
+  }
+  
+  .duyet-tin-dang__actions .operator-btn {
+    width: 100%;
+  }
+}
+
+
+
+
+
+

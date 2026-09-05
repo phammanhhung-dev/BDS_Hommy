@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+Disallow: /login
+Disallow: /dangky
+Disallow: /chu-du-an/
+Disallow: /nhan-vien-ban-hang/
+Disallow: /nvdh/
+Disallow: /quan-ly
+Disallow: /quanlytaikhoan
+Disallow: /quanlytindang
+Disallow: /quanlykhuvuc
+Disallow: /thanhtoan
+Disallow: /thanhtoancoc
+Disallow: /kyc-debug
+
+Sitemap: https://hommy.vn/sitemap.xml

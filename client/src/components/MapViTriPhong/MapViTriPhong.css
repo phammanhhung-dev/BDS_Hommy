@@ -1,0 +1,495 @@
+/**
+ * MAP VỊ TRÍ PHÒNG - LIGHT GLASS MORPHISM THEME
+ * 
+ * Design System:
+ * - Background: White glass (rgba 0.8) with blur(16px)
+ * - Border: Purple 12% alpha
+ * - Text: Dark (#111827) on light
+ * - Accent: Purple gradient (#14532D → #0F766E)
+ * - Shadows: Multi-layer với purple tint
+ * 
+ * Responsive:
+ * - Desktop (>1024px): 400px height
+ * - Tablet (768-1024px): 400px height
+ * - Mobile (480-768px): 300px height
+ * - Mobile Small (<480px): 250px height
+ */
+
+/* ========== CONTAINER ========== */
+.map-vi-tri-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  border-radius: 20px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 32px rgba(139, 92, 246, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-vi-tri-container:hover {
+  border-color: rgba(139, 92, 246, 0.2);
+  box-shadow: 
+    0 12px 40px rgba(139, 92, 246, 0.12),
+    0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* ========== HEADER ========== */
+.map-vi-tri-header {
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(139, 92, 246, 0.04));
+  border-bottom: 1px solid rgba(139, 92, 246, 0.12);
+}
+
+.map-vi-tri-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.map-vi-tri-header h3 svg {
+  width: 24px;
+  height: 24px;
+  color: #14532D;
+  flex-shrink: 0;
+}
+
+.map-vi-tri-address {
+  margin: 8px 0 0 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  line-height: 1.5;
+}
+
+.map-vi-tri-address svg {
+  width: 16px;
+  height: 16px;
+  color: #9ca3af;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ========== MAP CONTAINER ========== */
+.map-vi-tri-map {
+  width: 100%;
+  height: 400px;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* Override Leaflet default styles */
+.map-vi-tri-map .leaflet-container {
+  background: #f9fafb;
+  font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #111827;
+}
+
+/* Zoom Control Styling */
+.map-vi-tri-map .leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 
+    0 4px 12px rgba(139, 92, 246, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.map-vi-tri-map .leaflet-control-zoom a {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #14532D !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.12) !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  font-size: 20px !important;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.map-vi-tri-map .leaflet-control-zoom a:last-child {
+  border-bottom: none !important;
+}
+
+.map-vi-tri-map .leaflet-control-zoom a:hover {
+  background: linear-gradient(135deg, #14532D, #0F766E) !important;
+  color: #ffffff !important;
+  transform: scale(1.05);
+}
+
+.map-vi-tri-map .leaflet-control-zoom a.leaflet-disabled {
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: #9ca3af !important;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Attribution (Copyright text) */
+.map-vi-tri-map .leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 10px !important;
+  color: #6b7280 !important;
+  padding: 2px 6px !important;
+  border-radius: 4px 0 0 0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.map-vi-tri-map .leaflet-control-attribution a {
+  color: #14532D !important;
+  text-decoration: none;
+}
+
+.map-vi-tri-map .leaflet-control-attribution a:hover {
+  text-decoration: underline;
+}
+
+/* ========== POPUP STYLING ========== */
+.map-vi-tri-map .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px !important;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  box-shadow: 
+    0 12px 40px rgba(139, 92, 246, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  padding: 0 !important;
+}
+
+.map-vi-tri-map .leaflet-popup-content {
+  margin: 0 !important;
+  min-width: 220px;
+  max-width: 300px;
+}
+
+.map-vi-tri-map .leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+.map-vi-tri-map .leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  box-shadow: 
+    -2px -2px 6px rgba(139, 92, 246, 0.08),
+    -1px -1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.map-vi-tri-map .leaflet-popup-close-button {
+  color: #6b7280 !important;
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  border-radius: 50%;
+  top: 8px !important;
+  right: 8px !important;
+  transition: all 0.2s ease;
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.map-vi-tri-map .leaflet-popup-close-button:hover {
+  color: #ffffff !important;
+  background: #ef4444 !important;
+  transform: scale(1.1);
+}
+
+/* ========== POPUP CONTENT ========== */
+.map-popup-content {
+  padding: 18px;
+}
+
+.map-popup-title {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.map-popup-address {
+  margin: 0 0 14px 0;
+  font-size: 0.8125rem;
+  color: #6b7280;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.map-popup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #14532D, #0F766E);
+  color: #ffffff !important;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 12px rgba(139, 92, 246, 0.25),
+    0 2px 4px rgba(139, 92, 246, 0.15);
+}
+
+.map-popup-link:hover {
+  background: linear-gradient(135deg, #0F766E, #6d28d9);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(139, 92, 246, 0.35),
+    0 3px 6px rgba(139, 92, 246, 0.2);
+}
+
+.map-popup-link:active {
+  transform: translateY(0);
+}
+
+/* ========== ERROR STATE ========== */
+.map-vi-tri-error {
+  padding: 48px 24px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.04), rgba(139, 92, 246, 0.02));
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.map-error-icon {
+  width: 56px;
+  height: 56px;
+  color: #d1d5db;
+  margin-bottom: 8px;
+}
+
+.map-error-text {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.map-error-subtext {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .map-vi-tri-map {
+    height: 400px; /* Giữ nguyên */
+  }
+}
+
+/* Mobile Large (480px - 768px) */
+@media (max-width: 768px) {
+  .map-vi-tri-header {
+    padding: 16px 20px;
+  }
+  
+  .map-vi-tri-header h3 {
+    font-size: 1.125rem;
+  }
+  
+  .map-vi-tri-header h3 svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .map-vi-tri-address {
+    font-size: 0.8125rem;
+  }
+  
+  .map-vi-tri-map {
+    height: 300px;
+  }
+  
+  .map-popup-content {
+    padding: 16px;
+  }
+  
+  .map-popup-title {
+    font-size: 0.9375rem;
+  }
+  
+  .map-vi-tri-error {
+    padding: 40px 20px;
+    min-height: 250px;
+  }
+}
+
+/* Mobile Small (<480px) */
+@media (max-width: 480px) {
+  .map-vi-tri-container {
+    border-radius: 16px;
+  }
+  
+  .map-vi-tri-header {
+    padding: 14px 18px;
+  }
+  
+  .map-vi-tri-header h3 {
+    font-size: 1rem;
+  }
+  
+  .map-vi-tri-header h3 svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .map-vi-tri-address {
+    font-size: 0.75rem;
+    gap: 4px;
+  }
+  
+  .map-vi-tri-address svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .map-vi-tri-map {
+    height: 250px;
+    border-radius: 0 0 16px 16px;
+  }
+  
+  /* Zoom controls smaller on mobile */
+  .map-vi-tri-map .leaflet-control-zoom a {
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 18px !important;
+  }
+  
+  /* Popup adjustments */
+  .map-vi-tri-map .leaflet-popup-content {
+    min-width: 180px;
+    max-width: 240px;
+  }
+  
+  .map-popup-content {
+    padding: 14px;
+  }
+  
+  .map-popup-title {
+    font-size: 0.875rem;
+    margin-bottom: 6px;
+  }
+  
+  .map-popup-address {
+    font-size: 0.75rem;
+    margin-bottom: 12px;
+  }
+  
+  .map-popup-link {
+    padding: 7px 12px;
+    font-size: 0.75rem;
+    gap: 5px;
+  }
+  
+  .map-vi-tri-error {
+    padding: 32px 16px;
+    min-height: 220px;
+  }
+  
+  .map-error-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .map-error-text {
+    font-size: 0.9375rem;
+  }
+  
+  .map-error-subtext {
+    font-size: 0.8125rem;
+    max-width: 280px;
+  }
+}
+
+/* ========== ACCESSIBILITY ========== */
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .map-vi-tri-container {
+    border-width: 2px;
+    border-color: #14532D;
+  }
+  
+  .map-vi-tri-header {
+    background: rgba(139, 92, 246, 0.15);
+    border-bottom-width: 2px;
+  }
+  
+  .map-popup-link {
+    border: 2px solid #ffffff;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .map-vi-tri-container,
+  .map-vi-tri-map .leaflet-control-zoom a,
+  .map-popup-link {
+    transition: none !important;
+  }
+  
+  .map-vi-tri-container:hover {
+    transform: none !important;
+  }
+  
+  .map-popup-link:hover {
+    transform: none !important;
+  }
+}
+
+/* Focus States for Keyboard Navigation */
+.map-popup-link:focus {
+  outline: 3px solid rgba(139, 92, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .map-vi-tri-container {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .map-vi-tri-map .leaflet-control-zoom {
+    display: none;
+  }
+}
+

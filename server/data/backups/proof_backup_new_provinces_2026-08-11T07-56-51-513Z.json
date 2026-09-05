@@ -1,0 +1,42 @@
+[
+  {
+    "ProvinceID": 1,
+    "ProvinceCode": "1",
+    "ProvinceName": "Thành phố Hà Nội",
+    "ProvinceType": "thành phố trung ương",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "ProvinceID": 2,
+    "ProvinceCode": "2",
+    "ProvinceName": "Tỉnh Hà Giang",
+    "ProvinceType": "tỉnh",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "ProvinceID": 3,
+    "ProvinceCode": "4",
+    "ProvinceName": "Tỉnh Cao Bằng",
+    "ProvinceType": "tỉnh",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "ProvinceID": 4,
+    "ProvinceCode": "6",
+    "ProvinceName": "Tỉnh Bắc Kạn",
+    "ProvinceType": "tỉnh",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  },
+  {
+    "ProvinceID": 5,
+    "ProvinceCode": "8",
+    "ProvinceName": "Tỉnh Tuyên Quang",
+    "ProvinceType": "tỉnh",
+    "CreatedAt": "2026-08-06T08:30:19.000Z",
+    "UpdatedAt": "2026-08-06T08:30:19.000Z"
+  }
+]

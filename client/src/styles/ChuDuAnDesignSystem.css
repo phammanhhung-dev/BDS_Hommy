@@ -1,0 +1,856 @@
+/**
+ * Design System cho Chủ dự án
+ * Định nghĩa colors, typography, spacing, components dùng chung
+ */
+
+/* Import font Inter chỉ áp dụng cho ChuDuAn (scoped qua tokens, không ảnh hưởng global) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ==================== COLOR PALETTE - EMERALD NOIR THEME (CHỦ DỰ ÁN) ==================== */
+:root {
+  /* Primary Colors - Deep Emerald (Luxury, Wealth) */
+  --color-primary: #14532D;
+  --color-primary-dark: #0F3A20;
+  --color-primary-light: #166534;
+  --color-primary-bg: rgba(20, 83, 45, 0.08);
+
+  /* Secondary Colors - Teal (Growth, Trust) */
+  --color-secondary: #0F766E;
+  --color-secondary-dark: #0D5C54;
+  --color-secondary-light: #14B8A6;
+
+  /* Accent Colors - Gold (Premium, Exclusive) */
+  --color-accent: #D4AF37;
+  --color-accent-dark: #B68C3A;
+  --color-accent-light: #DDB945;
+  --color-accent-bg: rgba(212, 175, 55, 0.08);
+
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.08);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.08);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.08);
+  --color-info: #0F766E;
+  --color-info-bg: rgba(15, 118, 110, 0.08);
+
+  /* Emerald Noir - Glass Colors */
+  --color-glass-white: rgba(255, 255, 255, 0.85);
+  --color-glass-light: rgba(255, 255, 255, 0.7);
+  --color-glass-border: rgba(20, 83, 45, 0.15);
+  --color-glass-shadow: rgba(20, 83, 45, 0.12);
+
+  /* Neutral Colors - Emerald Noir Palette */
+  --color-white: #ffffff;
+  --color-porcelain: #F5F7F7;
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #E8EAEB;
+  --color-gray-200: #D1D5D8;
+  --color-gray-300: #B0B5B9;
+  --color-gray-400: #8A9096;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Text Colors - Emerald Noir Theme */
+  --color-text-primary: #111827;
+  --color-text-secondary: #4B5563;
+  --color-text-disabled: #9ca3af;
+  --color-text-inverse: #ffffff;
+  --color-text-accent: #D4AF37;
+
+  /* Background - Emerald Noir Theme */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #F5F7F7;
+  --color-bg-tertiary: #E8EAEB;
+
+  /* Border - Emerald Noir Theme */
+  --color-border: rgba(20, 83, 45, 0.12);
+  --color-border-hover: rgba(20, 83, 45, 0.2);
+  --color-border-gold: rgba(212, 175, 55, 0.3);
+
+  /* Shadow - Emerald Noir */
+  --shadow-xs: 0 1px 2px 0 rgba(20, 83, 45, 0.06);
+  --shadow-sm: 0 1px 3px 0 rgba(20, 83, 45, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(20, 83, 45, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(20, 83, 45, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(20, 83, 45, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  --shadow-gold: 0 4px 16px rgba(212, 175, 55, 0.2);
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  --font-family-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+}
+
+/* ==================== LAYOUT - EMERALD NOIR THEME ==================== */
+.chu-du-an-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #F5F7F7 0%, #E8F5F0 50%, #F9F9F7 100%);
+  font-family: var(--font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.chu-du-an-sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, rgba(20, 83, 45, 0.98) 0%, rgba(15, 58, 32, 1) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-right: 2px solid rgba(212, 175, 55, 0.15);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: 
+    4px 0 24px rgba(20, 83, 45, 0.2),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.1);
+}
+
+.chu-du-an-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.chu-du-an-content {
+  flex: 1;
+  padding: var(--spacing-2xl);
+  width: 100%;
+  max-width: none !important;
+}
+
+/* Topbar styles (defined in layout CSS, but keep fallbacks here) */
+.cda-topbar { position: sticky; top: 0; z-index: 900; height: 56px; display: none; align-items: center; gap: 12px; padding: 0 12px; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.06); }
+.cda-topbar.hide { transform: translateY(-100%); transition: transform 0.25s ease; }
+.cda-topbar-burger { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.9); display: inline-flex; align-items: center; justify-content: center; font-size: 1.125rem; cursor: pointer; }
+.cda-topbar-title { font-weight: 700; color: #111827; }
+
+/* Desktop: Ẩn topbar; Mobile/Tablet: Hiện topbar */
+@media (max-width: 1023px) {
+  .cda-topbar { display: flex; }
+}
+
+/* ==================== CARDS - EMERALD NOIR LUXURY ==================== */
+.cda-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: var(--radius-lg);
+  box-shadow: 
+    0 8px 32px rgba(20, 83, 45, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border: 1px solid rgba(20, 83, 45, 0.1);
+  border-top: 2px solid var(--color-accent);
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.cda-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.cda-card:hover {
+  box-shadow: 
+    0 12px 48px rgba(20, 83, 45, 0.18),
+    0 4px 16px rgba(212, 175, 55, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transform: translateY(-4px);
+  border-color: rgba(20, 83, 45, 0.2);
+  border-top-color: var(--color-accent-light);
+}
+
+.cda-card-header {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid rgba(20, 83, 45, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, rgba(20, 83, 45, 0.05) 0%, transparent 100%);
+  position: relative;
+}
+
+.cda-card-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+}
+
+.cda-card-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.cda-card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.cda-card-body {
+  padding: var(--spacing-xl);
+}
+
+.cda-card-footer {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-top: 1px solid rgba(20, 83, 45, 0.12);
+  background: linear-gradient(180deg, transparent 0%, rgba(245, 247, 247, 0.5) 100%);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* ==================== BUTTONS ==================== */
+.cda-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  line-height: 1.5;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.cda-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cda-btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.cda-btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.cda-btn-secondary {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+
+.cda-btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-primary);
+}
+
+.cda-btn-success {
+  background-color: var(--color-success);
+  color: var(--color-white);
+}
+
+.cda-btn-success:hover:not(:disabled) {
+  background-color: #059669;
+  box-shadow: var(--shadow-md);
+}
+
+.cda-btn-danger {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+
+.cda-btn-danger:hover:not(:disabled) {
+  background-color: #dc2626;
+  box-shadow: var(--shadow-md);
+}
+
+.cda-btn-warning {
+  background: linear-gradient(135deg, #D4AF37 0%, #B68C3A 100%);
+  color: var(--color-white);
+  border: none;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.cda-btn-warning:hover:not(:disabled) {
+  background: linear-gradient(135deg, #DDB945 0%, #D4AF37 100%);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
+.cda-btn-ghost {
+  background-color: transparent;
+  color: var(--color-text-primary);
+}
+
+.cda-btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-bg-secondary);
+}
+
+.cda-btn-sm {
+  padding: 0.375rem 0.875rem;
+  font-size: var(--font-size-xs);
+}
+
+.cda-btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: var(--font-size-base);
+}
+
+/* ==================== BADGES - EMERALD NOIR STATUS ==================== */
+.cda-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.cda-badge-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.08) 100%);
+  color: #059669;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.cda-badge-warning {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.1) 100%);
+  color: #B68C3A;
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.cda-badge-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.08) 100%);
+  color: #DC2626;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.cda-badge-info {
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.15) 0%, rgba(13, 148, 136, 0.08) 100%);
+  color: #0D9488;
+  border-color: rgba(15, 118, 110, 0.3);
+}
+
+.cda-badge-gray {
+  background: linear-gradient(135deg, rgba(107, 114, 128, 0.12) 0%, rgba(75, 85, 99, 0.06) 100%);
+  color: #4B5563;
+  border-color: rgba(107, 114, 128, 0.25);
+}
+
+/* Badge hover - subtle lift with emerald glow */
+.cda-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 8px rgba(20, 83, 45, 0.15);
+}
+
+/* ==================== FORMS ==================== */
+.cda-form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.cda-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.cda-label-required::after {
+  content: ' *';
+  color: var(--color-danger);
+}
+
+.cda-input,
+.cda-select,
+.cda-textarea {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(20, 83, 45, 0.2);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  box-shadow: 
+    0 2px 4px rgba(20, 83, 45, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.cda-input:focus,
+.cda-select:focus,
+.cda-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 
+    0 0 0 3px rgba(20, 83, 45, 0.12),
+    0 4px 12px rgba(212, 175, 55, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.cda-input:disabled,
+.cda-select:disabled,
+.cda-textarea:disabled {
+  background-color: var(--color-bg-secondary);
+  cursor: not-allowed;
+}
+
+.cda-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.cda-input-error {
+  border-color: var(--color-danger);
+}
+
+.cda-input-error:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.cda-error-message {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-danger);
+}
+
+.cda-help-text {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ==================== METRICS CARDS - EMERALD NOIR LUXURY ==================== */
+.cda-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.cda-metric-card {
+  background: linear-gradient(135deg, var(--gradient-from), var(--gradient-to));
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  color: var(--color-white);
+  box-shadow: 
+    0 10px 40px var(--shadow-color),
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(212, 175, 55, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transition: all var(--transition-base);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.cda-metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+.cda-metric-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cda-metric-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 
+    0 20px 60px var(--shadow-color),
+    0 4px 16px rgba(212, 175, 55, 0.3),
+    inset 0 2px 0 rgba(212, 175, 55, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.cda-metric-card.emerald {
+  --gradient-from: #14532D;
+  --gradient-to: #166534;
+  --shadow-color: rgba(20, 83, 45, 0.35);
+}
+
+.cda-metric-card.teal {
+  --gradient-from: #0F766E;
+  --gradient-to: #14B8A6;
+  --shadow-color: rgba(15, 118, 110, 0.35);
+}
+
+.cda-metric-card.green {
+  --gradient-from: #10b981;
+  --gradient-to: #059669;
+  --shadow-color: rgba(16, 185, 129, 0.35);
+}
+
+.cda-metric-card.gold {
+  --gradient-from: #D4AF37;
+  --gradient-to: #B68C3A;
+  --shadow-color: rgba(212, 175, 55, 0.4);
+  color: #111827;
+}
+
+.cda-metric-card.gray {
+  --gradient-from: #4B5563;
+  --gradient-to: #374151;
+  --shadow-color: rgba(75, 85, 99, 0.3);
+}
+
+.cda-metric-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.9;
+}
+
+.cda-metric-value {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+}
+
+.cda-metric-label {
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.cda-metric-change {
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* ==================== TABLE - EMERALD NOIR LUXURY ==================== */
+.cda-table-container {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(20, 83, 45, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 16px rgba(20, 83, 45, 0.12),
+    inset 0 1px 0 rgba(212, 175, 55, 0.1);
+  width: 100%;
+}
+
+.cda-table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  table-layout: fixed; /* Cố định layout để không bị shift */
+}
+
+.cda-table thead {
+  background: linear-gradient(90deg, rgba(20, 83, 45, 0.08) 0%, rgba(15, 118, 110, 0.04) 100%);
+  position: relative;
+}
+
+.cda-table thead::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+}
+
+.cda-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(20, 83, 45, 0.12);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cda-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(20, 83, 45, 0.08);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  word-wrap: break-word;
+  vertical-align: top;
+}
+
+.cda-table tbody tr {
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.cda-table tbody tr::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: all var(--transition-fast);
+  pointer-events: none;
+}
+
+.cda-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(20, 83, 45, 0.06) 0%, transparent 100%);
+}
+
+.cda-table tbody tr:hover::before {
+  background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+}
+
+.cda-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==================== EMPTY STATE ==================== */
+.cda-empty-state {
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+}
+
+.cda-empty-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.3;
+}
+
+.cda-empty-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.cda-empty-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ==================== LOADING ==================== */
+.cda-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl);
+}
+
+.cda-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-gray-200);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: cda-spin 0.8s linear infinite;
+}
+
+@keyframes cda-spin {
+  to { transform: rotate(360deg); }
+}
+
+.cda-loading-text {
+  margin-top: var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ==================== UTILITIES ==================== */
+.cda-text-center { text-align: center; }
+.cda-text-right { text-align: right; }
+.cda-font-bold { font-weight: 700; }
+.cda-font-semibold { font-weight: 600; }
+.cda-font-medium { font-weight: 500; }
+
+.cda-mt-sm { margin-top: var(--spacing-sm); }
+.cda-mt-md { margin-top: var(--spacing-md); }
+.cda-mt-lg { margin-top: var(--spacing-lg); }
+.cda-mb-sm { margin-bottom: var(--spacing-sm); }
+.cda-mb-md { margin-bottom: var(--spacing-md); }
+.cda-mb-lg { margin-bottom: var(--spacing-lg); }
+
+.cda-flex { display: flex; }
+.cda-flex-col { flex-direction: column; }
+.cda-items-center { align-items: center; }
+.cda-justify-between { justify-content: space-between; }
+.cda-gap-sm { gap: var(--spacing-sm); }
+.cda-gap-md { gap: var(--spacing-md); }
+.cda-gap-lg { gap: var(--spacing-lg); }
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .chu-du-an-sidebar {
+    width: 240px;
+  }
+  
+  .chu-du-an-content {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .chu-du-an-layout {
+    flex-direction: column;
+  }
+  
+  .chu-du-an-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  
+  .chu-du-an-content {
+    padding: var(--spacing-md);
+  }
+  
+  .cda-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== GLOBAL FULL-WIDTH & FLUID LAYOUT ==================== */
+/* Luôn full-width trên desktop; co giãn theo thiết bị */
+.chu-du-an-content > * { width: 100%; }
+.cda-card,
+.cda-table-container,
+.cda-metrics-grid,
+.cda-form-group,
+.cda-quick-actions { width: 100%; }
+
+/* Đảm bảo không có scroll ngang và full-width toàn bộ layout */
+.chu-du-an-layout,
+.chu-du-an-main,
+.chu-du-an-content,
+.chu-du-an-content > *,
+.qlda-container,
+.qtd-container,
+.qlhd-container,
+.noiDung,
+.chi-tiet-tin-dang,
+.trang,
+.trang.roleChuDuAn {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+/* Đảm bảo tất cả phần tử con cũng có box-sizing */
+.chu-du-an-content *,
+.chu-du-an-layout * {
+  box-sizing: border-box !important;
+}
+
+/* Breakpoints mở rộng cho tối ưu sử dụng màn hình */
+@media (min-width: 1536px) { /* Desktop lớn / 2K */
+  .chu-du-an-content { padding: 2.5rem; }
+  .cda-metrics-grid { gap: 1.75rem; }
+  .cda-card-body { padding: 1.25rem 1.5rem; }
+}
+
+@media (max-width: 1279px) { /* Laptop */
+  .chu-du-an-content { padding: 1.5rem; }
+  .cda-metrics-grid { gap: 1.25rem; }
+}
+
+@media (max-width: 1023px) { /* Tablet ngang/dọc */
+  .chu-du-an-content { padding: 1rem; }
+  .cda-card-body { padding: 1rem; }
+  .cda-metrics-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+@media (max-width: 767px) { /* Mobile */
+  .chu-du-an-content { padding: 0.75rem; }
+  .cda-metrics-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  .cda-card-body { padding: 0.875rem; }
+  .cda-table-container { overflow-x: auto; }
+}
+
+/* ==================== FLUID GRID UTILITIES ==================== */
+.cda-grid { display: grid; grid-auto-flow: row; gap: 1rem; }
+.cda-grid-auto { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+@media (max-width: 1279px) { .cda-grid-auto { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } }
+@media (max-width: 1023px) { .cda-grid-auto { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); } }
+@media (max-width: 767px) { .cda-grid-auto { grid-template-columns: 1fr; } }
+
+/* ==================== FLUID TYPOGRAPHY ==================== */
+h1, .cda-text-3xl { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
+h2, .cda-text-2xl { font-size: clamp(1.25rem, 1.05rem + 0.6vw, 1.5rem); }
+h3, .cda-text-xl { font-size: clamp(1.125rem, 1rem + 0.4vw, 1.25rem); }

@@ -1,0 +1,1172 @@
+/* ========================================
+   MODAL OVERLAY - Prevent body scroll
+   BEM Naming Convention
+======================================== */
+.modal-chon-chinh-sach-coc__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* Emerald tint */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  overflow: hidden; /* ✅ CRITICAL: Prevent body scroll behind modal */
+  overscroll-behavior: contain; /* ✅ Prevent scroll chaining */
+}
+
+/* ========================================
+   MODAL CHỌN CHÍNH SÁCH CỌC
+   Layout: 2 panels (List + Detail)
+   Redesigned for seamless connection
+======================================== */
+
+.modal-chon-chinh-sach-coc {
+  width: 90%;
+  max-width: 1000px;
+  height: 90vh; /* ✅ FIXED height instead of max-height */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(20, 83, 45, 0.15); /* Emerald shadow for depth */
+  overflow: hidden; /* ✅ CRITICAL: Prevent modal container scroll */
+}
+
+/* ===== HEADER Unified with Body ===== */
+.modal-chon-chinh-sach-coc__header {
+  background: linear-gradient(135deg, #14532d 0%, #0f766e 100%); /* Emerald to Teal */
+  color: white;
+  border-bottom: none; /* Remove border for seamless connection */
+  padding: 24px 28px;
+  flex-shrink: 0; /* ✅ CRITICAL: Don't shrink header */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-chon-chinh-sach-coc__header-title-group {
+  flex: 1;
+}
+
+.modal-chon-chinh-sach-coc__title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.modal-chon-chinh-sach-coc__subtitle {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.modal-chon-chinh-sach-coc__close-btn {
+  color: white;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.modal-chon-chinh-sach-coc__close-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== BODY with seamless connection ===== */
+.modal-chon-chinh-sach-coc__body {
+  flex: 1 1 0%; /* ✅ CRITICAL: Use 0% flex-basis */
+  overflow: hidden;
+  padding: 0;
+  background: #f9fafb; /* Light gray background */
+  border-top: 2px solid #0f766e; /* Teal accent line */
+  min-height: 0; /* ✅ CRITICAL: Enable flex shrink */
+  /* Remove max-height - let flex calculate from parent */
+}
+
+/* ===== FOOTER Unified with Body ===== */
+.modal-chon-chinh-sach-coc__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px;
+  background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+  border-top: 2px solid #0f766e;
+  box-shadow: 0 -4px 12px rgba(20, 83, 45, 0.06);
+  flex-shrink: 0; /* ✅ CRITICAL: Don't shrink footer */
+}
+
+.modal-chon-chinh-sach-coc__footer .cda-btn {
+  min-width: 120px;
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-chon-chinh-sach-coc__footer .cda-btn-secondary {
+  background: white;
+  color: #14532d;
+  border: 2px solid #e5e7eb;
+}
+
+.modal-chon-chinh-sach-coc__footer .cda-btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #0f766e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(15, 118, 110, 0.1);
+}
+
+.modal-chon-chinh-sach-coc__footer .cda-btn-primary {
+  background: linear-gradient(135deg, #14532d 0%, #0f766e 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(20, 83, 45, 0.2);
+}
+
+.modal-chon-chinh-sach-coc__footer .cda-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(20, 83, 45, 0.3);
+}
+
+.modal-chon-chinh-sach-coc__footer .cda-btn-primary:disabled {
+  background: #d1d5db;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ===== Content Layout ===== */
+.modal-chon-chinh-sach-coc__content {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 0;
+  height: 100%;
+  max-height: 100%; /* ✅ Inherit from parent */
+  background: var(--color-white); /* Unified white background */
+  overflow: hidden; /* ✅ CRITICAL: Prevent content overflow, force children to scroll */
+}
+
+/* ===== List Panel ===== */
+.modal-chon-chinh-sach-coc__list-panel {
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #e5e7eb; /* Thicker border for separation */
+  background: #fafbfc;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03); /* Subtle shadow for depth */
+  min-height: 0; /* ✅ Enable flex shrink */
+  overflow: hidden; /* ✅ Force .csc-list to scroll */
+  height: 100%; /* ✅ Take full grid cell height */
+  max-height: 100%; /* ✅ Don't exceed grid cell */
+}
+
+.modal-chon-chinh-sach-coc__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: var(--color-white);
+  flex-shrink: 0; /* ✅ CRITICAL: Don't shrink, take fixed space */
+  /* Remove position: sticky - it breaks flex height calculation */
+}
+
+.modal-chon-chinh-sach-coc__panel-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #14532d; /* Emerald Noir */
+}
+
+.modal-chon-chinh-sach-coc__list {
+  flex: 1 1 0%; /* ✅ CRITICAL: Use 0% flex-basis instead of auto */
+  overflow-y: scroll; /* ✅ Always show scrollbar */
+  overflow-x: hidden;
+  padding: 12px;
+  padding-right: 8px; /* ✅ Make room for scrollbar */
+  min-height: 0; /* ✅ CRITICAL: Enable scroll when content exceeds */
+  
+  /* Custom scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: #0f766e #f3f4f6;
+  scrollbar-gutter: stable; /* ✅ Reserve space */
+}
+
+.modal-chon-chinh-sach-coc__list::-webkit-scrollbar {
+  width: 10px; /* ✅ Match .csc-detail */
+  display: block;
+}
+
+.modal-chon-chinh-sach-coc__list::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 5px;
+  margin: 4px 0;
+}
+
+.modal-chon-chinh-sach-coc__list::-webkit-scrollbar-thumb {
+  background: #0f766e;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+  border: 2px solid #f3f4f6;
+  background-clip: padding-box;
+}
+
+.modal-chon-chinh-sach-coc__list::-webkit-scrollbar-thumb:hover {
+  background: #14532d;
+  border-color: #e5e7eb;
+}
+
+/* ===== List Item Wrapper ===== */
+.modal-chon-chinh-sach-coc__item-wrapper {
+  position: relative;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-chon-chinh-sach-coc__item-wrapper:hover .modal-chon-chinh-sach-coc__item-actions {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Luôn hiển thị nút khi item được chọn */
+.modal-chon-chinh-sach-coc__item-wrapper--active .modal-chon-chinh-sach-coc__item-actions {
+  opacity: 1;
+}
+
+/* ===== Item Actions (Edit/Delete buttons) ===== */
+.modal-chon-chinh-sach-coc__item-actions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 6px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-chon-chinh-sach-coc__action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-white);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-chon-chinh-sach-coc__action-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.modal-chon-chinh-sach-coc__action-btn--edit {
+  color: #3b82f6;
+}
+
+.modal-chon-chinh-sach-coc__action-btn--edit:hover {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.modal-chon-chinh-sach-coc__action-btn--delete {
+  color: #ef4444;
+}
+
+.modal-chon-chinh-sach-coc__action-btn--delete:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.modal-chon-chinh-sach-coc__action-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.modal-chon-chinh-sach-coc__item-wrapper--active {
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.15);
+}
+
+/* ===== List Item (Radio) ===== */
+.modal-chon-chinh-sach-coc__item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--color-white);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-chon-chinh-sach-coc__item:hover {
+  border-color: var(--color-primary-light);
+  background: #fefeff;
+  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.08);
+  transform: translateY(-1px);
+}
+
+.modal-chon-chinh-sach-coc__item--active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-bg);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.15);
+}
+
+.modal-chon-chinh-sach-coc__item input[type="radio"] {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+.modal-chon-chinh-sach-coc__item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-chon-chinh-sach-coc__item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.modal-chon-chinh-sach-coc__item-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-chon-chinh-sach-coc__check-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary);
+}
+
+.modal-chon-chinh-sach-coc__item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.modal-chon-chinh-sach-coc__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.modal-chon-chinh-sach-coc__tag--system {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.modal-chon-chinh-sach-coc__tag--custom {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.modal-chon-chinh-sach-coc__tag--info {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.modal-chon-chinh-sach-coc__tag--success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.modal-chon-chinh-sach-coc__item-usage {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+}
+
+/* ===== Detail Panel ===== */
+.modal-chon-chinh-sach-coc__detail-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  position: relative; /* For scroll indicator */
+  height: 100%; /* ✅ CRITICAL: Take full grid cell height */
+  max-height: 100%; /* ✅ Don't exceed grid cell */
+  min-height: 0; /* ✅ CRITICAL: Allow flex child to shrink below content size */
+  overflow: hidden; /* ✅ Force .csc-detail to scroll */
+}
+
+/* Panel header - Fixed height, don't shrink */
+.modal-chon-chinh-sach-coc__detail-panel .modal-chon-chinh-sach-coc__panel-header {
+  flex-shrink: 0; /* ✅ Take fixed space */
+}
+
+.modal-chon-chinh-sach-coc__detail {
+  flex: 1 1 0%; /* ✅ CRITICAL: Use 0% flex-basis instead of auto */
+  overflow-y: scroll; /* ✅ Always show scrollbar */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  padding: 20px 24px;
+  padding-right: 16px; /* ✅ Reduce right padding to make room for scrollbar */
+  min-height: 0; /* ✅ CRITICAL: Enable scroll when content exceeds */
+  /* Remove height: auto - let flex calculate */
+  
+  /* Custom scrollbar styling - matching list panel */
+  scrollbar-width: thin;
+  scrollbar-color: #0f766e #f3f4f6;
+  
+  /* Force scrollbar visibility on Windows */
+  scrollbar-gutter: stable; /* ✅ Reserve space for scrollbar */
+}
+
+.modal-chon-chinh-sach-coc__detail::-webkit-scrollbar {
+  width: 10px; /* ✅ Tăng lên 10px để rõ hơn trên Windows */
+  display: block; /* ✅ Force display */
+}
+
+.modal-chon-chinh-sach-coc__detail::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 5px;
+  margin: 4px 0; /* ✅ Add margin for better visual */
+}
+
+.modal-chon-chinh-sach-coc__detail::-webkit-scrollbar-thumb {
+  background: #0f766e;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+  border: 2px solid #f3f4f6; /* ✅ Tăng border để scrollbar nổi bật hơn */
+  background-clip: padding-box; /* ✅ Make border visible */
+}
+
+.modal-chon-chinh-sach-coc__detail::-webkit-scrollbar-thumb:hover {
+  background: #14532d;
+  border-color: #e5e7eb;
+}
+
+/* Scroll indicator (gradient fade at bottom) */
+.modal-chon-chinh-sach-coc__detail-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.modal-chon-chinh-sach-coc__detail-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-secondary);
+}
+
+.modal-chon-chinh-sach-coc__detail-empty-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+/* ===== Detail Panel - Redesigned ===== */
+/* Detail Header */
+.modal-chon-chinh-sach-coc__detail-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-chon-chinh-sach-coc__detail-title {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #14532d; /* Emerald Noir */
+}
+
+.modal-chon-chinh-sach-coc__detail-description {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* Detail Card */
+.modal-chon-chinh-sach-coc__detail-card {
+  margin-bottom: 16px;
+  background: var(--color-white);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); /* Subtle shadow for depth */
+}
+
+.modal-chon-chinh-sach-coc__detail-card:hover {
+  border-color: #0f766e; /* Teal hover */
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.12);
+  transform: translateY(-2px); /* Lift effect */
+}
+
+.modal-chon-chinh-sach-coc__detail-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #fafbfc 100%);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-chon-chinh-sach-coc__detail-card-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)); /* Icon depth */
+}
+
+.modal-chon-chinh-sach-coc__detail-card-icon--blue { color: #3b82f6; }
+.modal-chon-chinh-sach-coc__detail-card-icon--green { color: #10b981; }
+.modal-chon-chinh-sach-coc__detail-card-icon--purple { color: #8b5cf6; }
+
+.modal-chon-chinh-sach-coc__detail-card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.modal-chon-chinh-sach-coc__detail-card-body {
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(249, 250, 251, 0.3) 100%); /* Subtle gradient */
+}
+
+/* Info Row */
+.modal-chon-chinh-sach-coc__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-chon-chinh-sach-coc__info-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal-chon-chinh-sach-coc__info-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.modal-chon-chinh-sach-coc__inline-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+
+.modal-chon-chinh-sach-coc__info-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.modal-chon-chinh-sach-coc__info-value--highlight { color: #dc2626; } /* Red for penalty */
+.modal-chon-chinh-sach-coc__info-value--money { color: #0f766e; } /* Teal for money */
+
+/* Info Badges */
+.modal-chon-chinh-sach-coc__info-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.modal-chon-chinh-sach-coc__info-badge--success { background: #d1fae5; color: #065f46; }
+.modal-chon-chinh-sach-coc__info-badge--gray { background: #f3f4f6; color: #6b7280; }
+.modal-chon-chinh-sach-coc__info-badge--primary { background: #dbeafe; color: #1e40af; }
+
+/* Detail Footer */
+.modal-chon-chinh-sach-coc__detail-footer {
+  margin-top: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #fafafa 0%, #f9fafb 100%); /* Subtle gradient */
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03); /* Depth */
+}
+
+.modal-chon-chinh-sach-coc__footer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 0.875rem;
+}
+
+.modal-chon-chinh-sach-coc__footer-item:not(:last-child) {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-chon-chinh-sach-coc__footer-label {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.modal-chon-chinh-sach-coc__footer-value {
+  color: #14532d; /* Emerald Noir for emphasis */
+  font-weight: 600;
+}
+
+/* ===== Loading & Empty States ===== */
+.modal-chon-chinh-sach-coc__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--color-text-secondary);
+}
+
+.modal-chon-chinh-sach-coc__loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f4f6;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: modal-chon-chinh-sach-coc-spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes modal-chon-chinh-sach-coc-spin {
+  to { transform: rotate(360deg); }
+}
+
+.modal-chon-chinh-sach-coc__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.modal-chon-chinh-sach-coc__empty-text {
+  margin: 0 0 16px 0;
+  font-size: 0.9375rem;
+}
+
+/* ===== Alert ===== */
+.modal-chon-chinh-sach-coc__alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin: 16px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.modal-chon-chinh-sach-coc__alert--error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.modal-chon-chinh-sach-coc__alert-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Footer styles moved to line 78 - avoiding duplicate */
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .modal-chon-chinh-sach-coc {
+    width: 95%;
+    max-width: none;
+    height: 95vh; /* Match main modal height fix */
+  }
+  
+  /* Header responsive */
+  .modal-chon-chinh-sach-coc__header {
+    padding: 20px 20px;
+  }
+  
+  .modal-chon-chinh-sach-coc__title {
+    font-size: 1.25rem;
+  }
+
+  .modal-chon-chinh-sach-coc__content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    max-height: calc(95vh - 180px);
+  }
+
+  .modal-chon-chinh-sach-coc__list-panel {
+    border-right: none;
+    border-bottom: 2px solid #0f766e; /* Teal accent line */
+    max-height: 300px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* Shadow below */
+  }
+  
+  /* Footer responsive */
+  .modal-chon-chinh-sach-coc__footer {
+    padding: 16px 20px;
+    flex-direction: column-reverse; /* Stack buttons on mobile */
+    gap: 8px;
+  }
+  
+  .modal-chon-chinh-sach-coc__footer .cda-btn {
+    width: 100%; /* Full width buttons */
+    min-width: auto;
+  }
+  
+  .modal-chon-chinh-sach-coc__detail-panel {
+    max-height: none;
+  }
+
+  .modal-chon-chinh-sach-coc__panel-header {
+    padding: 12px 16px;
+  }
+
+  .modal-chon-chinh-sach-coc__list {
+    padding: 8px;
+  }
+
+  .modal-chon-chinh-sach-coc__item {
+    padding: 12px;
+  }
+
+  .modal-chon-chinh-sach-coc__detail {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-chon-chinh-sach-coc {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .modal-chon-chinh-sach-coc__panel-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .modal-chon-chinh-sach-coc__item {
+    padding: 10px;
+  }
+
+  .modal-chon-chinh-sach-coc__item-name {
+    font-size: 0.875rem;
+  }
+}
+
+/* ===== Edit Modal ===== */
+.modal-chon-chinh-sach-coc__edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1300;
+  backdrop-filter: blur(4px);
+}
+
+.modal-chon-chinh-sach-coc__edit-modal {
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  background: var(--color-white);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-chon-chinh-sach-coc__edit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 2px solid #e5e7eb;
+  background: linear-gradient(135deg, #14532d 0%, #0f766e 100%);
+  color: white;
+}
+
+.modal-chon-chinh-sach-coc__edit-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+.modal-chon-chinh-sach-coc__edit-close {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-chon-chinh-sach-coc__edit-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.modal-chon-chinh-sach-coc__edit-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+.modal-chon-chinh-sach-coc__edit-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.modal-chon-chinh-sach-coc__edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-chon-chinh-sach-coc__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-chon-chinh-sach-coc__form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.modal-chon-chinh-sach-coc__form-input,
+.modal-chon-chinh-sach-coc__form-textarea,
+.modal-chon-chinh-sach-coc__form-select {
+  padding: 10px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.modal-chon-chinh-sach-coc__form-input:focus,
+.modal-chon-chinh-sach-coc__form-textarea:focus,
+.modal-chon-chinh-sach-coc__form-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.modal-chon-chinh-sach-coc__form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-chon-chinh-sach-coc__form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.modal-chon-chinh-sach-coc__form-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+.modal-chon-chinh-sach-coc__preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-chon-chinh-sach-coc__preview-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.modal-chon-chinh-sach-coc__preview-card {
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.modal-chon-chinh-sach-coc__preview-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-chon-chinh-sach-coc__preview-name {
+  margin: 0 0 8px 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #14532d;
+}
+
+.modal-chon-chinh-sach-coc__preview-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.modal-chon-chinh-sach-coc__preview-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-chon-chinh-sach-coc__preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-chon-chinh-sach-coc__preview-row:last-child {
+  border-bottom: none;
+}
+
+.modal-chon-chinh-sach-coc__preview-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.modal-chon-chinh-sach-coc__preview-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+
+.modal-chon-chinh-sach-coc__preview-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.modal-chon-chinh-sach-coc__preview-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.modal-chon-chinh-sach-coc__preview-badge--success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.modal-chon-chinh-sach-coc__preview-badge--gray {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.modal-chon-chinh-sach-coc__edit-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 2px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+/* ===== Delete Confirmation Dialog ===== */
+.modal-chon-chinh-sach-coc__delete-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1300;
+  backdrop-filter: blur(4px);
+}
+
+.modal-chon-chinh-sach-coc__delete-dialog {
+  width: 90%;
+  max-width: 480px;
+  background: var(--color-white);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.modal-chon-chinh-sach-coc__delete-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 24px 16px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-bottom: 2px solid #fecaca;
+}
+
+.modal-chon-chinh-sach-coc__delete-icon {
+  width: 48px;
+  height: 48px;
+  color: #ef4444;
+}
+
+.modal-chon-chinh-sach-coc__delete-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #991b1b;
+}
+
+.modal-chon-chinh-sach-coc__delete-body {
+  padding: 24px;
+}
+
+.modal-chon-chinh-sach-coc__delete-message {
+  margin: 0 0 16px 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+
+.modal-chon-chinh-sach-coc__delete-message strong {
+  color: #14532d;
+  font-weight: 700;
+}
+
+.modal-chon-chinh-sach-coc__delete-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.modal-chon-chinh-sach-coc__delete-warning-icon {
+  width: 20px;
+  height: 20px;
+  color: #92400e;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.modal-chon-chinh-sach-coc__delete-warning span {
+  font-size: 0.875rem;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+.modal-chon-chinh-sach-coc__delete-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 2px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.cda-btn-danger {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cda-btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.cda-btn-danger:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive cho Edit Modal */
+@media (max-width: 768px) {
+  .modal-chon-chinh-sach-coc__edit-body {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-chon-chinh-sach-coc__edit-modal {
+    width: 95%;
+    max-height: 95vh;
+  }
+}

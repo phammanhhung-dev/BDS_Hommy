@@ -1,0 +1,122 @@
+:root {
+  --primary: #2563EB;
+  --primary-dark: #1e40af;
+  --accent: #FF6B2D;
+  --bg: #F7F8FB;
+  --surface: #FFFFFF;
+  --text: #0F172A;
+  --muted: #64748B;
+  --glass: rgba(255,255,255,0.92);
+  --glass-border: rgba(15,23,42,0.04);
+  --liquid-tint: rgba(37,99,235,0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 6px 18px rgba(15,23,42,0.06);
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1rem;
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* Áp dụng trực tiếp cho tất cả button - Thiết kế lại theo Liquid Glass: translucency cao, phản xạ động, morphing mượt */
+
+
+
+
+/* Lớp phản xạ nội bộ: specular highlights động, như kính lỏng phản chiếu môi trường */
+
+
+
+button::before:hover {
+  opacity: 0.85; /* Viền sáng hơn */
+}
+
+button::after:hover {
+  transform: scale(1.1); /* Highlight di chuyển/mở rộng nhẹ */
+}
+
+/* Active: co lại mượt, giảm phản xạ như kính bị chạm */
+button:active {
+  transform: translateY(0px) scale(0.99); /* Morph co nhẹ */
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1); /* Nhún nhanh */
+}
+
+/* Focus: ring mỏng, adaptive tint kiểu iOS */
+button:focus-visible {
+  box-shadow: 
+    0 0 0 2px var(--liquid-tint),
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 var(--liquid-reflect);
+  outline: none;
+}
+
+/* Dark mode adjustments tự động qua color-scheme */
+@media (prefers-color-scheme: dark) {
+  button {
+    color: rgba(0, 0, 0, 0.9);
+    --liquid-translucent: rgba(0, 0, 0, 0);
+    --liquid-reflect: rgba(0, 0, 0, 0.1);
+  }
+  
+  button::before {
+    background: conic-gradient(from 0deg, transparent, hsl(0, 0%, 75%), transparent 270deg);
+  }
+}

@@ -1,0 +1,78 @@
+/**
+ * StarRating Component Styles
+ * BEM naming convention
+ */
+
+.nvbh-star-rating {
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-xs);
+}
+
+.nvbh-star-rating__star {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform var(--nvbh-transition-fast);
+  color: var(--nvbh-accent);
+}
+
+.nvbh-star-rating__star:not(:disabled):hover {
+  transform: scale(1.15);
+}
+
+.nvbh-star-rating__star:focus {
+  outline: 2px solid var(--nvbh-primary);
+  outline-offset: 2px;
+  border-radius: var(--nvbh-radius-sm);
+}
+
+.nvbh-star-rating__star--active {
+  color: var(--nvbh-warning);
+}
+
+.nvbh-star-rating__icon {
+  display: block;
+  fill: currentColor;
+}
+
+.nvbh-star-rating__value {
+  margin-left: var(--nvbh-spacing-sm);
+  font-size: 0.875rem;
+  color: var(--nvbh-text-secondary);
+  font-weight: 500;
+}
+
+/* Size variants */
+.nvbh-star-rating--sm .nvbh-star-rating__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.nvbh-star-rating--md .nvbh-star-rating__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.nvbh-star-rating--lg .nvbh-star-rating__icon {
+  width: 28px;
+  height: 28px;
+}
+
+/* Readonly state */
+.nvbh-star-rating--readonly .nvbh-star-rating__star {
+  cursor: default;
+  pointer-events: none;
+}
+
+.nvbh-star-rating--readonly .nvbh-star-rating__star:not(:disabled):hover {
+  transform: none;
+}
+
+
+
+
+
+
+

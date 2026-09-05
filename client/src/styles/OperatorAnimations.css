@@ -1,0 +1,319 @@
+/**
+ * Operator Animations
+ * Glass Morphism-specific animations and transitions
+ */
+
+/* ==================== ENTRANCE ANIMATIONS ==================== */
+@keyframes operator-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes operator-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes operator-fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes operator-fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes operator-fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes operator-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes operator-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==================== LOADING ANIMATIONS ==================== */
+@keyframes operator-shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes operator-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes operator-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes operator-bounce {
+  0%, 100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+/* ==================== GLASS MORPHISM SPECIFIC ==================== */
+@keyframes operator-glass-glow {
+  0%, 100% {
+    box-shadow: 0 10px 36px 0 rgba(91, 90, 87, 0.14);
+  }
+  50% {
+    box-shadow: 0 12px 38px 0 rgba(122, 62, 46, 0.32);
+  }
+}
+
+@keyframes operator-border-glow {
+  0%, 100% {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  50% {
+    border-color: rgba(122, 62, 46, 0.6);
+  }
+}
+
+/* ==================== UTILITY ANIMATION CLASSES ==================== */
+.operator-anim-fade-in {
+  animation: operator-fade-in 0.3s ease-out;
+}
+
+.operator-anim-fade-in-up {
+  animation: operator-fade-in-up 0.5s ease-out;
+}
+
+.operator-anim-fade-in-down {
+  animation: operator-fade-in-down 0.5s ease-out;
+}
+
+.operator-anim-fade-in-left {
+  animation: operator-fade-in-left 0.5s ease-out;
+}
+
+.operator-anim-fade-in-right {
+  animation: operator-fade-in-right 0.5s ease-out;
+}
+
+.operator-anim-slide-up {
+  animation: operator-slide-up 0.3s ease-out;
+}
+
+.operator-anim-scale-in {
+  animation: operator-scale-in 0.3s ease-out;
+}
+
+.operator-anim-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 2000px 100%;
+  animation: operator-shimmer 2s infinite linear;
+}
+
+.operator-anim-pulse {
+  animation: operator-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.operator-anim-spin {
+  animation: operator-spin 1s linear infinite;
+}
+
+.operator-anim-bounce {
+  animation: operator-bounce 1s infinite;
+}
+
+.operator-anim-glass-glow {
+  animation: operator-glass-glow 2s ease-in-out infinite;
+}
+
+.operator-anim-border-glow {
+  animation: operator-border-glow 2s ease-in-out infinite;
+}
+
+/* ==================== STAGGERED ANIMATIONS ==================== */
+.operator-stagger-item {
+  opacity: 0;
+  animation: operator-fade-in-up 0.5s ease-out forwards;
+}
+
+.operator-stagger-item:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.operator-stagger-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.operator-stagger-item:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.operator-stagger-item:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.operator-stagger-item:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.operator-stagger-item:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.operator-stagger-item:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.operator-stagger-item:nth-child(8) {
+  animation-delay: 0.4s;
+}
+
+/* ==================== HOVER & INTERACTION ANIMATIONS ==================== */
+.operator-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.operator-hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.operator-hover-scale {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.operator-hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.operator-hover-rotate {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.operator-hover-rotate:hover {
+  transform: rotate(5deg);
+}
+
+/* ==================== SKELETON LOADING ==================== */
+.operator-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 2000px 100%;
+  animation: operator-shimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+.operator-skeleton--text {
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+.operator-skeleton--title {
+  height: 24px;
+  width: 60%;
+  margin-bottom: 12px;
+}
+
+.operator-skeleton--avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+/* ==================== PAGE TRANSITIONS ==================== */
+.operator-page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.operator-page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.operator-page-exit {
+  opacity: 1;
+}
+
+.operator-page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+
+
+

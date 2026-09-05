@@ -1,0 +1,347 @@
+.quan-ly-tai-khoan {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quan-ly-tai-khoan__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.quan-ly-tai-khoan__title {
+  margin: 0;
+  font-size: 2rem;
+  color: #0f172a;
+}
+
+.quan-ly-tai-khoan__subtitle {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.quan-ly-tai-khoan__primary-btn,
+.quan-ly-tai-khoan__secondary-btn {
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quan-ly-tai-khoan__primary-btn {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+.quan-ly-tai-khoan__primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.quan-ly-tai-khoan__secondary-btn {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.quan-ly-tai-khoan__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.quan-ly-tai-khoan__stat-card {
+  border-radius: 18px;
+  padding: 1rem 1.25rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quan-ly-tai-khoan__stat-card--total {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+}
+
+.quan-ly-tai-khoan__stat-card--active {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.quan-ly-tai-khoan__stat-card--locked {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.quan-ly-tai-khoan__stat-card--admin {
+  background: linear-gradient(135deg, #ec4899, #db2777);
+}
+
+.quan-ly-tai-khoan__stat-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.quan-ly-tai-khoan__stat-value {
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.quan-ly-tai-khoan__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.quan-ly-tai-khoan__input {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.65rem 0.9rem;
+  min-width: 220px;
+  font-size: 0.95rem;
+}
+
+.quan-ly-tai-khoan__alert {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.quan-ly-tai-khoan__alert--error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.quan-ly-tai-khoan__table-wrapper {
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.quan-ly-tai-khoan__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.quan-ly-tai-khoan__table th {
+  background: #f8fafc;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.quan-ly-tai-khoan__table td {
+  padding: 1.25rem 1.25rem;
+  border-top: 1px solid #f1f5f9;
+  vertical-align: top;
+  font-size: 0.95rem;
+}
+
+.quan-ly-tai-khoan__table tr:hover {
+  background: #f8fafc;
+}
+
+.quan-ly-tai-khoan__table-empty {
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+}
+
+.quan-ly-tai-khoan__user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quan-ly-tai-khoan__user-name {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.quan-ly-tai-khoan__user-id {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.quan-ly-tai-khoan__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: #475569;
+}
+
+.quan-ly-tai-khoan__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4c1d95;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.quan-ly-tai-khoan__status {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.quan-ly-tai-khoan__status--hoatdong {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.quan-ly-tai-khoan__status--tamkhoa {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.quan-ly-tai-khoan__status--vohieuhoa,
+.quan-ly-tai-khoan__status--xoamem {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.quan-ly-tai-khoan__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.quan-ly-tai-khoan__action-btn {
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.quan-ly-tai-khoan__action-btn--danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.quan-ly-tai-khoan__action-btn--outline {
+  background: transparent;
+  border: 1px solid #cbd5f5;
+  color: #4338ca;
+}
+
+.quan-ly-tai-khoan__action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.quan-ly-tai-khoan__modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.quan-ly-tai-khoan__modal {
+  background: #fff;
+  width: min(520px, 100%);
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.25);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.quan-ly-tai-khoan__modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.quan-ly-tai-khoan__modal-header h3 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.quan-ly-tai-khoan__modal-close {
+  border: none;
+  background: #f1f5f9;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.quan-ly-tai-khoan__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quan-ly-tai-khoan__form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.quan-ly-tai-khoan__form-field input,
+.quan-ly-tai-khoan__form-field select {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+.quan-ly-tai-khoan__form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .quan-ly-tai-khoan {
+    padding: 1.25rem;
+  }
+
+  .quan-ly-tai-khoan__filters {
+    flex-direction: column;
+  }
+
+  .quan-ly-tai-khoan__input {
+    width: 100%;
+  }
+
+  .quan-ly-tai-khoan__table th,
+  .quan-ly-tai-khoan__table td {
+    padding: 0.9rem;
+  }
+
+  .quan-ly-tai-khoan__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+

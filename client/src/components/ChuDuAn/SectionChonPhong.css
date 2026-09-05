@@ -1,0 +1,371 @@
+/**
+ * SectionChonPhong.css - Emerald Noir Theme
+ * FIX: Đồng bộ class names với JSX (không dùng BEM prefix)
+ */
+
+.section-chon-phong {
+  margin-top: 16px;
+}
+
+/* Empty State - FIX: Đồng bộ class names */
+.empty-phong {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(15, 118, 110, 0.05);
+  border: 2px dashed rgba(15, 118, 110, 0.3);
+  border-radius: 16px;
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  color: #d1d5db;
+  margin: 0 auto 16px;
+}
+
+.empty-phong p {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.btn-tao-phong-dau-tien {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #0F766E 0%, #14532D 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+}
+
+.btn-tao-phong-dau-tien:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.35);
+}
+
+.btn-tao-phong-dau-tien svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Danh sách phòng - FIX: Đồng bộ class names */
+.danh-sach-phong {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Header cột cho danh sách phòng */
+.phong-header {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr 1fr 0.8fr;
+  gap: 12px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  color: #6b7280;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.phong-header .col {
+  white-space: nowrap;
+}
+
+.phong-item {
+  border: 2px solid rgba(15, 118, 110, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.phong-item:hover {
+  border-color: rgba(15, 118, 110, 0.4);
+  transform: translateX(4px);
+}
+
+.phong-item-checked {
+  border-color: #0F766E;
+  background: rgba(15, 118, 110, 0.05);
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.15);
+}
+
+.phong-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.phong-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: #0F766E;
+}
+
+.phong-checkbox input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.phong-info-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr 1fr 0.8fr;
+  gap: 12px;
+  flex: 1;
+  align-items: center;
+}
+
+.phong-info-grid .col {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-ten {
+  font-weight: 700;
+  font-size: 16px;
+  color: #111827;
+}
+
+.col-gia {
+  color: #0F766E;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.col-dientich {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.col-trangthai {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  display: inline-block;
+}
+
+.trangthai-trong {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.trangthai-giucho {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.trangthai-dathue {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.trangthai-dondep {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.col-usage {
+  font-size: 13px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Override section - FIX: Đồng bộ class names */
+.phong-override {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(15, 118, 110, 0.2);
+  animation: phong-override-slide-down 0.3s ease-out;
+}
+
+@keyframes phong-override-slide-down {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+.override-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.override-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.override-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(15, 118, 110, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #111827;
+  background: white;
+  transition: all 0.3s;
+}
+
+.override-input:focus {
+  outline: none;
+  border-color: #0F766E;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+.override-input::placeholder {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* Ảnh override cho phòng - FIX: Đồng bộ class names + FIX ảnh to bất thường */
+.phong-anh-uploader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.phong-anh-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: #ffffff;
+}
+
+.phong-anh-preview img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  display: block;
+}
+
+.phong-anh-placeholder {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 11px;
+  padding: 6px;
+  text-align: center;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+/* FIX: Nút xóa ảnh bị đen */
+.btn-xoa-anh {
+  border: none;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-xoa-anh:hover {
+  background: #fecaca;
+  transform: translateY(-1px);
+}
+
+.ghi-chu-anh {
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Button tạo phòng mới - FIX: Đồng bộ class names */
+.btn-tao-phong-moi {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: white;
+  color: #0F766E;
+  border: 2px solid #0F766E;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-tao-phong-moi:hover {
+  background: #0F766E;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+}
+
+.btn-tao-phong-moi svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .phong-header {
+    display: none;
+  }
+  .phong-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 6px;
+  }
+
+  .override-row {
+    grid-template-columns: 1fr;
+  }
+
+  .phong-checkbox {
+    align-items: flex-start;
+  }
+  
+  .phong-anh-uploader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+

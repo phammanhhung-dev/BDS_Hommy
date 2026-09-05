@@ -1,0 +1,596 @@
+/* Styling for AI valuation tool - Hommy */
+
+.dinh-gia-ai-page {
+  background: radial-gradient(circle at 10% 20%, rgba(240, 248, 255, 1) 0%, rgba(245, 245, 250, 1) 90%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dg-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 80px 20px;
+  flex: 1;
+}
+
+.dg-header {
+  text-align: center;
+  margin-bottom: 50px;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.dg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.dg-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.dg-subtitle {
+  font-size: 16px;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Grid Layout */
+.dg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Card Styling */
+.dg-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.dg-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dg-card-title svg {
+  color: #10b981;
+}
+
+/* Form controls */
+.dg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dg-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dg-form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.dg-form-group.col-6 {
+  flex: 1;
+}
+
+.dg-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.dg-select, .dg-input {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 15px;
+  color: #1e293b;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.dg-select:focus, .dg-input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* Custom Radio Group */
+.dg-radio-group {
+  display: flex;
+  gap: 12px;
+}
+
+.dg-radio-label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.dg-radio-label input {
+  display: none;
+}
+
+.dg-radio-label:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.dg-radio-label.active {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.dg-btn-submit {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  margin-top: 10px;
+}
+
+.dg-btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+}
+
+.dg-btn-submit:active {
+  transform: translateY(0);
+}
+
+.dg-btn-submit:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Result Card */
+.dg-result-card {
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dg-error-box {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dg-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+}
+
+.dg-placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.dg-placeholder p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.dg-loader-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #64748b;
+}
+
+.dg-spinner {
+  width: 45px;
+  height: 45px;
+  border: 4px solid rgba(16, 185, 129, 0.1);
+  border-left-color: #10b981;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Result Content */
+.dg-result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.dg-price-box {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 96, 105, 0.05) 100%);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.dg-price-label {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dg-price-value {
+  font-size: 38px;
+  font-weight: 800;
+  color: #10b981;
+  margin: 10px 0;
+}
+
+.dg-price-m2 {
+  font-size: 14px;
+  color: #475569;
+  font-weight: 600;
+}
+
+/* Range Box */
+.dg-range-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dg-range-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.dg-range-slider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #f8fafc;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.dg-range-min, .dg-range-max {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.dg-range-bar {
+  flex: 1;
+  height: 6px;
+  background: #cbd5e1;
+  border-radius: 10px;
+  position: relative;
+}
+
+.dg-range-indicator {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 0;
+  bottom: 0;
+  background: #10b981;
+  border-radius: 10px;
+}
+
+.dg-range-info {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Tips and accurate report */
+.dg-tips {
+  background: #f0fdf4;
+  border: 1px solid #dcfce7;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.dg-tips-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #166534;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dg-tips-list {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.dg-tips-list li {
+  font-size: 13px;
+  color: #14532d;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+.dg-tips-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Keyframes */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Recommended Properties Section */
+.dg-recommended-section {
+  margin-top: 50px;
+  animation: fadeInUp 0.8s ease-out;
+  width: 100%;
+}
+
+.dg-rec-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dg-rec-title svg {
+  color: #10b981;
+}
+
+.dg-rec-subtitle {
+  font-size: 15px;
+  color: #64748b;
+  margin-bottom: 25px;
+}
+
+.dg-rec-loading, .dg-rec-empty {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.dg-rec-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.dg-rec-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dg-rec-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  border-color: #10b981;
+}
+
+.dg-rec-img-wrapper {
+  position: relative;
+  height: 160px;
+  width: 100%;
+}
+
+.dg-rec-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dg-rec-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #10b981;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dg-rec-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+}
+
+.dg-rec-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 38px;
+}
+
+.dg-rec-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.dg-rec-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.dg-rec-area {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dg-rec-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.dg-rec-location svg {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 1024px) {
+  .dg-rec-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 868px) {
+  .dg-grid {
+    grid-template-columns: 1fr;
+  }
+  .dg-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 580px) {
+  .dg-rec-grid {
+    grid-template-columns: 1fr;
+  }
+}

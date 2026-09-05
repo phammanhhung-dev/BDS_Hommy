@@ -1,0 +1,340 @@
+/**
+ * Navigation Sidebar styles cho Nhân viên Bán hàng
+ * BEM naming convention - Design Figma
+ */
+
+/* =====================================================
+   SIDEBAR BASE
+   ===================================================== */
+
+.nvbh-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  border-right: 1px solid var(--nvbh-glass-border);
+  background: var(--nvbh-card-bg, var(--nvbh-surface));
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  z-index: 40;
+}
+
+.nvbh-sidebar--collapsed {
+  width: 72px;
+}
+
+/* =====================================================
+   SIDEBAR LOGO
+   ===================================================== */
+
+.nvbh-sidebar__logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-sm);
+  padding: 0 var(--nvbh-spacing-md);
+  border-bottom: 1px solid var(--nvbh-glass-border);
+  justify-content: space-between;
+}
+
+.nvbh-sidebar__logo-content {
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-sm);
+  flex: 1;
+  min-width: 0;
+}
+
+.nvbh-sidebar__logo-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--nvbh-radius-lg);
+  background: var(--nvbh-primary);
+  color: var(--nvbh-primary-foreground, var(--nvbh-text-white));
+  flex-shrink: 0;
+}
+
+.nvbh-sidebar__logo-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Logo styling - White on blue background */
+.nvbh-sidebar__logo-img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+  transition: all 0.3s ease;
+}
+
+.nvbh-sidebar__logo-icon:hover .nvbh-sidebar__logo-img {
+  transform: scale(1.1);
+}
+
+.nvbh-sidebar__logo-text {
+  font-size: var(--nvbh-font-size-base);
+  font-weight: 600;
+  color: var(--nvbh-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nvbh-sidebar--collapsed .nvbh-sidebar__logo-content {
+  justify-content: center;
+}
+
+.nvbh-sidebar--collapsed .nvbh-sidebar__logo-text {
+  display: none;
+}
+
+/* Tăng specificity bằng cách thêm parent selector */
+.nvbh-sidebar .nvbh-sidebar__collapse-btn,
+.nvbh-sidebar__collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--nvbh-radius-md);
+  background: transparent !important;
+  border: 1px solid var(--nvbh-glass-border) !important;
+  padding: 0 !important;
+  /* Override global button padding */
+  cursor: pointer;
+  color: #475569 !important;
+  /* Slate 600 - màu xám đậm - force màu */
+  transition: all var(--nvbh-transition-fast);
+  flex-shrink: 0;
+  font-size: 0 !important;
+  /* Reset font size từ global */
+  box-shadow: var(--nvbh-shadow-xs);
+}
+
+.nvbh-sidebar .nvbh-sidebar__collapse-btn:hover,
+.nvbh-sidebar__collapse-btn:hover {
+  background: var(--nvbh-accent-50, rgba(148, 163, 184, 0.1)) !important;
+  color: #0f172a !important;
+  /* Slate 900 - màu đen - force màu */
+  border-color: var(--nvbh-glass-border-hover) !important;
+  box-shadow: var(--nvbh-shadow-sm);
+}
+
+/* Set màu trực tiếp cho SVG thay vì dùng currentColor */
+.nvbh-sidebar .nvbh-sidebar__collapse-btn svg,
+.nvbh-sidebar__collapse-btn svg,
+.nvbh-sidebar__collapse-icon {
+  width: 16px;
+  height: 16px;
+  stroke: #475569 !important;
+  /* Set màu trực tiếp thay vì currentColor */
+  fill: none;
+  color: #475569 !important;
+  /* Backup color */
+}
+
+.nvbh-sidebar .nvbh-sidebar__collapse-btn:hover svg,
+.nvbh-sidebar__collapse-btn:hover svg,
+.nvbh-sidebar__collapse-btn:hover .nvbh-sidebar__collapse-icon {
+  stroke: #0f172a !important;
+  /* Màu đen khi hover */
+  color: #0f172a !important;
+}
+
+/* =====================================================
+   SIDEBAR NAVIGATION
+   ===================================================== */
+
+.nvbh-sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: var(--nvbh-spacing-sm);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: var(--nvbh-radius-xl);
+  background: var(--nvbh-glass-bg);
+  box-shadow: var(--nvbh-shadow-md);
+  border: 1px solid var(--nvbh-glass-border);
+}
+
+/* Custom scrollbar cho sidebar */
+.nvbh-sidebar__nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nvbh-sidebar__nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nvbh-sidebar__nav::-webkit-scrollbar-thumb {
+  background: var(--nvbh-accent-lighter);
+  border-radius: 2px;
+}
+
+.nvbh-sidebar__nav::-webkit-scrollbar-thumb:hover {
+  background: var(--nvbh-accent);
+}
+
+.nvbh-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--nvbh-radius-lg);
+  text-decoration: none;
+  font-size: var(--nvbh-font-size-sm);
+  color: var(--nvbh-text-secondary);
+  transition: all var(--nvbh-transition-fast);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.nvbh-nav-item:hover {
+  background: var(--nvbh-accent-50, rgba(148, 163, 184, 0.1));
+}
+
+.nvbh-nav-item--active {
+  background: var(--nvbh-primary);
+  color: var(--nvbh-primary-foreground, var(--nvbh-text-white));
+  box-shadow: var(--nvbh-shadow-sm);
+}
+
+.nvbh-nav-item__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  /* Kế thừa màu từ parent */
+}
+
+.nvbh-nav-item__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  /* Đảm bảo SVG sử dụng màu hiện tại */
+  fill: none;
+}
+
+.nvbh-nav-item__label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nvbh-nav-item__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: #ef4444;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.nvbh-nav-item--active .nvbh-nav-item__badge {
+  background: white;
+  color: var(--nvbh-primary);
+}
+
+.nvbh-sidebar--collapsed .nvbh-nav-item {
+  justify-content: center;
+  padding: 0.625rem;
+}
+
+.nvbh-sidebar--collapsed .nvbh-nav-item__label {
+  display: none;
+}
+
+/* =====================================================
+   SIDEBAR BOTTOM ACTIONS
+   ===================================================== */
+
+.nvbh-sidebar__bottom {
+  padding: var(--nvbh-spacing-sm);
+  border-top: 1px solid var(--nvbh-glass-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nvbh-sidebar__feedback-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--nvbh-radius-lg);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: var(--nvbh-font-size-sm);
+  color: var(--nvbh-text-secondary);
+  transition: all var(--nvbh-transition-fast);
+  width: 100%;
+  text-align: left;
+}
+
+.nvbh-sidebar__feedback-btn:hover {
+  background: var(--nvbh-accent-50, rgba(148, 163, 184, 0.1));
+}
+
+.nvbh-sidebar__feedback-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: inherit;
+  /* Kế thừa màu từ parent */
+}
+
+.nvbh-sidebar__feedback-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+}
+
+.nvbh-sidebar__feedback-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =====================================================
+   RESPONSIVE - MOBILE
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .nvbh-sidebar {
+    position: fixed;
+    z-index: 100;
+    transform: translateX(-100%);
+  }
+
+  .nvbh-sidebar--open {
+    transform: translateX(0);
+  }
+
+  .nvbh-sidebar__logo {
+    padding: 0 var(--nvbh-spacing-md);
+  }
+}

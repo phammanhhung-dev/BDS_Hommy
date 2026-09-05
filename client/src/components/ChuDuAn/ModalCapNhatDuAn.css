@@ -1,0 +1,389 @@
+/* ============================================
+   BEM NAMING CONVENTION
+   Block: modal-cap-nhat-du-an
+   ============================================ */
+
+/* Overlay */
+.modal-cap-nhat-du-an__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10000;
+}
+
+/* Container */
+.modal-cap-nhat-du-an {
+  width: min(720px, 100%);
+  max-height: 92vh;
+  max-width: 90vw;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(139, 92, 246, 0.16);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.modal-cap-nhat-du-an__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.modal-cap-nhat-du-an__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.modal-cap-nhat-du-an__subtitle {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.modal-cap-nhat-du-an__close-btn {
+  border: none;
+  background: rgba(15, 23, 42, 0.05);
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-cap-nhat-du-an__close-btn:hover {
+  background: rgba(139, 92, 246, 0.12);
+  color: #0F766E;
+}
+
+/* Body */
+.modal-cap-nhat-du-an__body {
+  padding: 20px 28px 28px;
+  max-height: calc(92vh - 200px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Grid Layout */
+.modal-cap-nhat-du-an__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.modal-cap-nhat-du-an__grid--col-2 {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* Field */
+.modal-cap-nhat-du-an__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-cap-nhat-du-an__field--checkbox {
+  grid-column: 1 / -1;
+  padding: 16px;
+  background: rgba(241, 245, 249, 0.6);
+  border-radius: 14px;
+  border: 1px dashed rgba(148, 163, 184, 0.45);
+}
+
+.modal-cap-nhat-du-an__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: 0.02em;
+}
+
+.modal-cap-nhat-du-an__label--required {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.modal-cap-nhat-du-an__label--checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.modal-cap-nhat-du-an__label--checkbox input {
+  width: 18px;
+  height: 18px;
+}
+
+/* Input Elements */
+.modal-cap-nhat-du-an__input,
+.modal-cap-nhat-du-an__textarea,
+.modal-cap-nhat-du-an__select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: #111827;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-cap-nhat-du-an__input:focus,
+.modal-cap-nhat-du-an__textarea:focus,
+.modal-cap-nhat-du-an__select:focus {
+  border-color: rgba(139, 92, 246, 0.8);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+  outline: none;
+}
+
+.modal-cap-nhat-du-an__input:disabled,
+.modal-cap-nhat-du-an__textarea:disabled,
+.modal-cap-nhat-du-an__select:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.modal-cap-nhat-du-an__textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.modal-cap-nhat-du-an__select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+/* Field Hint */
+.modal-cap-nhat-du-an__hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Error State */
+.modal-cap-nhat-du-an__error {
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: rgba(254, 226, 226, 0.6);
+  color: #b91c1c;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+}
+
+/* Footer */
+.modal-cap-nhat-du-an__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Buttons */
+.modal-cap-nhat-du-an__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modal-cap-nhat-du-an__btn--primary {
+  background: linear-gradient(135deg, #14532D 0%, #0F766E 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.25);
+}
+
+.modal-cap-nhat-du-an__btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.3);
+}
+
+.modal-cap-nhat-du-an__btn--secondary {
+  background: rgba(148, 163, 184, 0.2);
+  color: #475569;
+}
+
+.modal-cap-nhat-du-an__btn--secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(148, 163, 184, 0.3);
+}
+
+.modal-cap-nhat-du-an__btn--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Map Toggle */
+.modal-cap-nhat-du-an__map-toggle {
+  margin-top: 8px;
+}
+
+.modal-cap-nhat-du-an__map-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.08);
+  color: #14532D;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-cap-nhat-du-an__map-toggle-btn:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.modal-cap-nhat-du-an__map-toggle-btn:active {
+  transform: translateY(0);
+}
+
+/* Map Picker */
+.modal-cap-nhat-du-an__map-picker {
+  margin-top: 16px;
+}
+
+.modal-cap-nhat-du-an__map-wrapper {
+  width: 100%;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+/* Status Box */
+.modal-cap-nhat-du-an__status {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-left-width: 4px;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.modal-cap-nhat-du-an__status:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.modal-cap-nhat-du-an__status-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.modal-cap-nhat-du-an__status-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.modal-cap-nhat-du-an__status-text svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #64748b;
+}
+
+.modal-cap-nhat-du-an__status-text span {
+  flex: 1;
+}
+
+/* Spinner Animation */
+@keyframes modal-cap-nhat-du-an-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-cap-nhat-du-an__spinner {
+  display: inline-block;
+  animation: modal-cap-nhat-du-an-spin 0.6s linear infinite;
+}
+
+/* Leaflet Map Override */
+.modal-cap-nhat-du-an .leaflet-container {
+  font-family: inherit;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .modal-cap-nhat-du-an__grid--col-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-cap-nhat-du-an__header,
+  .modal-cap-nhat-du-an__body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .modal-cap-nhat-du-an__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-cap-nhat-du-an__map-wrapper {
+    height: 300px;
+  }
+
+  .modal-cap-nhat-du-an__status {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modal-cap-nhat-du-an__status-icon {
+    font-size: 1.1rem;
+  }
+}
+

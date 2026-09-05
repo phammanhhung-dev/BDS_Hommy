@@ -1,0 +1,218 @@
+/* Modal Biên bản - Shared styles */
+
+.modal-tao-bb__content,
+.modal-ky-bb__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== Info Section ===== */
+.modal-tao-bb__info,
+.modal-ky-bb__warning {
+  padding: 1rem;
+  background: rgba(122, 62, 46, 0.1);
+  border: 1px solid var(--operator-primary);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.modal-ky-bb__warning {
+  background: rgba(201, 162, 39, 0.1);
+  border-color: var(--operator-warning);
+}
+
+/* ===== Form ===== */
+.modal-tao-bb__form,
+.modal-ky-bb__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-tao-bb__form-group,
+.modal-ky-bb__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-tao-bb__label,
+.modal-ky-bb__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+}
+
+.modal-tao-bb__required,
+.modal-ky-bb__required {
+  color: var(--operator-danger);
+}
+
+.modal-tao-bb__loading,
+.modal-ky-bb__loading {
+  padding: 1rem;
+  text-align: center;
+  color: var(--operator-text-secondary);
+  font-style: italic;
+}
+
+/* Select & Input */
+.modal-tao-bb__select,
+.modal-tao-bb__input,
+.modal-ky-bb__select,
+.modal-ky-bb__input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.modal-tao-bb__select:focus,
+.modal-tao-bb__input:focus,
+.modal-ky-bb__select:focus,
+.modal-ky-bb__input:focus {
+  outline: none;
+  border-color: var(--operator-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-tao-bb__select.has-error,
+.modal-tao-bb__input.has-error,
+.modal-ky-bb__select.has-error,
+.modal-ky-bb__input.has-error {
+  border-color: var(--operator-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.modal-tao-bb__select:disabled,
+.modal-tao-bb__input:disabled,
+.modal-ky-bb__select:disabled,
+.modal-ky-bb__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-tao-bb__select option,
+.modal-ky-bb__select option {
+  background: #FFFFFF;
+  color: var(--operator-text-primary);
+}
+
+/* Textarea */
+.modal-tao-bb__textarea,
+.modal-ky-bb__textarea {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+.modal-tao-bb__textarea:focus,
+.modal-ky-bb__textarea:focus {
+  outline: none;
+  border-color: var(--operator-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-tao-bb__textarea:disabled,
+.modal-ky-bb__textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-tao-bb__textarea-info,
+.modal-ky-bb__textarea-info {
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+  text-align: right;
+}
+
+.modal-tao-bb__error,
+.modal-ky-bb__error {
+  color: var(--operator-danger);
+  font-size: 0.85rem;
+}
+
+/* ===== Actions ===== */
+.modal-tao-bb__actions,
+.modal-ky-bb__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--operator-glass-border);
+}
+
+/* ===== Info Display (for ModalKy) ===== */
+.modal-ky-bb__info {
+  padding: 1rem;
+  background: rgba(122, 62, 46, 0.1);
+  border: 1px solid var(--operator-primary);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-ky-bb__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-ky-bb__info-row label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--operator-text-secondary);
+}
+
+.modal-ky-bb__info-row span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  text-align: right;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .modal-tao-bb__actions,
+  .modal-ky-bb__actions {
+    flex-direction: column;
+  }
+
+  .modal-tao-bb__actions .operator-btn,
+  .modal-ky-bb__actions .operator-btn {
+    width: 100%;
+  }
+
+  .modal-ky-bb__info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-ky-bb__info-row span {
+    text-align: left;
+  }
+}
+
+
+
+
+
+

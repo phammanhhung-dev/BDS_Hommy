@@ -1,0 +1,166 @@
+/**
+ * Dashboard Operator CSS - Glass Morphism
+ */
+
+.dashboard-operator {
+  animation: operator-fade-in-up 0.5s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.dashboard-operator__header {
+  margin-bottom: 1rem;
+}
+
+.dashboard-operator__title {
+  font-size: clamp(1.65rem, 2vw, 2rem);
+  font-weight: 700;
+  color: var(--op-text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.dashboard-operator__subtitle {
+  font-size: 0.95rem;
+  color: var(--op-text-secondary);
+  margin: 0;
+}
+
+.dashboard-operator__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.dashboard-operator__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-operator__section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--op-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.75rem;
+}
+
+.dashboard-operator__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 0;
+}
+
+.dashboard-operator__metric-card {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: var(--op-text-primary);
+  min-width: 0;
+}
+
+.dashboard-operator__metric-card--clickable {
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease;
+}
+
+.dashboard-operator__metric-card--clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--op-shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.08));
+  border-color: var(--op-primary-light, rgba(139, 92, 246, 0.3));
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dashboard-operator__metric-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  background: var(--op-glass-bg);
+  backdrop-filter: blur(var(--op-blur));
+  -webkit-backdrop-filter: blur(var(--op-blur));
+  border: 1px solid var(--op-glass-border);
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+
+.dashboard-operator__metric-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-operator__metric-value {
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  line-height: 1.05;
+}
+
+.dashboard-operator__metric-label {
+  font-size: 0.82rem;
+  color: var(--op-text-secondary);
+  line-height: 1.4;
+}
+
+.dashboard-operator__quick-actions {
+  margin-top: 0;
+}
+
+.dashboard-operator__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-operator__actions .operator-btn {
+  flex: 1 1 180px;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+}
+
+.dashboard-operator__actions .operator-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-operator__actions .operator-btn__text {
+  white-space: normal;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-operator__metrics {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-operator__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-operator__actions {
+    flex-direction: column;
+  }
+
+  .dashboard-operator__actions .operator-btn {
+    width: 100%;
+  }
+}
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<svg id="svg-hommy-icon-mono"
+     width="200" height="200"
+     viewBox="0 0 200 200"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5"
+                    flood-color="#000" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softShadow)" stroke="currentColor">
+
+    <!-- Outer frame -->
+    <rect x="10" y="10" width="180" height="180"
+          rx="40" ry="40"
+          fill="none"
+          stroke-width="2.4"
+          opacity="0.95"/>
+
+    <!-- Inner frame -->
+    <rect x="18" y="18" width="164" height="164"
+          rx="34" ry="34"
+          fill="none"
+          stroke-width="1"
+          opacity="0.45"/>
+
+    <!-- Monogram -->
+    <g transform="translate(0,15)">
+      <g transform="translate(100 100) scale(2.05) translate(-100 -100)">
+
+        <path d="M80 80 V120 M120 80 V120 M80 100 H120"
+              fill="none"
+              stroke-width="5"
+              stroke-linecap="square"/>
+
+        <path d="M78 80 L100 65 L122 80"
+              fill="none"
+              stroke-width="7"
+              stroke-linecap="square"/>
+      </g>
+    </g>
+
+  </g>
+</svg>

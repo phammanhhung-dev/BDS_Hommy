@@ -1,0 +1,251 @@
+/* Modal Phe Duyet Cuoc Hen - BEM Naming Convention */
+.modal-phe-duyet-cuoc-hen__overlay { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(17, 24, 39, 0.6); 
+  backdrop-filter: blur(4px);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 1200; 
+  animation: modal-fade-in 0.2s ease-out;
+}
+
+.modal-phe-duyet-cuoc-hen { 
+  width: 920px; 
+  max-width: 95%; 
+  background: #ffffff; 
+  border-radius: 16px; 
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25), 
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  animation: modal-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-phe-duyet-cuoc-hen__header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 20px 24px; 
+  border-bottom: 1px solid #e2e8f0; 
+}
+
+.modal-phe-duyet-cuoc-hen__header--success { 
+  background: linear-gradient(to right, #f0fdf4, #ffffff);
+  border-bottom-color: #dcfce7;
+}
+
+.modal-phe-duyet-cuoc-hen__header-icon { 
+  width: 48px; 
+  height: 48px; 
+  border-radius: 12px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 24px; 
+  margin-right: 16px; 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.modal-phe-duyet-cuoc-hen__header-icon--success { 
+  background: #dcfce7; 
+  color: #15803d; 
+  border: 1px solid #bbf7d0;
+}
+
+.modal-phe-duyet-cuoc-hen__title { 
+  margin: 0; 
+  font-size: 1.25rem; 
+  font-weight: 700; 
+  color: #0f172a;
+}
+
+.modal-phe-duyet-cuoc-hen__subtitle { 
+  margin: 4px 0 0 0; 
+  color: #64748b; 
+  font-size: 0.875rem; 
+}
+
+.modal-phe-duyet-cuoc-hen__close-btn { 
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent; 
+  font-size: 1.25rem; 
+  color: #64748b;
+  cursor: pointer; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-phe-duyet-cuoc-hen__close-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.modal-phe-duyet-cuoc-hen__body { 
+  padding: 24px; 
+  overflow-y: auto; 
+  background: #f8fafc;
+  flex: 1;
+}
+
+.modal-phe-duyet-cuoc-hen__form-section { 
+  margin-bottom: 24px; 
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.modal-phe-duyet-cuoc-hen__section-title { 
+  margin: 0 0 8px 0; 
+  font-size: 1rem; 
+  font-weight: 700; 
+  color: #0f172a;
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.modal-phe-duyet-cuoc-hen__section-icon { 
+  font-size: 1.25rem; 
+  color: #10b981;
+}
+
+.modal-phe-duyet-cuoc-hen__section-description { 
+  color: #64748b; 
+  font-size: 0.875rem; 
+  margin-top: 4px; 
+  margin-bottom: 16px;
+}
+
+.modal-phe-duyet-cuoc-hen__info-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 20px; 
+}
+
+.modal-phe-duyet-cuoc-hen__info-item { 
+  display: flex; 
+  gap: 12px; 
+  align-items: flex-start; 
+}
+
+.modal-phe-duyet-cuoc-hen__info-icon { 
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #f0fdf4;
+  color: #15803d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem; 
+  flex-shrink: 0;
+}
+
+.modal-phe-duyet-cuoc-hen__info-label { 
+  font-size: 0.75rem; 
+  color: #64748b; 
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.modal-phe-duyet-cuoc-hen__info-value { 
+  font-weight: 600; 
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.modal-phe-duyet-cuoc-hen__form-group { 
+  margin-bottom: 20px; 
+}
+
+.modal-phe-duyet-cuoc-hen__label { 
+  font-weight: 600; 
+  margin-bottom: 8px; 
+  display: block; 
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.modal-phe-duyet-cuoc-hen__textarea { 
+  width: 100%; 
+  padding: 12px; 
+  border-radius: 8px; 
+  border: 1px solid #cbd5e1; 
+  resize: vertical; 
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  background: #ffffff;
+}
+
+.modal-phe-duyet-cuoc-hen__textarea:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.modal-phe-duyet-cuoc-hen__footer { 
+  padding: 20px 24px; 
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0; 
+  display: flex; 
+  justify-content: flex-end; 
+  gap: 12px; 
+}
+
+.modal-phe-duyet-cuoc-hen__spinner--small { 
+  width: 16px; 
+  height: 16px; 
+  border: 2px solid rgba(255, 255, 255, 0.3); 
+  border-top-color: #ffffff; 
+  border-radius: 50%; 
+  animation: modal-phe-duyet-cuoc-hen-spin 0.8s linear infinite; 
+}
+
+@keyframes modal-phe-duyet-cuoc-hen-spin { 
+  to { transform: rotate(360deg); } 
+}
+
+.modal-phe-duyet-cuoc-hen__auto-actions-info { 
+  margin-top: 16px; 
+  background: #f0fdf4; 
+  padding: 16px; 
+  border-radius: 8px; 
+  border: 1px solid #dcfce7;
+  color: #166534;
+}
+
+.modal-phe-duyet-cuoc-hen__auto-actions-list { 
+  margin: 8px 0 0 20px; 
+  padding: 0;
+  list-style-type: none;
+}
+
+.modal-phe-duyet-cuoc-hen__auto-actions-list li {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

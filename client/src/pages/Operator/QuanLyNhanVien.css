@@ -1,0 +1,260 @@
+/* UC-OPER-04&05: Quản lý Nhân viên - Glass Morphism Theme */
+
+.quan-ly-nhan-vien {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.quan-ly-nhan-vien__header {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.quan-ly-nhan-vien__stats {
+  flex-wrap: wrap;
+}
+
+.quan-ly-nhan-vien__actions-header {
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.quan-ly-nhan-vien__filter-wrapper.is-open {
+  width: 100%;
+}
+
+/* ===== Header ===== */
+.quan-ly-nhan-vien__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.quan-ly-nhan-vien__title-section {
+  flex: 1;
+}
+
+.quan-ly-nhan-vien__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--operator-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.quan-ly-nhan-vien__subtitle {
+  font-size: 0.95rem;
+  color: var(--operator-text-secondary);
+  margin: 0;
+}
+
+/* ===== Stats ===== */
+.quan-ly-nhan-vien__stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.quan-ly-nhan-vien__stat-item {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  min-width: 110px;
+  transition: all 0.3s ease;
+}
+
+.quan-ly-nhan-vien__stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--operator-shadow-lg);
+}
+
+.quan-ly-nhan-vien__stat-item--success {
+  border-color: var(--operator-success);
+}
+
+.quan-ly-nhan-vien__stat-item--danger {
+  border-color: var(--operator-danger);
+}
+
+.quan-ly-nhan-vien__stat-item--warning {
+  border-color: var(--operator-warning);
+}
+
+.quan-ly-nhan-vien__stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.quan-ly-nhan-vien__stat-item--success .quan-ly-nhan-vien__stat-value {
+  color: var(--operator-success);
+}
+
+.quan-ly-nhan-vien__stat-item--danger .quan-ly-nhan-vien__stat-value {
+  color: var(--operator-danger);
+}
+
+.quan-ly-nhan-vien__stat-item--warning .quan-ly-nhan-vien__stat-value {
+  color: var(--operator-warning);
+}
+
+.quan-ly-nhan-vien__stat-label {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Content ===== */
+.quan-ly-nhan-vien__content {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--operator-shadow-lg);
+}
+
+.quan-ly-nhan-vien__error {
+  text-align: center;
+  padding: 3rem;
+  color: var(--operator-danger);
+  font-size: 1.1rem;
+}
+
+/* ===== Table Cell Custom Renders ===== */
+.quan-ly-nhan-vien__ho-ten {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quan-ly-nhan-vien__ten {
+  font-weight: 600;
+  color: var(--operator-text-primary);
+}
+
+.quan-ly-nhan-vien__email {
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+}
+
+/* ===== ID Cell ===== */
+.quan-ly-nhan-vien__cell-id {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Actions (table row) ===== */
+.quan-ly-nhan-vien__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: stretch;
+  width: 100%;
+}
+
+.quan-ly-nhan-vien__actions .operator-btn {
+  width: 100%;
+  white-space: nowrap;
+  text-align: center;
+  justify-content: center;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .quan-ly-nhan-vien__header {
+    flex-wrap: wrap;
+  }
+  
+  .quan-ly-nhan-vien__stats {
+    order: 2;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .quan-ly-nhan-vien {
+    padding: 1rem;
+  }
+  
+  .quan-ly-nhan-vien__title {
+    font-size: 1.5rem;
+  }
+  
+  .quan-ly-nhan-vien__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Thêm vào file QuanLyNhanVien.css */
+
+/* Container cho các nút hành động trên Header */
+.quan-ly-nhan-vien__actions-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Nút active khi đang mở filter */
+.operator-btn--active {
+  background-color: var(--operator-primary-light, #e3f2fd);
+  color: var(--operator-primary, #1976d2);
+  border: 1px solid var(--operator-primary);
+}
+
+/* Wrapper cho vùng Filter - Tạo hiệu ứng Glass Morphism riêng */
+.quan-ly-nhan-vien__filter-wrapper {
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-bottom: 0;
+  opacity: 0;
+  max-height: 0;
+}
+
+.quan-ly-nhan-vien__filter-wrapper.is-open {
+  margin-bottom: 1.5rem; /* Đẩy bảng xuống khi mở */
+  opacity: 1;
+  max-height: 500px; /* Đủ lớn để chứa filter */
+  
+  /* Style giống Glass Morphism để đồng bộ */
+  background: var(--operator-glass-bg, rgba(255, 255, 255, 0.7));
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--operator-glass-border, rgba(255, 255, 255, 0.5));
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--operator-shadow-sm, 0 4px 6px rgba(0,0,0,0.05));
+}
+
+/* Responsive cho nút */
+@media (max-width: 768px) {
+  .quan-ly-nhan-vien__actions-header {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  
+  .quan-ly-nhan-vien__actions-header .operator-btn {
+    flex: 1;
+  }
+}
+
+
+
+
+

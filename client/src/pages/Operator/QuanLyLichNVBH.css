@@ -1,0 +1,190 @@
+/* UC-OPER-03: Quản lý Lịch NVBH - Glass Morphism Theme */
+
+.quan-ly-lich {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.quan-ly-lich__header {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.quan-ly-lich__view-toggle {
+  flex-wrap: wrap;
+}
+
+.quan-ly-lich__actions {
+  flex-wrap: wrap;
+}
+
+/* ===== Header ===== */
+.quan-ly-lich__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.quan-ly-lich__title-section {
+  flex: 1;
+}
+
+.quan-ly-lich__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--operator-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.quan-ly-lich__subtitle {
+  font-size: 0.95rem;
+  color: var(--operator-text-secondary);
+  margin: 0;
+}
+
+/* ===== View Toggle ===== */
+.quan-ly-lich__view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 0.25rem;
+}
+
+.quan-ly-lich__toggle-btn {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--operator-text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quan-ly-lich__toggle-btn:hover {
+  color: var(--operator-text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.quan-ly-lich__toggle-btn.is-active {
+  background: var(--operator-primary);
+  color: white;
+  box-shadow: var(--operator-shadow-md);
+}
+
+/* ===== Calendar Wrapper ===== */
+.quan-ly-lich__calendar-wrapper {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--operator-shadow-lg);
+}
+
+.quan-ly-lich__calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.quan-ly-lich__month-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--operator-text-primary);
+  margin: 0;
+}
+
+.quan-ly-lich__loading {
+  padding: 2rem;
+}
+
+/* ===== Content (List View) ===== */
+.quan-ly-lich__content {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--operator-shadow-lg);
+}
+
+/* ===== Table Cell Custom Renders ===== */
+.quan-ly-lich__khach-hang {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quan-ly-lich__ten-khach {
+  font-weight: 500;
+  color: var(--operator-text-primary);
+}
+
+.quan-ly-lich__sdt-khach {
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+}
+
+.quan-ly-lich__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .quan-ly-lich__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .quan-ly-lich__view-toggle {
+    justify-content: stretch;
+  }
+  
+  .quan-ly-lich__toggle-btn {
+    flex: 1;
+  }
+  
+  .quan-ly-lich__calendar-header {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .quan-ly-lich__month-title {
+    width: 100%;
+    text-align: center;
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .quan-ly-lich {
+    padding: 1rem;
+  }
+  
+  .quan-ly-lich__title {
+    font-size: 1.5rem;
+  }
+  
+  .quan-ly-lich__calendar-wrapper {
+    padding: 1rem;
+  }
+}
+
+
+
+
+
+

@@ -1,0 +1,95 @@
+/**
+ * CSS cho Animated Icons
+ * BEM naming convention
+ */
+
+/* Base */
+.animated-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pulsing */
+.animated-icon--pulsing {
+  will-change: transform, opacity;
+}
+
+/* Spinning */
+.animated-icon--spinning {
+  will-change: transform;
+}
+
+/* Bouncing */
+.animated-icon--bouncing {
+  will-change: transform, opacity;
+}
+
+/* Shaking */
+.animated-icon--shaking {
+  will-change: transform;
+}
+
+/* Waiting dots */
+.animated-icon--waiting-dots {
+  padding: 8px 0;
+}
+
+/* Scanning QR */
+.animated-icon--scanning {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.animated-icon__scan-line {
+  will-change: top;
+}
+
+/* Countdown */
+.animated-icon--countdown {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animated-icon__countdown-text {
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+/* Confetti */
+.animated-icon--confetti {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Accessibility - Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .animated-icon--pulsing,
+  .animated-icon--spinning,
+  .animated-icon--bouncing,
+  .animated-icon--shaking,
+  .animated-icon--waiting-dots,
+  .animated-icon--scanning,
+  .animated-icon--countdown,
+  .animated-icon--confetti {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .animated-icon--spinning svg {
+    animation: none;
+  }
+
+  .animated-icon__scan-line {
+    animation: none;
+    top: 50% !important;
+  }
+}
+

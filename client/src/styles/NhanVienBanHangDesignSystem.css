@@ -1,0 +1,602 @@
+/**
+ * Design System - Nhân viên Bán hàng (Sales Staff)
+ * Theme: Corporate Blue + Silver
+ * Glass Morphism Effects
+ * Tuân thủ BEM naming convention
+ */
+
+/* =====================================================
+   1. COLOR PALETTE - Corporate Blue + Silver
+   ===================================================== */
+
+:root {
+  /* Primary - Corporate Blue */
+  --nvbh-primary: #1D4ED8;           /* Blue 600 */
+  --nvbh-primary-dark: #1E40AF;      /* Blue 700 */
+  --nvbh-primary-light: #3B82F6;     /* Blue 500 */
+  --nvbh-primary-lighter: #60A5FA;   /* Blue 400 */
+  
+  /* Secondary - Sky Blue */
+  --nvbh-secondary: #0EA5E9;         /* Sky 500 */
+  --nvbh-secondary-dark: #0284C7;    /* Sky 600 */
+  --nvbh-secondary-light: #38BDF8;   /* Sky 400 */
+  
+  /* Accent - Silver */
+  --nvbh-accent: #94A3B8;            /* Slate 400 */
+  --nvbh-accent-light: #CBD5E1;      /* Slate 300 */
+  --nvbh-accent-lighter: #E2E8F0;    /* Slate 200 */
+  --nvbh-accent-dark: #64748B;       /* Slate 500 */
+  --nvbh-accent-50: rgba(148, 163, 184, 0.1); /* Accent với opacity cho hover states */
+  
+  /* Backgrounds - Light Professional */
+  --nvbh-bg-primary: #F8FAFC;        /* Slate 50 */
+  --nvbh-bg-secondary: #F1F5F9;      /* Slate 100 */
+  --nvbh-bg-tertiary: #E2E8F0;       /* Slate 200 */
+  --nvbh-surface: #FFFFFF;
+  --nvbh-card-bg: #FFFFFF;           /* Background cho card/sidebar */
+  
+  /* Glass Morphism */
+  --nvbh-glass-bg: rgba(255, 255, 255, 0.8);
+  --nvbh-glass-bg-dark: rgba(255, 255, 255, 0.6);
+  --nvbh-glass-border: rgba(29, 78, 216, 0.12);
+  --nvbh-glass-border-hover: rgba(29, 78, 216, 0.2);
+  --nvbh-glass-shadow: 0 8px 32px rgba(29, 78, 216, 0.08);
+  --nvbh-glass-shadow-hover: 0 12px 48px rgba(29, 78, 216, 0.12);
+  
+  /* Text Colors */
+  --nvbh-text-primary: #0F172A;      /* Slate 900 */
+  --nvbh-text-secondary: #475569;    /* Slate 600 */
+  --nvbh-text-tertiary: #64748B;     /* Slate 500 */
+  --nvbh-text-disabled: #94A3B8;     /* Slate 400 */
+  --nvbh-text-white: #FFFFFF;
+  
+  /* Primary Foreground - Text color khi active (thường là white) */
+  --nvbh-primary-foreground: #FFFFFF;
+  
+  /* Semantic Colors */
+  --nvbh-success: #10B981;           /* Green 500 */
+  --nvbh-success-light: #D1FAE5;     /* Green 100 */
+  --nvbh-success-dark: #059669;      /* Green 600 */
+  
+  --nvbh-warning: #F59E0B;           /* Amber 500 */
+  --nvbh-warning-light: #FEF3C7;     /* Amber 100 */
+  --nvbh-warning-dark: #D97706;      /* Amber 600 */
+  
+  --nvbh-danger: #EF4444;            /* Red 500 */
+  --nvbh-danger-light: #FEE2E2;      /* Red 100 */
+  --nvbh-danger-dark: #DC2626;       /* Red 600 */
+  
+  --nvbh-info: #0EA5E9;              /* Sky 500 */
+  --nvbh-info-light: #E0F2FE;        /* Sky 100 */
+  --nvbh-info-dark: #0284C7;         /* Sky 600 */
+  
+  /* Shadows - Multi-layer for depth */
+  --nvbh-shadow-xs: 0 1px 2px rgba(29, 78, 216, 0.08);
+  --nvbh-shadow-sm: 0 1px 3px rgba(29, 78, 216, 0.12), 0 1px 2px rgba(29, 78, 216, 0.06);
+  --nvbh-shadow-md: 0 4px 6px rgba(29, 78, 216, 0.15), 0 2px 4px rgba(29, 78, 216, 0.08);
+  --nvbh-shadow-lg: 0 8px 15px rgba(29, 78, 216, 0.18), 0 4px 6px rgba(29, 78, 216, 0.10);
+  --nvbh-shadow-xl: 0 12px 24px rgba(29, 78, 216, 0.20), 0 6px 12px rgba(29, 78, 216, 0.12);
+  --nvbh-shadow-2xl: 0 20px 40px rgba(29, 78, 216, 0.25), 0 10px 20px rgba(29, 78, 216, 0.15);
+  
+  /* Gradients */
+  --nvbh-gradient-primary: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+  --nvbh-gradient-secondary: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+  --nvbh-gradient-surface: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+  
+  /* Transitions */
+  --nvbh-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --nvbh-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --nvbh-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Spacing */
+  --nvbh-spacing-xs: 0.25rem;   /* 4px */
+  --nvbh-spacing-sm: 0.5rem;    /* 8px */
+  --nvbh-spacing-md: 1rem;      /* 16px */
+  --nvbh-spacing-lg: 1.5rem;    /* 24px */
+  --nvbh-spacing-xl: 2rem;      /* 32px */
+  --nvbh-spacing-2xl: 3rem;     /* 48px */
+  
+  /* Border Radius */
+  --nvbh-radius-sm: 0.375rem;   /* 6px */
+  --nvbh-radius-md: 0.5rem;     /* 8px */
+  --nvbh-radius-lg: 0.75rem;    /* 12px */
+  --nvbh-radius-xl: 1rem;       /* 16px */
+  --nvbh-radius-2xl: 1.5rem;    /* 24px */
+  --nvbh-radius-full: 9999px;
+  
+  /* Typography */
+  --nvbh-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  --nvbh-font-size-xs: 0.75rem;     /* 12px */
+  --nvbh-font-size-sm: 0.875rem;    /* 14px */
+  --nvbh-font-size-base: 1rem;      /* 16px */
+  --nvbh-font-size-lg: 1.125rem;    /* 18px */
+  --nvbh-font-size-xl: 1.25rem;     /* 20px */
+  --nvbh-font-size-2xl: 1.5rem;     /* 24px */
+  --nvbh-font-size-3xl: 1.875rem;   /* 30px */
+  --nvbh-font-size-4xl: 2.25rem;    /* 36px */
+  
+  /* Layout */
+  --nvbh-sidebar-width: 240px;
+  --nvbh-sidebar-collapsed: 72px;
+  --nvbh-topbar-height: 64px;
+}
+
+/* =====================================================
+   2. GLASS MORPHISM BASE CLASSES
+   ===================================================== */
+
+.nvbh-glass {
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--nvbh-glass-border);
+  box-shadow: var(--nvbh-glass-shadow);
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-glass:hover {
+  border-color: var(--nvbh-glass-border-hover);
+  box-shadow: var(--nvbh-glass-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.nvbh-glass--dark {
+  background: var(--nvbh-glass-bg-dark);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Mobile optimization: Reduce blur for performance */
+@media (max-width: 768px) {
+  .nvbh-glass {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* =====================================================
+   3. CARD COMPONENTS
+   ===================================================== */
+
+.nvbh-card {
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-xl);
+  padding: var(--nvbh-spacing-lg);
+  box-shadow: var(--nvbh-shadow-md);
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-card:hover {
+  border-color: var(--nvbh-glass-border-hover);
+  box-shadow: var(--nvbh-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.nvbh-card--interactive {
+  cursor: pointer;
+}
+
+.nvbh-card--compact {
+  padding: var(--nvbh-spacing-md);
+}
+
+.nvbh-card--elevated {
+  box-shadow: var(--nvbh-shadow-xl);
+}
+
+.nvbh-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--nvbh-spacing-md);
+  padding-bottom: var(--nvbh-spacing-md);
+  border-bottom: 1px solid var(--nvbh-accent-lighter);
+}
+
+.nvbh-card__title {
+  font-size: var(--nvbh-font-size-lg);
+  font-weight: 600;
+  color: var(--nvbh-text-primary);
+  margin: 0;
+}
+
+.nvbh-card__subtitle {
+  font-size: var(--nvbh-font-size-sm);
+  color: var(--nvbh-text-secondary);
+  margin-top: var(--nvbh-spacing-xs);
+}
+
+.nvbh-card__body {
+  color: var(--nvbh-text-secondary);
+  line-height: 1.6;
+}
+
+.nvbh-card__footer {
+  margin-top: var(--nvbh-spacing-lg);
+  padding-top: var(--nvbh-spacing-md);
+  border-top: 1px solid var(--nvbh-accent-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* =====================================================
+   4. BUTTONS
+   ===================================================== */
+
+.nvbh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nvbh-spacing-sm);
+  padding: 0.625rem 1.25rem;
+  font-size: var(--nvbh-font-size-base);
+  font-weight: 500;
+  line-height: 1.5;
+  border-radius: var(--nvbh-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--nvbh-transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nvbh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nvbh-btn--primary {
+  background: var(--nvbh-gradient-primary);
+  color: var(--nvbh-text-white);
+  box-shadow: var(--nvbh-shadow-sm);
+}
+
+.nvbh-btn--primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--nvbh-shadow-md);
+}
+
+.nvbh-btn--secondary {
+  background: var(--nvbh-surface);
+  color: var(--nvbh-primary);
+  border: 1px solid var(--nvbh-primary);
+}
+
+.nvbh-btn--secondary:hover:not(:disabled) {
+  background: var(--nvbh-primary-light);
+  color: var(--nvbh-text-white);
+}
+
+.nvbh-btn--ghost {
+  background: transparent;
+  color: var(--nvbh-primary);
+}
+
+.nvbh-btn--ghost:hover:not(:disabled) {
+  background: rgba(29, 78, 216, 0.08);
+}
+
+.nvbh-btn--success {
+  background: var(--nvbh-success);
+  color: var(--nvbh-text-white);
+}
+
+.nvbh-btn--danger {
+  background: var(--nvbh-danger);
+  color: var(--nvbh-text-white);
+}
+
+.nvbh-btn--sm {
+  padding: 0.375rem 0.875rem;
+  font-size: var(--nvbh-font-size-sm);
+}
+
+.nvbh-btn--lg {
+  padding: 0.875rem 1.75rem;
+  font-size: var(--nvbh-font-size-lg);
+}
+
+.nvbh-btn--full {
+  width: 100%;
+}
+
+/* =====================================================
+   5. BADGES
+   ===================================================== */
+
+.nvbh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-xs);
+  padding: 0.25rem 0.75rem;
+  font-size: var(--nvbh-font-size-xs);
+  font-weight: 600;
+  border-radius: var(--nvbh-radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nvbh-badge--success {
+  background: var(--nvbh-success-light);
+  color: var(--nvbh-success-dark);
+}
+
+.nvbh-badge--warning {
+  background: var(--nvbh-warning-light);
+  color: var(--nvbh-warning-dark);
+}
+
+.nvbh-badge--danger {
+  background: var(--nvbh-danger-light);
+  color: var(--nvbh-danger-dark);
+}
+
+.nvbh-badge--info {
+  background: var(--nvbh-info-light);
+  color: var(--nvbh-info-dark);
+}
+
+.nvbh-badge--primary {
+  background: rgba(29, 78, 216, 0.12);
+  color: var(--nvbh-primary-dark);
+}
+
+.nvbh-badge--secondary {
+  background: var(--nvbh-accent-lighter);
+  color: var(--nvbh-accent-dark);
+}
+
+/* =====================================================
+   6. LAYOUT COMPONENTS
+   ===================================================== */
+
+.nvbh-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--nvbh-bg-primary);
+  font-family: var(--nvbh-font-family);
+}
+
+/* Sidebar styles đã được di chuyển sang NavigationNhanVienBanHang.css */
+/* Giữ lại để tham khảo, nhưng không sử dụng để tránh conflict */
+
+/*
+.nvbh-sidebar {
+  width: var(--nvbh-sidebar-width);
+  background: var(--nvbh-gradient-primary);
+  color: var(--nvbh-text-white);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: var(--nvbh-shadow-xl);
+  transition: width var(--nvbh-transition-base);
+  z-index: 100;
+}
+
+.nvbh-sidebar--collapsed {
+  width: var(--nvbh-sidebar-collapsed);
+}
+
+.nvbh-sidebar__logo {
+  padding: var(--nvbh-spacing-lg);
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+*/
+
+/* .nvbh-sidebar__nav đã được di chuyển sang NavigationNhanVienBanHang.css */
+/*
+.nvbh-sidebar__nav {
+  flex: 1;
+  padding: var(--nvbh-spacing-md) 0;
+}
+*/
+
+.nvbh-main {
+  flex: 1;
+  margin-left: var(--nvbh-sidebar-width);
+  transition: margin-left var(--nvbh-transition-base);
+}
+
+.nvbh-main--sidebar-collapsed {
+  margin-left: var(--nvbh-sidebar-collapsed);
+}
+
+.nvbh-topbar {
+  height: var(--nvbh-topbar-height);
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--nvbh-glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--nvbh-spacing-xl);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.nvbh-content {
+  padding: var(--nvbh-spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   7. NAVIGATION
+   ===================================================== */
+
+/* Navigation styles được định nghĩa trong NavigationNhanVienBanHang.css
+   để tránh conflict với component-specific styles */
+
+/* =====================================================
+   8. FORMS
+   ===================================================== */
+
+.nvbh-form-group {
+  margin-bottom: var(--nvbh-spacing-lg);
+}
+
+.nvbh-label {
+  display: block;
+  margin-bottom: var(--nvbh-spacing-sm);
+  font-size: var(--nvbh-font-size-sm);
+  font-weight: 600;
+  color: var(--nvbh-text-primary);
+}
+
+.nvbh-input {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  font-size: var(--nvbh-font-size-base);
+  border: 1px solid var(--nvbh-accent-lighter);
+  border-radius: var(--nvbh-radius-md);
+  background: var(--nvbh-surface);
+  color: var(--nvbh-text-primary);
+  transition: all var(--nvbh-transition-fast);
+}
+
+.nvbh-input:focus {
+  outline: none;
+  border-color: var(--nvbh-primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+.nvbh-input::placeholder {
+  color: var(--nvbh-text-tertiary);
+}
+
+.nvbh-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.nvbh-select {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  font-size: var(--nvbh-font-size-base);
+  border: 1px solid var(--nvbh-accent-lighter);
+  border-radius: var(--nvbh-radius-md);
+  background: var(--nvbh-surface);
+  color: var(--nvbh-text-primary);
+  cursor: pointer;
+  transition: all var(--nvbh-transition-fast);
+}
+
+.nvbh-select:focus {
+  outline: none;
+  border-color: var(--nvbh-primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+/* =====================================================
+   9. RESPONSIVE BREAKPOINTS
+   ===================================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .nvbh-sidebar {
+    width: var(--nvbh-sidebar-collapsed);
+  }
+  
+  .nvbh-main {
+    margin-left: var(--nvbh-sidebar-collapsed);
+  }
+  
+  .nvbh-content {
+    padding: var(--nvbh-spacing-lg);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .nvbh-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .nvbh-sidebar--open {
+    transform: translateX(0);
+  }
+  
+  .nvbh-main {
+    margin-left: 0;
+  }
+  
+  .nvbh-content {
+    padding: var(--nvbh-spacing-md);
+  }
+  
+  .nvbh-card {
+    padding: var(--nvbh-spacing-md);
+  }
+}
+
+/* =====================================================
+   10. UTILITIES
+   ===================================================== */
+
+.nvbh-text-primary { color: var(--nvbh-text-primary); }
+.nvbh-text-secondary { color: var(--nvbh-text-secondary); }
+.nvbh-text-white { color: var(--nvbh-text-white); }
+
+.nvbh-bg-primary { background: var(--nvbh-primary); }
+.nvbh-bg-success { background: var(--nvbh-success); }
+.nvbh-bg-warning { background: var(--nvbh-warning); }
+.nvbh-bg-danger { background: var(--nvbh-danger); }
+
+.nvbh-shadow-sm { box-shadow: var(--nvbh-shadow-sm); }
+.nvbh-shadow-md { box-shadow: var(--nvbh-shadow-md); }
+.nvbh-shadow-lg { box-shadow: var(--nvbh-shadow-lg); }
+
+.nvbh-mt-xs { margin-top: var(--nvbh-spacing-xs); }
+.nvbh-mt-sm { margin-top: var(--nvbh-spacing-sm); }
+.nvbh-mt-md { margin-top: var(--nvbh-spacing-md); }
+.nvbh-mt-lg { margin-top: var(--nvbh-spacing-lg); }
+.nvbh-mt-xl { margin-top: var(--nvbh-spacing-xl); }
+
+.nvbh-mb-xs { margin-bottom: var(--nvbh-spacing-xs); }
+.nvbh-mb-sm { margin-bottom: var(--nvbh-spacing-sm); }
+.nvbh-mb-md { margin-bottom: var(--nvbh-spacing-md); }
+.nvbh-mb-lg { margin-bottom: var(--nvbh-spacing-lg); }
+.nvbh-mb-xl { margin-bottom: var(--nvbh-spacing-xl); }
+
+.nvbh-flex { display: flex; }
+.nvbh-flex-col { flex-direction: column; }
+.nvbh-items-center { align-items: center; }
+.nvbh-justify-between { justify-content: space-between; }
+.nvbh-gap-sm { gap: var(--nvbh-spacing-sm); }
+.nvbh-gap-md { gap: var(--nvbh-spacing-md); }
+
+.nvbh-grid { display: grid; }
+.nvbh-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.nvbh-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.nvbh-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1024px) {
+  .nvbh-grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+  .nvbh-grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .nvbh-grid-cols-2 { grid-template-columns: 1fr; }
+  .nvbh-grid-cols-3 { grid-template-columns: 1fr; }
+  .nvbh-grid-cols-4 { grid-template-columns: 1fr; }
+}
+
+
+
+
+
+
+
+

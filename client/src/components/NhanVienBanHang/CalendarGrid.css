@@ -1,0 +1,209 @@
+/**
+ * CalendarGrid styles
+ */
+
+.nvbh-calendar {
+  background: var(--nvbh-surface);
+  border: 1px solid var(--nvbh-accent-lighter);
+  border-radius: var(--nvbh-radius-lg);
+  overflow: hidden;
+}
+
+/* Header */
+.nvbh-calendar__header {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  background: var(--nvbh-bg-secondary);
+  border-bottom: 2px solid var(--nvbh-accent-lighter);
+}
+
+.nvbh-calendar__time-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--nvbh-font-size-sm);
+  font-weight: 600;
+  color: var(--nvbh-text-secondary);
+  padding: var(--nvbh-spacing-md);
+  border-right: 1px solid var(--nvbh-accent-lighter);
+}
+
+.nvbh-calendar__day-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--nvbh-spacing-md);
+  gap: var(--nvbh-spacing-xs);
+  border-right: 1px solid var(--nvbh-accent-lighter);
+}
+
+.nvbh-calendar__day-header:last-child {
+  border-right: none;
+}
+
+.nvbh-calendar__day-name {
+  font-size: var(--nvbh-font-size-sm);
+  font-weight: 600;
+  color: var(--nvbh-text-primary);
+}
+
+.nvbh-calendar__day-date {
+  font-size: var(--nvbh-font-size-xs);
+  color: var(--nvbh-text-tertiary);
+}
+
+/* Body */
+.nvbh-calendar__body {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.nvbh-calendar__row {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  border-bottom: 1px solid var(--nvbh-accent-lighter);
+}
+
+.nvbh-calendar__row:last-child {
+  border-bottom: none;
+}
+
+.nvbh-calendar__time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--nvbh-font-size-sm);
+  color: var(--nvbh-text-secondary);
+  padding: var(--nvbh-spacing-md);
+  background: var(--nvbh-bg-primary);
+  border-right: 1px solid var(--nvbh-accent-lighter);
+  font-weight: 500;
+}
+
+.nvbh-calendar__cell {
+  min-height: 60px;
+  padding: var(--nvbh-spacing-xs);
+  border-right: 1px solid var(--nvbh-accent-lighter);
+  cursor: pointer;
+  transition: background var(--nvbh-transition-fast);
+  position: relative;
+}
+
+.nvbh-calendar__cell:last-child {
+  border-right: none;
+}
+
+.nvbh-calendar__cell:hover:not(.nvbh-calendar__cell--has-shift) {
+  background: var(--nvbh-bg-primary);
+}
+
+.nvbh-calendar__cell--has-shift {
+  background: var(--nvbh-bg-secondary);
+  cursor: default;
+}
+
+/* Shift */
+.nvbh-calendar__shift {
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--nvbh-primary);
+  border-left: 3px solid var(--nvbh-primary);
+  border-radius: var(--nvbh-radius-sm);
+  padding: var(--nvbh-spacing-xs);
+  cursor: pointer;
+  transition: all var(--nvbh-transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nvbh-calendar__shift:hover {
+  background: var(--nvbh-primary-light);
+  color: var(--nvbh-text-white);
+  box-shadow: var(--nvbh-shadow-sm);
+  transform: scale(1.02);
+}
+
+.nvbh-calendar__shift-time {
+  font-size: var(--nvbh-font-size-xs);
+  font-weight: 600;
+  color: var(--nvbh-primary-dark);
+}
+
+.nvbh-calendar__shift:hover .nvbh-calendar__shift-time {
+  color: var(--nvbh-text-white);
+}
+
+.nvbh-calendar__shift-badge {
+  display: inline-block;
+  background: var(--nvbh-success-light);
+  color: var(--nvbh-success-dark);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--nvbh-radius-sm);
+}
+
+.nvbh-calendar__shift:hover .nvbh-calendar__shift-badge {
+  background: var(--nvbh-text-white);
+  color: var(--nvbh-primary-dark);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nvbh-calendar__header {
+    grid-template-columns: 60px repeat(7, 1fr);
+  }
+
+  .nvbh-calendar__row {
+    grid-template-columns: 60px repeat(7, 1fr);
+  }
+
+  .nvbh-calendar__day-name {
+    font-size: var(--nvbh-font-size-xs);
+  }
+
+  .nvbh-calendar__cell {
+    min-height: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nvbh-calendar {
+    overflow-x: auto;
+  }
+
+  .nvbh-calendar__header {
+    grid-template-columns: 50px repeat(7, 100px);
+  }
+
+  .nvbh-calendar__row {
+    grid-template-columns: 50px repeat(7, 100px);
+  }
+
+  .nvbh-calendar__day-header {
+    padding: var(--nvbh-spacing-sm);
+  }
+
+  .nvbh-calendar__cell {
+    min-height: 40px;
+  }
+
+  .nvbh-calendar__shift {
+    padding: 4px;
+  }
+
+  .nvbh-calendar__shift-time {
+    font-size: 10px;
+  }
+}
+
+
+
+
+
+
+
+

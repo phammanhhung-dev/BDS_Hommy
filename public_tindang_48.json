@@ -1,0 +1,39 @@
+﻿{
+    "TinDangID":  48,
+    "DuAnID":  36,
+    "KhuVucID":  1,
+    "ChinhSachCocID":  1,
+    "TieuDe":  "Test final TienIch fix",
+    "URL":  "\"[]\"",
+    "MoTa":  "Test final TienIch coercion fix",
+    "TienIch":  "[\"Dieu hoa\",\"Wifi\"]",
+    "GiaDien":  "2000.00",
+    "GiaNuoc":  "30000.00",
+    "GiaDichVu":  "100000.00",
+    "MoTaGiaDichVu":  "Test description",
+    "TrangThai":  "DaDuyet",
+    "TaoLuc":  "2026-08-22T08:31:52.000Z",
+    "CapNhatLuc":  "2026-08-22T08:34:58.000Z",
+    "DuyetLuc":  "2026-08-22T08:34:58.000Z",
+    "TenDuAn":  "Dự án Test UI",
+    "DiaChi":  "123 Đường Test, Quận 1, TP.HCM",
+    "YeuCauPheDuyetChu":  0,
+    "ViDo":  null,
+    "KinhDo":  null,
+    "SoThangCocToiThieu":  1,
+    "TenKhuVuc":  "Phường Phúc Xá (Quận Ba Đình)",
+    "TenTinh":  "Thành phố Hà Nội",
+    "TongSoPhong":  1,
+    "Gia":  "3500000.00",
+    "DienTich":  "25.00",
+    "DanhSachPhong":  [
+                          {
+                              "PhongID":  20,
+                              "TenPhong":  "Phòng Test UI",
+                              "TrangThaiPhong":  "Trong",
+                              "Gia":  "3500000.00",
+                              "DienTich":  "25.00",
+                              "AnhPhong":  null
+                          }
+                      ]
+}

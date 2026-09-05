@@ -1,0 +1,112 @@
+{
+  "title": "Báo Cáo Quản Lý Bất Động Sản",
+  "sections": [
+    {
+      "type": "heading1",
+      "text": "1. Tổng Quan Dự Án"
+    },
+    {
+      "type": "paragraph",
+      "text": "Dự án phát triển hệ thống quản lý bất động sản tích hợp dự đoán giá bằng học máy, giúp chủ đầu tư và khách hàng giao dịch minh bạch, nhanh chóng và hiệu quả.",
+      "font_size": 12
+    },
+    {
+      "type": "heading2",
+      "text": "1.1 Mục Tiêu"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Xây dựng hệ thống quản lý tin đăng mua bán và cho thuê bất động sản",
+        "Tích hợp mô hình học máy Random Forest dự đoán giá nhà đất",
+        "Tích hợp thanh toán online, đặt cọc và quản lý hợp đồng điện tử",
+        "Cung cấp công cụ báo cáo phân tích hiệu suất dự án theo thời gian thực"
+      ]
+    },
+    {
+      "type": "heading2",
+      "text": "1.2 Phạm Vi"
+    },
+    {
+      "type": "numbered_list",
+      "items": [
+        "Phân tích yêu cầu và thiết kế hệ thống",
+        "Phát triển backend API với Node.js",
+        "Phát triển frontend với React",
+        "Phát triển mobile app với React Native",
+        "Testing và deployment"
+      ]
+    },
+    {
+      "type": "page_break"
+    },
+    {
+      "type": "heading1",
+      "text": "2. Kế Hoạch Thực Hiện"
+    },
+    {
+      "type": "table",
+      "headers": ["Giai Đoạn", "Thời Gian", "Trạng Thái", "Ghi Chú"],
+      "rows": [
+        ["Phân tích", "2 tuần", "Hoàn thành", "Đã hoàn tất use cases"],
+        ["Thiết kế DB", "1 tuần", "Hoàn thành", "Schema đã được approve"],
+        ["Backend API", "4 tuần", "Đang thực hiện", "60% hoàn thành"],
+        ["Frontend", "3 tuần", "Đang thực hiện", "40% hoàn thành"],
+        ["Mobile App", "3 tuần", "Chưa bắt đầu", ""],
+        ["Testing", "2 tuần", "Chưa bắt đầu", ""],
+        ["Deployment", "1 tuần", "Chưa bắt đầu", ""]
+      ]
+    },
+    {
+      "type": "heading2",
+      "text": "2.1 Chi Tiết Công Việc"
+    },
+    {
+      "type": "paragraph",
+      "text": "Backend API: ",
+      "bold": true
+    },
+    {
+      "type": "paragraph",
+      "text": "Đã hoàn thành các module chính gồm quản lý người dùng, tin đăng, dự án, và hợp đồng. Đang trong giai đoạn tích hợp thanh toán và tối ưu hiệu suất.",
+      "font_size": 11
+    },
+    {
+      "type": "paragraph",
+      "text": "Frontend: ",
+      "bold": true
+    },
+    {
+      "type": "paragraph",
+      "text": "Đã hoàn thành các trang chính cho Chủ dự án. Đang phát triển các trang cho Admin và Người thuê.",
+      "font_size": 11
+    },
+    {
+      "type": "page_break"
+    },
+    {
+      "type": "heading1",
+      "text": "3. Thông Tin Liên Hệ"
+    },
+    {
+      "type": "paragraph",
+      "text": "Để biết thêm thông tin chi tiết, vui lòng truy cập: "
+    },
+    {
+      "type": "link",
+      "text": "Website Dự Án",
+      "url": "https://github.com/your-project"
+    },
+    {
+      "type": "paragraph",
+      "text": ""
+    },
+    {
+      "type": "paragraph",
+      "text": "Hoặc liên hệ qua email: project@example.com",
+      "italic": true
+    }
+  ]
+}
+
+

@@ -1,0 +1,20 @@
+.ttc-container {
+  max-width: 760px;
+  margin: 24px auto;
+  padding: 18px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.ttc-info { margin-bottom: 16px; color: #333; }
+.ttc-info div { margin: 6px 0; }
+
+.ttc-qr-wrap { margin: 12px 0 18px; display: flex; justify-content: center; }
+.ttc-qr { width: 320px; height: 320px; object-fit: contain; border: 1px solid #eee; border-radius: 8px; }
+
+.ttc-actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 8px; }
+.ttc-actions .btn { padding: 8px 14px; border-radius: 6px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
+.btn-primary { background: #2563eb; color: #496eb3 !important; border-color: #2563eb; }
+.ttc-note { margin-top: 10px; color: #666; font-size: 13px; }

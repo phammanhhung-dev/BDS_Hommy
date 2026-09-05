@@ -1,0 +1,37 @@
+[
+  {
+    "ProvinceCode": "79",
+    "ProvinceName": "Thành phố Hồ Chí Minh",
+    "ProvinceType": "Thành phố",
+    "Communes": [
+      { "CommuneCode": "790101", "CommuneName": "Phường Bến Thành", "CommuneType": "Phường" },
+      { "CommuneCode": "790102", "CommuneName": "Phường Đa Kao", "CommuneType": "Phường" },
+      { "CommuneCode": "790103", "CommuneName": "Phường Nguyễn Cư Trinh", "CommuneType": "Phường" },
+      { "CommuneCode": "790104", "CommuneName": "Phường Cầu Kho", "CommuneType": "Phường" },
+      { "CommuneCode": "790105", "CommuneName": "Phường Tân Định", "CommuneType": "Phường" },
+      { "CommuneCode": "790106", "CommuneName": "Phường Gia Định", "CommuneType": "Phường" },
+      { "CommuneCode": "790107", "CommuneName": "Phường Hạnh Thông Tây", "CommuneType": "Phường" }
+    ]
+  },
+  {
+    "ProvinceCode": "01",
+    "ProvinceName": "Thủ đô Hà Nội",
+    "ProvinceType": "Thành phố",
+    "Communes": [
+      { "CommuneCode": "010101", "CommuneName": "Phường Cống Vị", "CommuneType": "Phường" },
+      { "CommuneCode": "010102", "CommuneName": "Phường Điện Biên", "CommuneType": "Phường" },
+      { "CommuneCode": "010103", "CommuneName": "Phường Nguyễn Trung Trực", "CommuneType": "Phường" },
+      { "CommuneCode": "010104", "CommuneName": "Phường Ngọc Hà", "CommuneType": "Phường" }
+    ]
+  },
+  {
+    "ProvinceCode": "75",
+    "ProvinceName": "Tỉnh Đồng Nai",
+    "ProvinceType": "Tỉnh",
+    "Communes": [
+      { "CommuneCode": "750101", "CommuneName": "Phường Tân Phong", "CommuneType": "Phường" },
+      { "CommuneCode": "750102", "CommuneName": "Phường Trảng Dài", "CommuneType": "Phường" },
+      { "CommuneCode": "750103", "CommuneName": "Xã An Hòa", "CommuneType": "Xã" }
+    ]
+  }
+]

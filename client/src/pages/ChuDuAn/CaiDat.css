@@ -1,0 +1,943 @@
+/* ========================================
+   CÀI ĐẶT CHỦ DỰ ÁN - SETTINGS PAGE
+   Design: Light Glass Morphism Theme
+   Đồng bộ với ChuDuAnDesignSystem.css
+   ======================================== */
+
+/* Container & Layout - Full Width Like Dashboard */
+.caidat-container {
+  width: 100%;
+  animation: caidat-fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes caidat-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header - Clean & Modern */
+.caidat-header {
+  margin-bottom: var(--spacing-2xl, 2.5rem);
+}
+
+/* Header - Gradient với Glass Morphism Effect */
+.caidat-header-content {
+  background: linear-gradient(135deg, var(--color-primary, #14532D) 0%, var(--color-primary-dark, #0F766E) 100%);
+  padding: var(--spacing-2xl, 2rem) var(--spacing-xl, 1.5rem);
+  border-radius: var(--radius-xl, 1rem);
+  box-shadow: 
+    0 10px 40px rgba(139, 92, 246, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.caidat-header-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+}
+
+.caidat-header-content::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: caidat-float 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes caidat-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-30px, 30px) scale(1.15);
+  }
+}
+
+.caidat-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 1rem);
+  margin-bottom: var(--spacing-sm, 0.5rem);
+  position: relative;
+  z-index: 1;
+}
+
+.caidat-title-icon {
+  width: 36px;
+  height: 36px;
+  color: rgba(255, 255, 255, 0.95);
+  animation: caidat-sparkle 3s ease-in-out infinite;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes caidat-sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: rotate(180deg) scale(1.1);
+  }
+}
+
+.caidat-title {
+  font-size: var(--font-size-3xl, 1.875rem);
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  letter-spacing: -0.025em;
+}
+
+.caidat-subtitle {
+  font-size: var(--font-size-base, 1rem);
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  font-weight: 400;
+}
+
+.caidat-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-2xl, 2rem);
+  align-items: start;
+}
+
+/* Tabs - Glass Morphism Sidebar */
+.caidat-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 0.25rem);
+  position: sticky;
+  top: var(--spacing-xl, 1.5rem);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: var(--spacing-sm, 0.5rem);
+  box-shadow: 
+    0 4px 16px rgba(139, 92, 246, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  transition: all var(--transition-slow, 0.3s);
+}
+
+.caidat-tabs::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+  border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
+}
+
+.caidat-tabs:hover {
+  box-shadow: 
+    0 8px 24px rgba(139, 92, 246, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border-color: rgba(139, 92, 246, 0.25);
+}
+
+.caidat-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  position: relative;
+  overflow: hidden;
+}
+
+.caidat-tab::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--color-primary, #14532D);
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+}
+
+.caidat-tab:hover {
+  background: var(--color-primary-bg, rgba(139, 92, 246, 0.08));
+  color: var(--color-primary, #14532D);
+  transform: translateX(4px);
+}
+
+.caidat-tab:hover::before {
+  transform: scaleY(1);
+}
+
+.caidat-tab.active {
+  background: linear-gradient(135deg, var(--color-primary, #14532D) 0%, var(--color-primary-dark, #0F766E) 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  transform: translateX(0);
+}
+
+.caidat-tab.active::before {
+  transform: scaleY(1);
+  background: white;
+}
+
+.caidat-tab-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.caidat-tab-label {
+  flex: 1;
+}
+
+/* Content - Glass Morphism Card */
+.caidat-main {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: var(--radius-xl, 1rem);
+  padding: var(--spacing-2xl, 2rem);
+  box-shadow: 
+    0 8px 32px rgba(139, 92, 246, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: caidat-slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.caidat-main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+  border-radius: var(--radius-xl, 1rem) var(--radius-xl, 1rem) 0 0;
+}
+
+@keyframes caidat-slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.caidat-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl, 2rem);
+}
+
+.caidat-section {
+  padding-bottom: var(--spacing-2xl, 2rem);
+  border-bottom: 2px solid rgba(139, 92, 246, 0.08);
+  position: relative;
+}
+
+.caidat-section::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+}
+
+.caidat-section:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.caidat-section:last-child::after {
+  display: none;
+}
+
+.caidat-section-title {
+  font-size: var(--font-size-xl, 1.25rem);
+  font-weight: 600;
+  color: var(--color-text-primary, #111827);
+  margin: 0 0 var(--spacing-md, 1rem) 0;
+  position: relative;
+  padding-bottom: var(--spacing-md, 1rem);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 0.5rem);
+}
+
+.caidat-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary, #14532D) 0%, var(--color-primary-light, #52a383) 100%);
+  border-radius: var(--radius-full, 9999px);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+.caidat-description {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 var(--spacing-xl, 1.5rem) 0;
+  line-height: 1.6;
+}
+
+/* Form */
+.caidat-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.caidat-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.caidat-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.caidat-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.caidat-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #111827);
+}
+
+.caidat-input,
+.caidat-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-sm, 0.875rem);
+  line-height: 1.5;
+  color: var(--color-text-primary, #111827);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(139, 92, 246, 0.15);
+  border-radius: var(--radius-md, 0.5rem);
+  transition: all var(--transition-base, 0.2s);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  font-family: var(--font-family-base);
+}
+
+.caidat-input:hover:not(:disabled),
+.caidat-textarea:hover:not(:disabled) {
+  border-color: var(--color-primary-light, #52a383);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 
+    0 4px 8px rgba(139, 92, 246, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.caidat-input:focus,
+.caidat-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #14532D);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 
+    0 0 0 4px rgba(139, 92, 246, 0.1),
+    0 4px 12px rgba(139, 92, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+}
+
+.caidat-input:disabled,
+.caidat-textarea:disabled {
+  background: var(--color-gray-50, #f9fafb);
+  color: var(--color-text-secondary, #6b7280);
+  cursor: not-allowed;
+}
+
+.caidat-input.disabled {
+  opacity: 0.6;
+}
+
+.caidat-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.caidat-help-text {
+  font-size: 12px;
+  color: var(--color-text-secondary, #6b7280);
+  margin-top: -4px;
+}
+
+/* Status Cards */
+.caidat-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.caidat-status-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  background: var(--color-gray-50, #f9fafb);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.caidat-status-card:hover {
+  background: white;
+  border-color: var(--color-primary-light, #52a383);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+.caidat-status-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 22px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.caidat-status-card:hover .caidat-status-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.caidat-status-icon.verified {
+  background: linear-gradient(135deg, var(--color-success, #10b981) 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.caidat-status-icon.warning {
+  background: linear-gradient(135deg, var(--color-secondary, #D4AF37) 0%, #B68C3A 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.caidat-status-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.caidat-status-label {
+  font-size: 12px;
+  color: var(--color-text-secondary, #6b7280);
+  margin-bottom: 2px;
+}
+
+.caidat-status-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary, #111827);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Actions */
+.caidat-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.caidat-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm, 0.5rem);
+  padding: 0.75rem 1.5rem;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 500;
+  line-height: 1.5;
+  border-radius: var(--radius-md, 0.5rem);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-base, 0.2s);
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: var(--font-family-base);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.caidat-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.caidat-btn.primary {
+  background: linear-gradient(135deg, var(--color-primary, #14532D) 0%, var(--color-primary-dark, #0F766E) 100%);
+  color: white;
+  box-shadow: 
+    0 4px 12px rgba(139, 92, 246, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.caidat-btn.primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-dark, #0F766E) 0%, var(--color-primary, #14532D) 100%);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 24px rgba(139, 92, 246, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.caidat-btn.success {
+  background: linear-gradient(135deg, var(--color-success, #10b981) 0%, #059669 100%);
+  color: white;
+  box-shadow: 
+    0 4px 12px rgba(16, 185, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.caidat-btn.success:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669 0%, var(--color-success, #10b981) 100%);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 24px rgba(16, 185, 129, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.caidat-btn.secondary {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  color: var(--color-text-primary, #111827);
+  border-color: rgba(139, 92, 246, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.caidat-btn.secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1);
+  border-color: var(--color-primary, #14532D);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Messages */
+.caidat-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 16px;
+  animation: caidat-messageSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+@keyframes caidat-messageSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.caidat-message.success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+  color: var(--color-success, #10b981);
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.caidat-message.error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+  color: var(--color-danger, #ef4444);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+}
+
+.caidat-message svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Notifications */
+.caidat-notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.caidat-notification-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  background: var(--color-gray-50, #f9fafb);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.caidat-notification-item:hover {
+  background: white;
+  border-color: var(--color-primary-light, #52a383);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+  transform: translateX(4px);
+}
+
+.caidat-notification-info {
+  flex: 1;
+}
+
+.caidat-notification-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #111827);
+  margin-bottom: 4px;
+}
+
+.caidat-notification-desc {
+  font-size: 13px;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* Toggle Switch */
+.caidat-switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.caidat-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.caidat-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-gray-100, #e5e7eb);
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.caidat-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.caidat-switch input:checked + .caidat-switch-slider {
+  background-color: var(--color-primary, #14532D);
+}
+
+.caidat-switch input:checked + .caidat-switch-slider:before {
+  transform: translateX(24px);
+}
+
+/* Documents */
+.caidat-document-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.caidat-document-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--color-gray-50, #f9fafb);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.caidat-document-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(135deg, var(--color-primary, #14532D), var(--color-primary-dark, #0F766E));
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.caidat-document-item:hover {
+  background: white;
+  border-color: var(--color-primary-light, #52a383);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+  transform: translateX(8px);
+}
+
+.caidat-document-item:hover::before {
+  transform: scaleY(1);
+}
+
+.caidat-document-item > svg {
+  width: 24px;
+  height: 24px;
+  color: var(--color-primary, #14532D);
+  flex-shrink: 0;
+}
+
+.caidat-document-info {
+  flex: 1;
+}
+
+.caidat-document-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #111827);
+  margin-bottom: 4px;
+}
+
+.caidat-document-desc {
+  font-size: 13px;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* Loading */
+.caidat-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  gap: 16px;
+}
+
+.caidat-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-gray-100, #f3f4f6);
+  border-top-color: var(--color-primary, #14532D);
+  border-radius: 50%;
+  animation: caidat-spin 0.8s linear infinite;
+}
+
+@keyframes caidat-spin {
+  to { transform: rotate(360deg); }
+}
+
+.caidat-loading p {
+  font-size: 14px;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .caidat-layout {
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+  }
+
+  .caidat-tabs {
+    padding: 6px;
+  }
+
+  .caidat-tab {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .caidat-container {
+    padding: 16px;
+  }
+
+  .caidat-header-content {
+    padding: 24px;
+    border-radius: 12px;
+  }
+
+  .caidat-title {
+    font-size: 24px;
+  }
+
+  .caidat-title-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .caidat-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .caidat-tabs {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 4px;
+    gap: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .caidat-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .caidat-tab {
+    flex-shrink: 0;
+    min-width: 60px;
+    padding: 12px;
+    justify-content: center;
+  }
+
+  .caidat-tab::before {
+    display: none;
+  }
+
+  .caidat-tab:hover {
+    transform: translateX(0) translateY(-2px);
+  }
+
+  .caidat-tab-label {
+    display: none;
+  }
+
+  .caidat-tab-icon {
+    font-size: 24px;
+  }
+
+  .caidat-main {
+    padding: 24px 16px;
+    border-radius: 12px;
+  }
+
+  .caidat-form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .caidat-status-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .caidat-actions {
+    flex-direction: column;
+  }
+
+  .caidat-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .caidat-notification-item:hover,
+  .caidat-document-item:hover {
+    transform: translateX(0) scale(1.02);
+  }
+}
+
+@media (max-width: 480px) {
+  .caidat-header-content {
+    padding: 20px 16px;
+  }
+
+  .caidat-title {
+    font-size: 20px;
+  }
+
+  .caidat-subtitle {
+    font-size: 13px;
+  }
+
+  .caidat-main {
+    padding: 20px 12px;
+  }
+
+  .caidat-section-title {
+    font-size: 18px;
+  }
+
+  .caidat-status-card {
+    padding: 16px;
+  }
+
+  .caidat-status-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}
+

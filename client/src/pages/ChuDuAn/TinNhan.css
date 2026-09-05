@@ -1,0 +1,58 @@
+/* TinNhan.css - Chat page layout */
+
+.tin-nhan-page {
+  height: calc(100vh - 80px); /* Trừ header height */
+  background: white;
+}
+
+.tin-nhan-container {
+  display: flex;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.tin-nhan-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(20, 83, 45, 0.02) 0%, rgba(15, 118, 110, 0.02) 100%);
+  text-align: center;
+}
+
+.tin-nhan-placeholder .placeholder-icon {
+  width: 64px;
+  height: 64px;
+  color: #d1d5db;
+  margin-bottom: 16px;
+}
+
+.tin-nhan-placeholder h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.tin-nhan-placeholder p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  max-width: 400px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tin-nhan-container {
+    flex-direction: column;
+  }
+
+  .tin-nhan-placeholder {
+    display: none;
+  }
+}
+
+

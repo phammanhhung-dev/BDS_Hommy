@@ -1,0 +1,49 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Scratch / Temp files (browser profiles, one-off scripts)
+scratch/
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Uploads (User data - Privacy)
+server/uploads/kyc/cccd_front/*
+server/uploads/kyc/cccd_back/*
+server/uploads/kyc/selfie/*
+!server/uploads/kyc/cccd_front/.gitkeep
+!server/uploads/kyc/cccd_back/.gitkeep
+!server/uploads/kyc/selfie/.gitkeep
+!server/uploads/kyc/README.md
+
+# AI Models (Large files - Download separately)
+client/public/models/*.bin
+client/public/models/*-shard*
+client/public/tessdata/*.gz
+client/public/tessdata/*.traineddata
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+server/.env
+
+# Environment variables (chỉ ignore file .env thực, KHÔNG ignore .env.production và .env.example)
+.env
+client/.env
+# Không ignore: client/.env.production (cần cho Vercel build), server/.env.example

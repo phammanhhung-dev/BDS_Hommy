@@ -1,0 +1,396 @@
+:root {
+  /* chỉnh lại nếu Header/Footer cao khác */
+  --header-h: 72px;
+  --footer-h: 68px;
+}
+
+/* Block */
+.appointments {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;      /* để Footer luôn nằm dưới cùng */
+  background: #f8fafc;
+}
+
+/* Chừa khoảng tránh đè Header/Footer (nếu fixed) */
+.appointments__content {
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 16px) 20px calc(var(--footer-h) + 24px);
+  box-sizing: border-box;
+}
+
+/* Header row */
+.appointments__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.appointments__title { margin: 0; font-size: 22px; font-weight: 600; color: #0f172a; }
+.appointments__home-link { font-size: 13px; color: #06b6d4; text-decoration: none; white-space: nowrap; }
+.appointments__home-link:hover { text-decoration: underline; }
+
+/* User + states */
+.appointments__user { font-size: 12px; color: #475569; margin-bottom: 10px; }
+.appointments__state,
+.appointments__error,
+.appointments__empty {
+  font-size: 14px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+}
+.appointments__error { color: #dc2626; background: #fff5f5; border-color: #fecaca; }
+.appointments__empty { color: #64748b; }
+
+/* Grid dùng wrap để không tràn */
+.appointments__grid {
+  display: flex;
+  flex-wrap: wrap;        /* wrap theo ý bạn */
+  gap: 14px;
+}
+
+/* Card co giãn theo hàng, không tràn */
+.appointments__card {
+  flex: 1 1 300px;        /* min ~300px, tự wrap khi hẹp */
+  min-width: 280px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 10px -3px rgba(0,0,0,0.06);
+  transition: box-shadow .18s, transform .18s;
+}
+.appointments__card:hover { box-shadow: 0 8px 20px -6px rgba(0,0,0,0.12); transform: translateY(-2px); }
+
+.appointments__card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.appointments__card-id { font-size: 14px; }
+.appointments__card-time { font-size: 11px; color: #64748b; }
+
+/* Info */
+.appointments__info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  font-size: 13px;
+  color: #334155;
+  margin-bottom: 6px;
+}
+.appointments__note {
+  font-size: 12px;
+  color: #475569;
+  margin-top: 4px;
+  background: #f1f5f9;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+/* Actions */
+.appointments__actions { margin-top: 10px; display: flex; gap: 8px; }
+.appointments__btn {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #0f172a;
+  transition: background .18s, border-color .18s;
+}
+.appointments__btn:hover { background: #e2e8f0; border-color: #94a3b8; }
+
+.appointments__approval-status {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.appointments__approval-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fbbf24;
+}
+
+.appointments__approval-status.approved {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.appointments__btn--approve {
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: #fff;
+  border-color: #059669;
+}
+
+.appointments__btn--approve:hover {
+  background: linear-gradient(90deg, #059669, #047857);
+}
+
+.appointments__btn--approve:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== Nút nhắn tin ===== */
+.appointments__btn--chat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.appointments__btn--chat:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  border-color: #1d4ed8;
+}
+
+.appointments__btn--chat svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== Delete button ===== */
+.appointments__btn--delete {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+  border-color: #dc2626;
+}
+
+.appointments__btn--delete:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.appointments__btn--delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== Admin status edit ===== */
+.appointments__status-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.appointments__status-edit select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 12px;
+  background: #fff;
+}
+
+.appointments__btn-mini {
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 6px;
+  background: #10b981;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.appointments__btn-mini:hover {
+  background: #059669;
+}
+
+/* ===== Chat Panel ===== */
+.appointments--chat-open {
+  display: flex;
+  flex-direction: row;
+}
+
+.appointments--chat-open .appointments__content {
+  flex: 1;
+  max-width: calc(100% - 420px);
+}
+
+.appointments__chat-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 420px;
+  max-width: 100vw;
+  background: #fff;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.appointments__chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #fff;
+}
+
+.appointments__chat-back,
+.appointments__chat-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.appointments__chat-back:hover,
+.appointments__chat-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.appointments__chat-back svg,
+.appointments__chat-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.appointments__chat-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.appointments__chat-info h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.appointments__chat-status {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* Chat Actions Container */
+.appointments__chat-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Nút Video Call trong Chat Panel */
+.appointments__chat-video-call {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.appointments__chat-video-call:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.appointments__chat-video-call:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.appointments__chat-video-call svg {
+  width: 20px;
+  height: 20px;
+}
+
+.appointments__chat-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.appointments__chat-loading,
+.appointments__chat-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 14px;
+  color: #64748b;
+  padding: 20px;
+  text-align: center;
+}
+
+.appointments__chat-error {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.appointments__chat-footer {
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .appointments__content {
+    padding: calc(var(--header-h) + 12px) 14px calc(var(--footer-h) + 28px);
+  }
+  .appointments__info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .appointments--chat-open .appointments__content {
+    max-width: 100%;
+    display: none;
+  }
+
+  .appointments__chat-panel {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+  }
+
+  .appointments__chat-back {
+    display: flex;
+  }
+
+  .appointments__chat-close {
+    display: none;
+  }
+}
+
+@media (min-width: 901px) {
+  .appointments__chat-back {
+    display: none;
+  }
+}

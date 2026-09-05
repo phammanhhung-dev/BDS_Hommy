@@ -1,0 +1,250 @@
+/* MessageList.css - Emerald Noir Theme */
+
+.message-list {
+  flex: 1;
+  overflow-y: auto;
+  background: linear-gradient(135deg, rgba(20, 83, 45, 0.02) 0%, rgba(15, 118, 110, 0.02) 100%);
+  padding: 20px;
+}
+
+.message-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.message-list-loading,
+.message-list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.message-list-empty p {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.message-list-empty small {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* Message Bubble */
+.message-bubble {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  width: fit-content;
+  animation: message-slide-in 0.3s ease-out;
+  margin-bottom: 4px;
+}
+
+@keyframes message-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tin nhắn của mình - LUÔN BÊN PHẢI */
+.message-own {
+  align-self: flex-end;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Tin nhắn của người khác - LUÔN BÊN TRÁI */
+.message-other {
+  align-self: flex-start;
+  align-items: flex-start;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.message-sender {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.message-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-sender-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #14532D;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.message-text {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.message-own .message-text {
+  background: linear-gradient(135deg, #14532D 0%, #0F766E 100%);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.message-other .message-text {
+  background: white;
+  color: #1f2937;
+  border: 1px solid rgba(20, 83, 45, 0.1);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.message-time {
+  font-size: 11px;
+  color: #9ca3af;
+  padding: 0 4px;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(20, 83, 45, 0.1);
+}
+
+.typing-indicator span {
+  width: 8px;
+  height: 8px;
+  background: #9ca3af;
+  border-radius: 50%;
+  animation: typing-bounce 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Scrollbar */
+.message-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-list::-webkit-scrollbar-track {
+  background: rgba(20, 83, 45, 0.05);
+}
+
+.message-list::-webkit-scrollbar-thumb {
+  background: rgba(20, 83, 45, 0.2);
+  border-radius: 3px;
+}
+
+.message-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 83, 45, 0.3);
+}
+
+/* Missed Call Message */
+.message-missed-call {
+  align-self: center;
+  max-width: 90%;
+  margin: 12px auto;
+}
+
+.message-missed-call-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
+}
+
+.message-missed-call-icon {
+  width: 24px;
+  height: 24px;
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.message-missed-call-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.message-missed-call-text {
+  margin: 0;
+  font-size: 14px;
+  color: #1f2937;
+  line-height: 1.4;
+}
+
+.message-missed-call-text strong {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.message-missed-call .message-time {
+  font-size: 11px;
+  color: #9ca3af;
+  padding: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .message-bubble {
+    max-width: 85%;
+  }
+
+  .message-list {
+    padding: 16px 12px;
+  }
+
+  .message-missed-call {
+    max-width: 95%;
+  }
+}
+
+

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Chat Test - Socket.IO</title>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #14532D;
+      margin-bottom: 24px;
+    }
+    .section {
+      margin-bottom: 24px;
+      padding: 16px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border-left: 4px solid #14532D;
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #14532D;
+    }
+    input, button {
+      padding: 10px 16px;
+      margin: 4px;
+      border-radius: 6px;
+      border: 2px solid #e5e7eb;
+      font-size: 14px;
+    }
+    button {
+      background: linear-gradient(135deg, #14532D 0%, #0F766E 100%);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(20, 83, 45, 0.3);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    .status.connected {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .status.disconnected {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    #log {
+      background: #1f2937;
+      color: #10b981;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .log-success { color: #10b981; }
+    .log-error { color: #ef4444; }
+    .log-info { color: #60a5fa; }
+    .log-warning { color: #fbbf24; }
+    .input-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .input-group input {
+      flex: 1;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 2px solid #e5e7eb;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Quick Chat Test - Socket.IO</h1>
+
+    <!-- Connection Section -->
+    <div class="section">
+      <h3>1. Kết nối Socket.IO</h3>
+      <div class="input-group">
+        <input type="text" id="token" placeholder="Paste JWT token here..." />
+        <button onclick="connect()">Kết nối</button>
+        <button onclick="disconnect()">Ngắt kết nối</button>
+      </div>
+      <p>
+        Status: 
+        <span class="status disconnected" id="status">Disconnected</span>
+        <span id="socketId"></span>
+      </p>
+    </div>
+
+    <!-- Join Conversation -->
+    <div class="section">
+      <h3>2. Tham gia Cuộc hội thoại</h3>
+      <div class="input-group">
+        <input type="number" id="conversationId" placeholder="Conversation ID" value="1" />
+        <button onclick="joinConversation()">Join</button>
+        <button onclick="leaveConversation()">Leave</button>
+      </div>
+    </div>
+
+    <!-- Send Message -->
+    <div class="section">
+      <h3>3. Gửi Tin nhắn</h3>
+      <textarea id="messageContent" rows="3" placeholder="Nhập tin nhắn..."></textarea>
+      <div class="input-group">
+        <button onclick="sendMessage()">📤 Gửi tin nhắn</button>
+        <button onclick="startTyping()">⌨️ Start Typing</button>
+        <button onclick="stopTyping()">⏸️ Stop Typing</button>
+      </div>
+    </div>
+
+    <!-- Mark as Read -->
+    <div class="section">
+      <h3>4. Đánh dấu đã đọc</h3>
+      <button onclick="markAsRead()">✅ Mark as Read</button>
+    </div>
+
+    <!-- Log Console -->
+    <div class="section">
+      <h3>📋 Log Console</h3>
+      <div id="log">Waiting for actions...</div>
+      <button onclick="clearLog()" style="margin-top: 12px;">🗑️ Clear Log</button>
+    </div>
+  </div>
+
+  <script>
+    let socket = null;
+    let currentConversationId = null;
+
+    function log(message, type = 'info') {
+      const logDiv = document.getElementById('log');
+      const timestamp = new Date().toLocaleTimeString();
+      const className = `log-${type}`;
+      logDiv.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function clearLog() {
+      document.getElementById('log').innerHTML = 'Log cleared.\n';
+    }
+
+    function updateStatus(connected, socketId = '') {
+      const statusEl = document.getElementById('status');
+      const socketIdEl = document.getElementById('socketId');
+      
+      if (connected) {
+        statusEl.textContent = 'Connected';
+        statusEl.className = 'status connected';
+        socketIdEl.textContent = `(Socket ID: ${socketId})`;
+      } else {
+        statusEl.textContent = 'Disconnected';
+        statusEl.className = 'status disconnected';
+        socketIdEl.textContent = '';
+      }
+    }
+
+    function connect() {
+      const token = document.getElementById('token').value.trim();
+      
+      if (!token) {
+        alert('Vui lòng nhập JWT token!');
+        return;
+      }
+
+      log('🔌 Connecting to Socket.IO...', 'info');
+
+      socket = io('http://localhost:5000', {
+        auth: { token },
+        transports: ['websocket', 'polling']
+      });
+
+      // Event listeners
+      socket.on('connect', () => {
+        log(`✅ Connected successfully! Socket ID: ${socket.id}`, 'success');
+        updateStatus(true, socket.id);
+      });
+
+      socket.on('disconnect', (reason) => {
+        log(`🔴 Disconnected: ${reason}`, 'warning');
+        updateStatus(false);
+      });
+
+      socket.on('connect_error', (err) => {
+        log(`❌ Connection error: ${err.message}`, 'error');
+        updateStatus(false);
+      });
+
+      socket.on('error', (err) => {
+        log(`❌ Socket error: ${JSON.stringify(err)}`, 'error');
+      });
+
+      // Chat events
+      socket.on('joined_conversation', (data) => {
+        log(`✅ Joined conversation: ${JSON.stringify(data)}`, 'success');
+      });
+
+      socket.on('new_message', (message) => {
+        log(`📩 New message: ${message.NguoiGuiTen}: ${message.NoiDung}`, 'info');
+      });
+
+      socket.on('user_typing', (data) => {
+        const status = data.typing ? 'đang gõ...' : 'dừng gõ';
+        log(`⌨️ User ${data.nguoiDungID} ${status}`, 'info');
+      });
+
+      socket.on('user_online', (data) => {
+        log(`🟢 User ${data.nguoiDungID} online`, 'success');
+      });
+
+      socket.on('user_offline', (data) => {
+        log(`🔴 User ${data.nguoiDungID} offline`, 'warning');
+      });
+
+      socket.on('message_read', (data) => {
+        log(`✅ User ${data.nguoiDungID} đã đọc tin nhắn`, 'success');
+      });
+    }
+
+    function disconnect() {
+      if (socket) {
+        socket.disconnect();
+        log('🔌 Disconnected manually', 'warning');
+        updateStatus(false);
+      }
+    }
+
+    function joinConversation() {
+      if (!socket || !socket.connected) {
+        alert('Vui lòng kết nối Socket.IO trước!');
+        return;
+      }
+
+      const conversationId = parseInt(document.getElementById('conversationId').value);
+      currentConversationId = conversationId;
+
+      log(`🚪 Joining conversation ${conversationId}...`, 'info');
+      socket.emit('join_conversation', { cuocHoiThoaiID: conversationId });
+    }
+
+    function leaveConversation() {
+      if (!socket || !currentConversationId) return;
+
+      log(`🚪 Leaving conversation ${currentConversationId}...`, 'info');
+      socket.emit('leave_conversation', { cuocHoiThoaiID: currentConversationId });
+      currentConversationId = null;
+    }
+
+    function sendMessage() {
+      if (!socket || !currentConversationId) {
+        alert('Vui lòng join conversation trước!');
+        return;
+      }
+
+      const content = document.getElementById('messageContent').value.trim();
+      if (!content) {
+        alert('Vui lòng nhập nội dung tin nhắn!');
+        return;
+      }
+
+      log(`📤 Sending message: "${content}"`, 'info');
+      socket.emit('send_message', {
+        cuocHoiThoaiID: currentConversationId,
+        noiDung: content
+      });
+
+      document.getElementById('messageContent').value = '';
+    }
+
+    function startTyping() {
+      if (!socket || !currentConversationId) return;
+
+      log('⌨️ Typing started...', 'info');
+      socket.emit('typing_start', { cuocHoiThoaiID: currentConversationId });
+    }
+
+    function stopTyping() {
+      if (!socket || !currentConversationId) return;
+
+      log('⏸️ Typing stopped', 'info');
+      socket.emit('typing_stop', { cuocHoiThoaiID: currentConversationId });
+    }
+
+    function markAsRead() {
+      if (!socket || !currentConversationId) return;
+
+      log('✅ Marking as read...', 'info');
+      socket.emit('mark_as_read', { cuocHoiThoaiID: currentConversationId });
+    }
+
+    // Auto-fill token from localStorage if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedToken = localStorage.getItem('token');
+      if (savedToken) {
+        document.getElementById('token').value = savedToken;
+        log('📝 Token loaded from localStorage', 'info');
+      }
+    });
+  </script>
+</body>
+</html>
+
+

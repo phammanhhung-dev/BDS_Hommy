@@ -1,0 +1,150 @@
+/**
+ * Styles cho PushNotificationToggle component
+ */
+
+.push-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.push-toggle__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.push-toggle__button:hover:not(:disabled) {
+  border-color: var(--color-primary, #10b981);
+  color: var(--color-primary, #10b981);
+  background: var(--color-primary-bg, rgba(16, 185, 129, 0.08));
+}
+
+.push-toggle__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.push-toggle__button--loading {
+  pointer-events: none;
+}
+
+/* Icon styles */
+.push-toggle__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.push-toggle__icon--active {
+  color: var(--color-success, #10b981);
+  animation: bell-ring 0.5s ease-in-out;
+}
+
+.push-toggle__icon--denied {
+  color: var(--color-danger, #ef4444);
+}
+
+/* Spinner */
+.push-toggle__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-border, #e5e7eb);
+  border-top-color: var(--color-primary, #10b981);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Label */
+.push-toggle__label {
+  white-space: nowrap;
+}
+
+/* Hint text */
+.push-toggle__hint {
+  font-size: 12px;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+.push-toggle__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Test button */
+.push-toggle__test {
+  padding: 6px 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.push-toggle__test:hover:not(:disabled) {
+  border-color: var(--color-info, #3b82f6);
+  color: var(--color-info, #3b82f6);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+/* Error message */
+.push-toggle__error {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--color-danger, #ef4444);
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 6px;
+}
+
+/* Active state */
+.push-toggle--active .push-toggle__button {
+  border-color: var(--color-success, #10b981);
+  color: var(--color-success, #10b981);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+/* Unsupported state */
+.push-toggle--unsupported,
+.push-toggle--denied {
+  padding: 8px 16px;
+  background: var(--color-gray-100, #f3f4f6);
+  border-radius: 8px;
+  color: var(--color-text-tertiary, #9ca3af);
+  font-size: 14px;
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-15deg); }
+  75% { transform: rotate(10deg); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .push-toggle__button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .push-toggle__label {
+    display: none;
+  }
+}

@@ -1,0 +1,164 @@
+/**
+ * MetricCard styles
+ * Glass morphism với hover effects
+ */
+
+.nvbh-metric-card {
+  background: var(--nvbh-surface);
+  border-radius: var(--nvbh-radius-xl);
+  border: 1px solid var(--nvbh-accent-lighter);
+  padding: var(--nvbh-spacing-lg);
+  box-shadow: var(--nvbh-shadow-sm);
+  transition: all var(--nvbh-transition-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--nvbh-spacing-md);
+}
+
+.nvbh-metric-card:hover {
+  border-color: var(--nvbh-accent-light);
+  box-shadow: var(--nvbh-shadow-md);
+  transform: translateY(-2px);
+}
+
+.nvbh-metric-card--interactive {
+  cursor: pointer;
+}
+
+.nvbh-metric-card--interactive:active {
+  transform: translateY(0);
+}
+
+/* Header */
+.nvbh-metric-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-sm);
+}
+
+.nvbh-metric-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--nvbh-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nvbh-text-white);
+  flex-shrink: 0;
+}
+
+.nvbh-metric-card__icon--primary {
+  background: var(--nvbh-gradient-primary);
+}
+
+.nvbh-metric-card__icon--success {
+  background: var(--nvbh-success);
+}
+
+.nvbh-metric-card__icon--warning {
+  background: var(--nvbh-warning);
+}
+
+.nvbh-metric-card__icon--danger {
+  background: var(--nvbh-danger);
+}
+
+.nvbh-metric-card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.nvbh-metric-card__label {
+  font-size: var(--nvbh-font-size-sm);
+  font-weight: 500;
+  color: var(--nvbh-text-secondary);
+}
+
+/* Body */
+.nvbh-metric-card__body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--nvbh-spacing-md);
+}
+
+.nvbh-metric-card__value {
+  font-size: var(--nvbh-font-size-3xl);
+  font-weight: 700;
+  color: var(--nvbh-text-primary);
+  line-height: 1;
+}
+
+.nvbh-metric-card__change {
+  font-size: var(--nvbh-font-size-sm);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--nvbh-radius-sm);
+  white-space: nowrap;
+}
+
+.nvbh-metric-card__change--positive {
+  background: var(--nvbh-success-light);
+  color: var(--nvbh-success-dark);
+}
+
+.nvbh-metric-card__change--negative {
+  background: var(--nvbh-danger-light);
+  color: var(--nvbh-danger-dark);
+}
+
+.nvbh-metric-card__change--neutral {
+  background: var(--nvbh-accent-lighter);
+  color: var(--nvbh-accent-dark);
+}
+
+/* Top border accent theo loại thẻ, giống Figma */
+.nvbh-metric-card--primary {
+  border-top: 4px solid var(--nvbh-primary);
+}
+
+.nvbh-metric-card--success {
+  border-top: 4px solid var(--nvbh-success);
+}
+
+.nvbh-metric-card--warning {
+  border-top: 4px solid var(--nvbh-warning);
+}
+
+.nvbh-metric-card--danger {
+  border-top: 4px solid var(--nvbh-danger);
+}
+
+/* Footer action "Xem chi tiết" */
+.nvbh-metric-card__footer {
+  margin-top: var(--nvbh-spacing-md);
+}
+
+.nvbh-metric-card__action {
+  font-size: var(--nvbh-font-size-sm);
+  font-weight: 500;
+  color: var(--nvbh-primary);
+}
+
+.nvbh-metric-card--warning .nvbh-metric-card__action {
+  color: var(--nvbh-warning-dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nvbh-metric-card {
+    padding: var(--nvbh-spacing-md);
+  }
+
+  .nvbh-metric-card__value {
+    font-size: var(--nvbh-font-size-2xl);
+  }
+}
+
+
+
+
+
+
+
+

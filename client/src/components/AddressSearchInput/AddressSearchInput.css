@@ -1,0 +1,263 @@
+/* AddressSearchInput Component - Light Glass Morphism */
+/* BEM Naming Convention */
+
+.address-search-input {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 
+    0 8px 32px rgba(139, 92, 246, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.address-search-input__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.address-search-input__label svg {
+  width: 20px;
+  height: 20px;
+  color: #14532D;
+}
+
+.address-search-input__input-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.address-search-input__input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.2s ease;
+  color: #1f2937;
+}
+
+.address-search-input__input::placeholder {
+  color: #9ca3af;
+}
+
+.address-search-input__input:focus {
+  outline: none;
+  border-color: #14532D;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.address-search-input__input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(243, 244, 246, 0.8);
+}
+
+.address-search-input__button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #14532D 0%, #0F766E 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.address-search-input__button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.address-search-input__button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.address-search-input__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.address-search-input__button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Spinner Animation */
+.address-search-input__spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: address-search-input-spin 0.6s linear infinite;
+}
+
+@keyframes address-search-input-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Result Display */
+.address-search-input__result {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  animation: address-search-input-slide-in 0.3s ease;
+}
+
+@keyframes address-search-input-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.address-search-input__result--success {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.address-search-input__result--error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.address-search-input__result-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.address-search-input__result--success .address-search-input__result-icon {
+  color: #10b981;
+}
+
+.address-search-input__result--error .address-search-input__result-icon {
+  color: #ef4444;
+}
+
+.address-search-input__result-content {
+  flex: 1;
+}
+
+.address-search-input__result-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+
+.address-search-input__result-address {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.address-search-input__result-coords {
+  font-size: 12px;
+  color: #6b7280;
+  font-family: 'Courier New', monospace;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.address-search-input__result-coords strong {
+  margin: 0 8px 0 0;
+  color: #374151;
+  font-weight: 600;
+}
+
+.address-search-input__result-error {
+  font-size: 13px;
+  color: #dc2626;
+  line-height: 1.5;
+}
+
+/* Hint Text */
+.address-search-input__hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 8px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .address-search-input {
+    padding: 20px;
+  }
+
+  .address-search-input__input-group {
+    flex-direction: column;
+  }
+
+  .address-search-input__button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .address-search-input__result-coords {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  .address-search-input__result-coords strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .address-search-input {
+    padding: 16px;
+  }
+
+  .address-search-input__label {
+    font-size: 13px;
+  }
+
+  .address-search-input__input {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+
+  .address-search-input__button {
+    font-size: 13px;
+    padding: 10px 20px;
+  }
+
+  .address-search-input__hint {
+    font-size: 11px;
+  }
+}
+

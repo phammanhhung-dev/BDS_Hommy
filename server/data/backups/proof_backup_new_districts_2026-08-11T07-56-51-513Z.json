@@ -1,0 +1,47 @@
+[
+  {
+    "DistrictID": 1,
+    "ProvinceID": 50,
+    "DistrictCode": "HCM-Q1",
+    "DistrictName": "Quận 1",
+    "DistrictType": "Quận",
+    "CreatedAt": "2026-08-08T16:36:24.000Z",
+    "UpdatedAt": "2026-08-08T16:36:24.000Z"
+  },
+  {
+    "DistrictID": 1132,
+    "ProvinceID": 6,
+    "DistrictCode": "080",
+    "DistrictName": "Thành phố Lào Cai",
+    "DistrictType": "thành phố",
+    "CreatedAt": "2026-08-09T03:15:09.000Z",
+    "UpdatedAt": "2026-08-09T03:15:09.000Z"
+  },
+  {
+    "DistrictID": 1133,
+    "ProvinceID": 6,
+    "DistrictCode": "082",
+    "DistrictName": "Huyện Bát Xát",
+    "DistrictType": "huyện",
+    "CreatedAt": "2026-08-09T03:15:09.000Z",
+    "UpdatedAt": "2026-08-09T03:15:09.000Z"
+  },
+  {
+    "DistrictID": 1134,
+    "ProvinceID": 6,
+    "DistrictCode": "083",
+    "DistrictName": "Huyện Mường Khương",
+    "DistrictType": "huyện",
+    "CreatedAt": "2026-08-09T03:15:09.000Z",
+    "UpdatedAt": "2026-08-09T03:15:09.000Z"
+  },
+  {
+    "DistrictID": 1135,
+    "ProvinceID": 6,
+    "DistrictCode": "084",
+    "DistrictName": "Huyện Si Ma Cai",
+    "DistrictType": "huyện",
+    "CreatedAt": "2026-08-09T03:15:09.000Z",
+    "UpdatedAt": "2026-08-09T03:15:09.000Z"
+  }
+]

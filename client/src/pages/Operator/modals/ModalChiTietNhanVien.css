@@ -1,0 +1,179 @@
+/* Modal Chi tiết Nhân viên */
+
+.modal-chi-tiet-nv__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-chi-tiet-nv__loading,
+.modal-chi-tiet-nv__error {
+  padding: 3rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.modal-chi-tiet-nv__error {
+  color: var(--operator-danger);
+}
+
+/* ===== Sections ===== */
+.modal-chi-tiet-nv__section {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.modal-chi-tiet-nv__section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--operator-glass-border);
+}
+
+/* ===== Info Grid ===== */
+.modal-chi-tiet-nv__info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.modal-chi-tiet-nv__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modal-chi-tiet-nv__info-item label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--operator-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-chi-tiet-nv__info-item span {
+  font-size: 0.95rem;
+  color: var(--operator-text-primary);
+  word-break: break-word;
+}
+
+/* ===== Stats Grid ===== */
+.modal-chi-tiet-nv__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.modal-chi-tiet-nv__stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.modal-chi-tiet-nv__stat-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.modal-chi-tiet-nv__stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--operator-primary);
+  margin-bottom: 0.25rem;
+}
+
+.modal-chi-tiet-nv__stat-label {
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+}
+
+/* ===== History List ===== */
+.modal-chi-tiet-nv__history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.modal-chi-tiet-nv__history-item {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--operator-primary);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.modal-chi-tiet-nv__history-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: var(--operator-success);
+}
+
+.modal-chi-tiet-nv__history-time {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+}
+
+.modal-chi-tiet-nv__history-action {
+  font-weight: 600;
+  color: var(--operator-text-primary);
+}
+
+.modal-chi-tiet-nv__history-detail {
+  font-size: 0.9rem;
+  color: var(--operator-text-secondary);
+}
+
+/* ===== Actions ===== */
+.modal-chi-tiet-nv__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--operator-glass-border);
+}
+
+/* Help text for form fields */
+.modal-chinh-sua-nv__help-text {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+  font-style: italic;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .modal-chi-tiet-nv__stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-chi-tiet-nv__info-grid,
+  .modal-chi-tiet-nv__stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-chi-tiet-nv__actions {
+    flex-direction: column;
+  }
+
+  .modal-chi-tiet-nv__actions .operator-btn {
+    width: 100%;
+  }
+}
+
+
+
+
+
+

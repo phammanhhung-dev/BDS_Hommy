@@ -1,0 +1,242 @@
+/* UC-OPER-02: Báo cáo Hoa hồng - BEM Naming */
+
+.bao-cao-hoa-hong {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* ===== Header ===== */
+.bao-cao-hoa-hong__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.bao-cao-hoa-hong__title-section {
+  flex: 1;
+}
+
+.bao-cao-hoa-hong__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--operator-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.bao-cao-hoa-hong__subtitle {
+  font-size: 0.95rem;
+  color: var(--operator-text-secondary);
+  margin: 0;
+}
+
+/* ===== Stats Cards ===== */
+.bao-cao-hoa-hong__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.bao-cao-hoa-hong__stat-card {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.bao-cao-hoa-hong__stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--operator-shadow-lg);
+}
+
+.bao-cao-hoa-hong__stat-card--total {
+  border-color: var(--operator-primary);
+}
+
+.bao-cao-hoa-hong__stat-card--warning {
+  border-color: var(--operator-warning);
+}
+
+.bao-cao-hoa-hong__stat-card--success {
+  border-color: var(--operator-success);
+}
+
+.bao-cao-hoa-hong__stat-card--danger {
+  border-color: var(--operator-danger);
+}
+
+.bao-cao-hoa-hong__stat-card--secondary {
+  border-color: var(--operator-text-secondary);
+}
+
+.bao-cao-hoa-hong__stat-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.bao-cao-hoa-hong__stat-content {
+  flex: 1;
+}
+
+.bao-cao-hoa-hong__stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--operator-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.bao-cao-hoa-hong__stat-card--total .bao-cao-hoa-hong__stat-value {
+  color: var(--operator-primary);
+}
+
+.bao-cao-hoa-hong__stat-card--warning .bao-cao-hoa-hong__stat-value {
+  color: var(--operator-warning);
+}
+
+.bao-cao-hoa-hong__stat-card--success .bao-cao-hoa-hong__stat-value {
+  color: var(--operator-success);
+}
+
+.bao-cao-hoa-hong__stat-card--danger .bao-cao-hoa-hong__stat-value {
+  color: var(--operator-danger);
+}
+
+.bao-cao-hoa-hong__stat-label {
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Charts ===== */
+.bao-cao-hoa-hong__charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.bao-cao-hoa-hong__chart-card {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--operator-shadow-lg);
+}
+
+.bao-cao-hoa-hong__chart-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  margin: 0 0 1rem 0;
+}
+
+/* ===== Content ===== */
+.bao-cao-hoa-hong__content {
+  background: var(--operator-glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--operator-shadow-lg);
+}
+
+.bao-cao-hoa-hong__error {
+  text-align: center;
+  padding: 3rem;
+  color: var(--operator-danger);
+  font-size: 1.1rem;
+}
+
+/* ===== Table Cell Custom Renders ===== */
+.bao-cao-hoa-hong__ten-du-an {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bao-cao-hoa-hong__ten {
+  font-weight: 600;
+  color: var(--operator-text-primary);
+}
+
+.bao-cao-hoa-hong__dia-chi {
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bao-cao-hoa-hong__hoa-hong {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.bao-cao-hoa-hong__hoa-hong-value {
+  font-weight: 600;
+  color: var(--operator-primary);
+  font-size: 0.95rem;
+}
+
+.bao-cao-hoa-hong__hoa-hong-thang {
+  font-size: 0.8rem;
+  color: var(--operator-text-secondary);
+}
+
+.bao-cao-hoa-hong__hoa-hong-empty,
+.bao-cao-hoa-hong__trang-thai-empty {
+  color: var(--operator-text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .bao-cao-hoa-hong__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .bao-cao-hoa-hong__charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .bao-cao-hoa-hong {
+    padding: 1rem;
+  }
+  
+  .bao-cao-hoa-hong__title {
+    font-size: 1.5rem;
+  }
+  
+  .bao-cao-hoa-hong__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .bao-cao-hoa-hong__charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+

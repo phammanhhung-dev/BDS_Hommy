@@ -1,0 +1,74 @@
+[
+  {
+    "old_ward_code": "HCM-Q1-PBN",
+    "old_ward_name": "Phường Bến Nghé",
+    "old_district_code": "HCM-Q1",
+    "old_district_name": "Quận 1",
+    "new_ward_code": "790111",
+    "new_ward_name": "Phường Bến Nghé",
+    "new_district_code": "7901",
+    "new_district_name": "Quận 1",
+    "province_code": "79",
+    "province_name": "Thành phố Hồ Chí Minh"
+  },
+  {
+    "old_ward_code": "HCM-Q1-PBT",
+    "old_ward_name": "Phường Bến Thành",
+    "old_district_code": "HCM-Q1",
+    "old_district_name": "Quận 1",
+    "new_ward_code": "790101",
+    "new_ward_name": "Phường Bến Thành",
+    "new_district_code": "7901",
+    "new_district_name": "Quận 1",
+    "province_code": "79",
+    "province_name": "Thành phố Hồ Chí Minh"
+  },
+  {
+    "old_ward_code": "HCM-Q1-PNCT",
+    "old_ward_name": "Phường Nguyễn Cư Trinh",
+    "old_district_code": "HCM-Q1",
+    "old_district_name": "Quận 1",
+    "new_ward_code": "790103",
+    "new_ward_name": "Phường Nguyễn Cư Trinh",
+    "new_district_code": "7901",
+    "new_district_name": "Quận 1",
+    "province_code": "79",
+    "province_name": "Thành phố Hồ Chí Minh"
+  },
+  {
+    "old_ward_code": "HCM-Q3-PVTS",
+    "old_ward_name": "Phường Võ Thị Sáu",
+    "old_district_code": "HCM-Q3",
+    "old_district_name": "Quận 3",
+    "new_ward_code": "790301",
+    "new_ward_name": "Phường Võ Thị Sáu",
+    "new_district_code": "7903",
+    "new_district_name": "Quận 3",
+    "province_code": "79",
+    "province_name": "Thành phố Hồ Chí Minh"
+  },
+  {
+    "old_ward_code": "HCM-Q4-P1",
+    "old_ward_name": "Phường 1",
+    "old_district_code": "HCM-Q4",
+    "old_district_name": "Quận 4",
+    "new_ward_code": "790401",
+    "new_ward_name": "Phường 1",
+    "new_district_code": "7904",
+    "new_district_name": "Quận 4",
+    "province_code": "79",
+    "province_name": "Thành phố Hồ Chí Minh"
+  },
+  {
+    "old_ward_code": "HCM-BT-P5",
+    "old_ward_name": "Phường 5",
+    "old_district_code": "HCM-BT",
+    "old_district_name": "Quận Bình Thạnh",
+    "new_ward_code": "790501",
+    "new_ward_name": "Phường 5",
+    "new_district_code": "7905",
+    "new_district_name": "Quận Bình Thạnh",
+    "province_code": "79",
+    "province_name": "Thành phố Hồ Chí Minh"
+  }
+]

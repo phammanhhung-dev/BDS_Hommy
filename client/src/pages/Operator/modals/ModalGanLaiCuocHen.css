@@ -1,0 +1,242 @@
+/* Modal Gán lại Cuộc hẹn */
+
+.modal-gan-lai__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== Info Section ===== */
+.modal-gan-lai__info {
+  padding: 1rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid var(--operator-primary);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-gan-lai__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-gan-lai__info-row label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--operator-text-secondary);
+}
+
+.modal-gan-lai__info-row span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  text-align: right;
+}
+
+/* ===== Form ===== */
+.modal-gan-lai__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-gan-lai__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-gan-lai__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+}
+
+.modal-gan-lai__required {
+  color: var(--operator-danger);
+}
+
+.modal-gan-lai__loading {
+  padding: 1rem;
+  text-align: center;
+  color: var(--operator-text-secondary);
+  font-style: italic;
+}
+
+/* Select */
+.modal-gan-lai__select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-gan-lai__select:focus {
+  outline: none;
+  border-color: var(--operator-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-gan-lai__select.has-error {
+  border-color: var(--operator-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.modal-gan-lai__select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-gan-lai__select option {
+  background: #1a1a2e;
+  color: var(--operator-text-primary);
+}
+
+/* Textarea */
+.modal-gan-lai__textarea {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+  color: var(--operator-text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+.modal-gan-lai__textarea:focus {
+  outline: none;
+  border-color: var(--operator-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-gan-lai__textarea.has-error {
+  border-color: var(--operator-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.modal-gan-lai__textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-gan-lai__textarea-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--operator-text-secondary);
+}
+
+.modal-gan-lai__error {
+  color: var(--operator-danger) !important;
+  font-size: 0.85rem;
+}
+
+.modal-gan-lai__hint {
+  color: var(--operator-warning);
+}
+
+/* ===== Suggestions ===== */
+.modal-gan-lai__suggestions {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 8px;
+}
+
+.modal-gan-lai__suggestions-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--operator-text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.modal-gan-lai__suggestions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.modal-gan-lai__suggestion-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--operator-glass-border);
+  border-radius: 6px;
+  color: var(--operator-text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-gan-lai__suggestion-btn:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: var(--operator-primary);
+  transform: translateY(-2px);
+}
+
+.modal-gan-lai__suggestion-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.modal-gan-lai__suggestion-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Actions ===== */
+.modal-gan-lai__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--operator-glass-border);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .modal-gan-lai__info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-gan-lai__info-row span {
+    text-align: left;
+  }
+
+  .modal-gan-lai__actions {
+    flex-direction: column;
+  }
+
+  .modal-gan-lai__actions .operator-btn {
+    width: 100%;
+  }
+
+  .modal-gan-lai__suggestions-list {
+    flex-direction: column;
+  }
+
+  .modal-gan-lai__suggestion-btn {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+
+
+
+
+

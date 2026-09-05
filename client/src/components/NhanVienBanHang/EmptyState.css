@@ -1,0 +1,110 @@
+/**
+ * EmptyState Component Styles
+ * BEM naming convention
+ */
+
+.nvbh-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--nvbh-spacing-2xl);
+  text-align: center;
+  min-height: 400px;
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-xl);
+}
+
+.nvbh-empty-state__icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--nvbh-spacing-lg);
+  color: var(--nvbh-accent);
+  background: var(--nvbh-bg-secondary);
+  border-radius: var(--nvbh-radius-full);
+}
+
+.nvbh-empty-state__icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.nvbh-empty-state__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--nvbh-text-primary);
+  margin: 0 0 var(--nvbh-spacing-sm) 0;
+}
+
+.nvbh-empty-state__description {
+  font-size: 0.9375rem;
+  color: var(--nvbh-text-secondary);
+  margin: 0 0 var(--nvbh-spacing-lg) 0;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.nvbh-empty-state__action {
+  background: var(--nvbh-gradient-primary);
+  color: var(--nvbh-text-white);
+  border: none;
+  padding: var(--nvbh-spacing-sm) var(--nvbh-spacing-lg);
+  border-radius: var(--nvbh-radius-md);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nvbh-transition-base);
+  box-shadow: var(--nvbh-shadow-sm);
+}
+
+.nvbh-empty-state__action:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--nvbh-shadow-md);
+}
+
+.nvbh-empty-state__action:active {
+  transform: translateY(0);
+}
+
+.nvbh-empty-state__action:focus {
+  outline: 2px solid var(--nvbh-primary);
+  outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nvbh-empty-state {
+    padding: var(--nvbh-spacing-xl);
+    min-height: 300px;
+  }
+  
+  .nvbh-empty-state__icon {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .nvbh-empty-state__icon svg {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .nvbh-empty-state__title {
+    font-size: 1.125rem;
+  }
+  
+  .nvbh-empty-state__description {
+    font-size: 0.875rem;
+  }
+}
+
+
+
+
+
+
+

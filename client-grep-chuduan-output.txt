@@ -1,0 +1,123 @@
+Found 100 match(es) (limited by max_results) for pattern 'ChuDuAn' in C:\Users\phamm\Desktop\realestate\Hommy-Website\client:
+-- 8 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\QuanLyTinDang.jsx
+  3|import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
+  4|import { TinDangService, DuAnService } from '../../services/ChuDuAnService';
+  5|import ModalPreviewPhong from '../../components/ChuDuAn/ModalPreviewPhong';
+  7|import '../../styles/ChuDuAnDesignSystem.css';
+258|      <ChuDuAnLayout>
+263|      </ChuDuAnLayout>
+268|    <ChuDuAnLayout>
+591|    </ChuDuAnLayout>
+-- 8 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\TaoTinDang.jsx
+   3|import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
+   4|import { TinDangService, DuAnService, LocationService, KhuVucService } from '../../services/ChuDuAnService';
+   5|import ModalTaoNhanhDuAn from '../../components/ChuDuAn/ModalTaoNhanhDuAn';
+   6|import ModalChinhSuaToaDo from '../../components/ChuDuAn/ModalChinhSuaToaDo';
+   7|import SectionChonPhong from '../../components/ChuDuAn/SectionChonPhong';
+   8|import AddressSyncBlock from '../../components/ChuDuAn/AddressSyncBlock';
+1521|    <ChuDuAnLayout>
+2882|    </ChuDuAnLayout>
+-- 1 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\scripts\find_slashes.js
+4|const file = path.join(__dirname, 'src', 'pages', 'ChuDuAn', 'TaoTinDang.jsx');
+-- 1 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\components\ChuDuAn\ModalTaoNhanhDuAn.jsx
+5|import { KhuVucService } from '../../services/ChuDuAnService';
+-- 9 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\ChinhSuaTinDang.jsx
+   3|import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
+   4|import { TinDangService, DuAnService, KhuVucService } from '../../services/ChuDuAnService';
+   5|import ModalChinhSuaToaDo from '../../components/ChuDuAn/ModalChinhSuaToaDo';
+   6|import SectionChonPhong from '../../components/ChuDuAn/SectionChonPhong';
+   9|import '../../styles/ChuDuAnDesignSystem.css';
+ 896|      <ChuDuAnLayout>
+ 911|      </ChuDuAnLayout>
+ 920|    <ChuDuAnLayout>
+1652|    </ChuDuAnLayout>
+-- 11 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\QuanLyCuocHen.jsx
+  3|import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
+  5|import '../../styles/ChuDuAnDesignSystem.css';
+ 26|import ModalChiTietCuocHen from '../../components/ChuDuAn/ModalChiTietCuocHen';
+ 27|import ModalPheDuyetCuocHen from '../../components/ChuDuAn/ModalPheDuyetCuocHen';
+ 28|import ModalTuChoiCuocHen from '../../components/ChuDuAn/ModalTuChoiCuocHen';
+310|    <ChuDuAnLayout>
+555|                      const status = formatTrangThai(cuocHen.TrangThai, cuocHen.PheDuyetChuDuAn);
+627|                              {cuocHen.PheDuyetChuDuAn === 'ChoPheDuyet' && (
+671|                  const status = formatTrangThai(cuocHen.TrangThai, cuocHen.PheDuyetChuDuAn);
+756|                        {cuocHen.PheDuyetChuDuAn === 'ChoPheDuyet' && (
+829|    </ChuDuAnLayout>
+-- 1 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\components\ChuDuAn\ModalCapNhatDuAn.jsx
+7|import { DuAnService, KhuVucService } from '../../services/ChuDuAnService';
+-- 14 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\App.jsx
+  9|import DashboardChuDuAn from "./pages/ChuDuAn/Dashboard"; // ✨ Light Glass Morphism với Dashboard mới
+ 10|import QuanLyTinDangChuDuAn from "./pages/ChuDuAn/QuanLyTinDang"; // Alias để tránh conflict
+ 11|import ChiTietTinDang from "./pages/ChuDuAn/ChiTietTinDang"; // ✨ Light Glass Morphism Theme
+ 12|import BaoCaoHieuSuat from "./pages/ChuDuAn/BaoCaoHieuSuat";
+ 13|import TaoTinDang from "./pages/ChuDuAn/TaoTinDang";
+ 14|import ChinhSuaTinDang from "./pages/ChuDuAn/ChinhSuaTinDang";
+ 15|import QuanLyDuAn from "./pages/ChuDuAn/QuanLyDuAn"; // ✨ Quản lý dự án (UC-PROJ-01 utilities)
+ 16|import QuanLyCuocHen from "./pages/ChuDuAn/QuanLyCuocHen"; // ✨ UC-PROJ-02: Quản lý cuộc hẹn
+ 17|import QuanLyHopDong from "./pages/ChuDuAn/QuanLyHopDong"; // ✨ UC-PROJ-04: Quản lý hợp đồng
+ 18|import TinNhan from "./pages/ChuDuAn/TinNhan"; // ✨ UC-PROJ-05: Tin nhắn Chủ dự án
+ 19|import ChiTietTinNhan from "./pages/ChuDuAn/ChiTietTinNhan"; // ✨ Chi tiết cuộc hội thoại
+ 20|import CaiDat from "./pages/ChuDuAn/CaiDat"; // ✨ Cài đặt tài khoản Chủ dự án
+128|        <Route path='/chu-du-an/dashboard' element={<ProtectedRoute allowedRoles={[3, 5]}><DashboardChuDuAn /></ProtectedRoute>} />
+130|        <Route path='/chu-du-an/tin-dang' element={<ProtectedRoute allowedRoles={[3, 5]}><QuanLyTinDangChuDuAn /></ProtectedRoute>} />
+-- 3 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\Operator\DuyetTinDang.jsx
+165|      key: 'TenChuDuAn',
+170|          <div className="duyet-tin-dang__ten-chu">{row.TenChuDuAn}</div>
+          <div className="duyet-tin-dang__email">{row.EmailChuDuAn}</div>
+-- 3 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\Operator\QuanLyDuAnOperator.jsx
+134|      key: 'ChuDuAn',
+139|          <div className="quan-ly-du-an__ten-chu">{row.TenChuDuAn}</div>
+          <div className="quan-ly-du-an__email">{row.EmailChuDuAn}</div>
+-- 1 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\TaoTinDang.css
+4|.trang.roleChuDuAn {
+-- 3 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\Operator\BaoCaoHoaHong.jsx
+123|        duAn.TenChuDuAn,
+161|      key: 'TenChuDuAn',
+164|      render: (row) => row.TenChuDuAn
+-- 3 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\Operator\modals\ModalChiTietTinDang.jsx
+113|              <span>{tinDang.TenChuDuAn}</span>
+117|              <span>{tinDang.EmailChuDuAn}</span>
+121|              <span>{tinDang.SoDienThoaiChuDuAn || 'N/A'}</span>
+-- 1 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\api\cuocHenApi.js
+12|  findByChuDuAn: (chuDuAnId) =>
+-- 2 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\quanlyhopdong\index.jsx
+ 95|        response = await hopDongApi.getChuDuAnContracts(params);
+736|                    <td>{hd.TenChuDuAn || 'N/A'}</td>
+-- 2 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\hopdongcuatoi\index.jsx
+645|                          <p className="hdct-chu-name">{hd.TenChuDuAn || 'N/A'}</p>
+646|                          <p className="hdct-chu-phone">{hd.SDTChuDuAn || ''}</p>
+-- 5 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\QuanLyHopDong.jsx
+  7|import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
+ 24|import '../../styles/ChuDuAnDesignSystem.css';
+ 51|      const response = await hopDongApi.getChuDuAnContracts(params);
+284|    <ChuDuAnLayout>
+555|    </ChuDuAnLayout>
+-- 1 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\api\hopDongApi.js
+33|  getChuDuAnContracts(params = {}) {
+-- 11 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\Dashboard.jsx
+  3|import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
+  6|import '../../styles/ChuDuAnDesignSystem.css';
+ 25|function DashboardChuDuAn() {
+ 44|      <ChuDuAnLayout>
+ 51|      </ChuDuAnLayout>
+ 57|      <ChuDuAnLayout>
+ 70|      </ChuDuAnLayout>
+ 75|    <ChuDuAnLayout>
+189|                {formatCurrency(dashboardData?.cocHoanVeChuDuAnThang || 0)}
+532|    </ChuDuAnLayout>
+536|export default DashboardChuDuAn;
+-- 1 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\BaoCaoHieuSuat.css
+12|.trang.roleChuDuAn {
+-- 6 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\BaoCaoHieuSuat.jsx
+  2|import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
+  3|import '../../styles/ChuDuAnDesignSystem.css';
+202|      <ChuDuAnLayout>
+207|      </ChuDuAnLayout>
+212|    <ChuDuAnLayout>
+602|    </ChuDuAnLayout>
+-- 5 matches in C:\Users\phamm\Desktop\realestate\Hommy-Website\client\src\pages\ChuDuAn\Dashboard.css
+ 457|.roleChuDuAn {
+1083|.trang.roleChuDuAn {
+1106|.trang.roleChuDuAn .header
+1124|.trang.roleChuDuAn .headerInfo
+1131|.trang.roleChuDuAn .tieuDe

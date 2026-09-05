@@ -1,0 +1,521 @@
+/**
+ * CSS cho trang Xem Ngay Confirm (Public)
+ * Mobile-first, Glassmorphism
+ */
+
+/* ==================== BASE ==================== */
+.xem-ngay-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== LOADING ==================== */
+.xem-ngay-page--loading {
+  align-items: center;
+  justify-content: center;
+}
+
+.xem-ngay-page__loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.xem-ngay-page__spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.xem-ngay-page__loader p {
+  margin-top: 16px;
+  font-size: 1rem;
+}
+
+/* ==================== ERROR ==================== */
+.xem-ngay-page--error,
+.xem-ngay-page--rejected {
+  align-items: center;
+  justify-content: center;
+}
+
+.xem-ngay-page__error-content,
+.xem-ngay-page__status-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 40px 32px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.xem-ngay-page__error-content svg,
+.xem-ngay-page__status-content svg {
+  color: #f59e0b;
+  margin-bottom: 16px;
+}
+
+.xem-ngay-page--rejected .xem-ngay-page__status-content svg {
+  color: #6b7280;
+}
+
+.xem-ngay-page__error-content h2,
+.xem-ngay-page__status-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 12px;
+}
+
+.xem-ngay-page__error-content p,
+.xem-ngay-page__status-content p {
+  font-size: 0.938rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ==================== SUCCESS ==================== */
+.xem-ngay-page--success {
+  align-items: center;
+  justify-content: center;
+}
+
+.xem-ngay-page__success-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 32px 24px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.xem-ngay-page__success-icon {
+  color: #10b981;
+}
+
+.xem-ngay-page__success-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 16px 0 8px;
+}
+
+.xem-ngay-page__success-content > p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 24px;
+}
+
+/* Contact Card */
+.xem-ngay-page__contact-card {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: left;
+}
+
+.xem-ngay-page__contact-row {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.xem-ngay-page__contact-row:last-of-type {
+  border-bottom: none;
+}
+
+.xem-ngay-page__contact-row svg {
+  color: #8b5cf6;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.xem-ngay-page__contact-row div {
+  display: flex;
+  flex-direction: column;
+}
+
+.xem-ngay-page__contact-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 2px;
+}
+
+.xem-ngay-page__contact-value {
+  font-size: 0.938rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.xem-ngay-page__contact-phone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 16px;
+  background: #10b981;
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.xem-ngay-page__contact-phone:hover {
+  background: #059669;
+  transform: scale(1.02);
+}
+
+.xem-ngay-page__map-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.xem-ngay-page__map-btn:hover {
+  background: #7c3aed;
+}
+
+.xem-ngay-page__note {
+  margin-top: 20px;
+  font-size: 0.813rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* ==================== HEADER ==================== */
+.xem-ngay-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0 16px;
+}
+
+.xem-ngay-page__header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.xem-ngay-page__timer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* ==================== CONTENT ==================== */
+.xem-ngay-page__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Room Card */
+.xem-ngay-page__room-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.xem-ngay-page__room-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.xem-ngay-page__room-header svg {
+  color: #8b5cf6;
+}
+
+.xem-ngay-page__room-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.xem-ngay-page__room-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.xem-ngay-page__info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.938rem;
+  color: #4b5563;
+}
+
+.xem-ngay-page__info-row svg {
+  color: #6b7280;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.xem-ngay-page__info-row--highlight {
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+  border-radius: 12px;
+  margin: 8px 0;
+}
+
+.xem-ngay-page__info-row--highlight svg {
+  color: #8b5cf6;
+}
+
+.xem-ngay-page__price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #8b5cf6;
+}
+
+/* Costs */
+.xem-ngay-page__costs {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.xem-ngay-page__costs h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin: 0 0 12px;
+}
+
+.xem-ngay-page__cost-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.xem-ngay-page__cost-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  font-size: 0.813rem;
+  color: #4b5563;
+}
+
+/* Amenities */
+.xem-ngay-page__amenities {
+  margin-top: 16px;
+}
+
+.xem-ngay-page__amenities h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin: 0 0 12px;
+}
+
+.xem-ngay-page__amenity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.xem-ngay-page__amenity-tag {
+  padding: 6px 12px;
+  background: #ede9fe;
+  color: #8b5cf6;
+  border-radius: 16px;
+  font-size: 0.813rem;
+  font-weight: 500;
+}
+
+/* ==================== ACTIONS ==================== */
+.xem-ngay-page__actions {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.xem-ngay-page__question {
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 20px;
+}
+
+.xem-ngay-page__buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.xem-ngay-page__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.xem-ngay-page__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.xem-ngay-page__btn--reject {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.xem-ngay-page__btn--reject:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.xem-ngay-page__btn--accept {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.xem-ngay-page__btn--accept:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.xem-ngay-page__btn-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (min-width: 480px) {
+  .xem-ngay-page {
+    padding: 24px;
+    align-items: center;
+  }
+
+  .xem-ngay-page__content {
+    max-width: 440px;
+    width: 100%;
+  }
+
+  .xem-ngay-page__header {
+    max-width: 440px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .xem-ngay-page {
+    padding: 40px;
+  }
+}
+
+/* ==================== DARK MODE ==================== */
+@media (prefers-color-scheme: dark) {
+  .xem-ngay-page__room-card,
+  .xem-ngay-page__actions,
+  .xem-ngay-page__error-content,
+  .xem-ngay-page__status-content,
+  .xem-ngay-page__success-content {
+    background: rgba(30, 30, 30, 0.95);
+  }
+
+  .xem-ngay-page__room-header h2,
+  .xem-ngay-page__question,
+  .xem-ngay-page__error-content h2,
+  .xem-ngay-page__status-content h2,
+  .xem-ngay-page__success-content h2 {
+    color: #f3f4f6;
+  }
+
+  .xem-ngay-page__info-row,
+  .xem-ngay-page__costs h3,
+  .xem-ngay-page__amenities h3,
+  .xem-ngay-page__error-content p,
+  .xem-ngay-page__status-content p {
+    color: #9ca3af;
+  }
+
+  .xem-ngay-page__contact-card {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .xem-ngay-page__contact-value {
+    color: #f3f4f6;
+  }
+
+  .xem-ngay-page__cost-item {
+    background: rgba(255, 255, 255, 0.1);
+    color: #d1d5db;
+  }
+
+  .xem-ngay-page__btn--reject {
+    background: rgba(255, 255, 255, 0.1);
+    color: #d1d5db;
+  }
+
+  .xem-ngay-page__btn--reject:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+

@@ -1,0 +1,383 @@
+/* RevenueChart Component Styles */
+
+.revenue-chart-container {
+  position: relative;
+  padding: 1.5rem; /* 24px */
+  background: rgba(37, 40, 52, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 1rem; /* 16px */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  
+  /* Multi-layer shadow for depth */
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Header section */
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem; /* 24px */
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chart-title {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  color: #f9fafb;
+  margin-bottom: 0.25rem;
+  
+  /* Gradient text */
+  background: linear-gradient(135deg, #f9fafb 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.chart-subtitle {
+  font-size: 0.875rem; /* 14px */
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+/* Legend */
+.chart-legend {
+  display: flex;
+  gap: 1.5rem; /* 24px */
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 8px */
+  font-size: 0.875rem; /* 14px */
+  color: #d1d5db;
+  padding: 0.375rem 0.75rem; /* 6px 12px */
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem; /* 8px */
+  transition: all 0.2s ease;
+}
+
+.legend-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: relative;
+}
+
+/* Pulse animation for legend dots */
+.legend-dot::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.5;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.legend-dot--primary {
+  background: #14532D;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+}
+
+.legend-dot--success {
+  background: #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+
+.legend-dot--info {
+  background: #3b82f6;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+}
+
+/* Chart wrapper với ambient lighting */
+.chart-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ambient glow under chart */
+.chart-ambient-glow {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 40%;
+  opacity: 0.3;
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Custom Tooltip Styles */
+.revenue-chart-tooltip {
+  position: relative;
+  background: rgba(37, 40, 52, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 0.75rem; /* 12px */
+  padding: 1rem; /* 16px */
+  min-width: 200px;
+  
+  /* Shadow with glow */
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(139, 92, 246, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  
+  /* Smooth appearance */
+  animation: tooltipFadeIn 0.2s ease;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tooltip glow effect */
+.tooltip-glow {
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 92, 246, 0.3) 0%,
+    transparent 70%
+  );
+  filter: blur(15px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.tooltip-header {
+  margin-bottom: 0.75rem; /* 12px */
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tooltip-label {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: #d1d5db;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tooltip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* 8px */
+}
+
+.tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 8px */
+  font-size: 0.875rem; /* 14px */
+}
+
+.tooltip-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.tooltip-name {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.tooltip-value {
+  color: #f9fafb;
+  font-weight: 600;
+  margin-left: auto;
+  
+  /* Gradient effect */
+  background: linear-gradient(135deg, #f9fafb 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shimmer effect cho loading state */
+.chart-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  animation: shimmer-slide 3s infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes shimmer-slide {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Recharts custom styling overrides */
+.revenue-chart-container .recharts-wrapper {
+  cursor: crosshair;
+}
+
+.revenue-chart-container .recharts-surface {
+  overflow: visible;
+}
+
+/* Active dot với glow effect */
+.revenue-chart-container .recharts-dot-active {
+  animation: dot-pulse 1.5s infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(139, 92, 246, 1));
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .revenue-chart-container {
+    padding: 1rem; /* 16px */
+  }
+  
+  .chart-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .chart-legend {
+    gap: 0.75rem; /* 12px */
+  }
+  
+  .legend-item {
+    font-size: 0.75rem; /* 12px */
+    padding: 0.25rem 0.5rem; /* 4px 8px */
+  }
+  
+  .chart-title {
+    font-size: 1rem; /* 16px */
+  }
+  
+  .chart-subtitle {
+    font-size: 0.75rem; /* 12px */
+  }
+}
+
+/* Print styles */
+@media print {
+  .revenue-chart-container {
+    background: white;
+    border: 1px solid #e5e7eb;
+    box-shadow: none;
+  }
+  
+  .chart-shimmer,
+  .chart-ambient-glow,
+  .tooltip-glow {
+    display: none;
+  }
+  
+  .chart-title {
+    -webkit-text-fill-color: initial;
+    background: none;
+    color: #111827;
+  }
+}
+
+/* Accessibility */
+.revenue-chart-container:focus-visible {
+  outline: 2px solid #14532D;
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .chart-shimmer,
+  .legend-dot::before,
+  .recharts-dot-active {
+    animation: none !important;
+  }
+  
+  .revenue-chart-tooltip {
+    animation: none !important;
+  }
+}
+
+/* Loading state skeleton */
+.revenue-chart-container.loading {
+  position: relative;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.revenue-chart-container.loading::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+

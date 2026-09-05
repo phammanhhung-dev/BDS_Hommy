@@ -1,0 +1,425 @@
+/**
+ * QuanLyCuocHen Page Styles
+ * BEM naming convention
+ */
+
+.nvbh-quan-ly-cuoc-hen {
+  padding: var(--nvbh-spacing-lg);
+}
+
+/* Header */
+.nvbh-quan-ly-cuoc-hen__header {
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-md);
+  margin-bottom: var(--nvbh-spacing-lg);
+  flex-wrap: wrap;
+}
+
+.nvbh-quan-ly-cuoc-hen__title {
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-sm);
+  color: var(--nvbh-text-primary);
+  flex: 1;
+  min-width: 200px;
+}
+
+.nvbh-quan-ly-cuoc-hen__title svg {
+  width: 28px;
+  height: 28px;
+  color: var(--nvbh-primary);
+}
+
+.nvbh-quan-ly-cuoc-hen__title h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Search */
+.nvbh-quan-ly-cuoc-hen__search {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  min-width: 200px;
+}
+
+.nvbh-quan-ly-cuoc-hen__search-icon {
+  position: absolute;
+  left: var(--nvbh-spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--nvbh-text-tertiary);
+  pointer-events: none;
+}
+
+.nvbh-quan-ly-cuoc-hen__search input {
+  width: 100%;
+  padding: var(--nvbh-spacing-sm) var(--nvbh-spacing-md) var(--nvbh-spacing-sm) 44px;
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-md);
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  font-size: 0.9375rem;
+  color: var(--nvbh-text-primary);
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-quan-ly-cuoc-hen__search input:focus {
+  outline: none;
+  border-color: var(--nvbh-primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+/* Filter Button */
+.nvbh-quan-ly-cuoc-hen__filter-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-xs);
+  padding: var(--nvbh-spacing-sm) var(--nvbh-spacing-md);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-md);
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  color: var(--nvbh-text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-btn:hover {
+  border-color: var(--nvbh-primary);
+  background: var(--nvbh-glass-bg-dark);
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-btn--active {
+  background: var(--nvbh-primary);
+  color: white;
+  border-color: var(--nvbh-primary);
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Filter Tabs */
+.nvbh-quan-ly-cuoc-hen__tabs {
+  display: flex;
+  gap: var(--nvbh-spacing-sm);
+  margin-bottom: var(--nvbh-spacing-lg);
+  padding: var(--nvbh-spacing-sm);
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-lg);
+  overflow-x: auto;
+}
+
+.nvbh-quan-ly-cuoc-hen__tab {
+  display: flex;
+  align-items: center;
+  gap: var(--nvbh-spacing-xs);
+  padding: var(--nvbh-spacing-sm) var(--nvbh-spacing-md);
+  border: none;
+  border-radius: var(--nvbh-radius-md);
+  background: transparent;
+  color: var(--nvbh-text-secondary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nvbh-transition-base);
+  white-space: nowrap;
+}
+
+.nvbh-quan-ly-cuoc-hen__tab:hover {
+  background: var(--nvbh-bg-secondary);
+  color: var(--nvbh-text-primary);
+}
+
+.nvbh-quan-ly-cuoc-hen__tab--active {
+  background: var(--nvbh-primary);
+  color: white;
+}
+
+.nvbh-quan-ly-cuoc-hen__tab-count {
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--nvbh-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.nvbh-quan-ly-cuoc-hen__tab--active .nvbh-quan-ly-cuoc-hen__tab-count {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Advanced Filters */
+.nvbh-quan-ly-cuoc-hen__filters {
+  display: flex;
+  gap: var(--nvbh-spacing-md);
+  align-items: flex-end;
+  padding: var(--nvbh-spacing-md);
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-lg);
+  margin-bottom: var(--nvbh-spacing-lg);
+  flex-wrap: wrap;
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nvbh-spacing-xs);
+  flex: 1;
+  min-width: 200px;
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--nvbh-text-secondary);
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-group input {
+  padding: var(--nvbh-spacing-sm);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-md);
+  background: white;
+  font-size: 0.9375rem;
+  color: var(--nvbh-text-primary);
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-reset {
+  padding: var(--nvbh-spacing-sm) var(--nvbh-spacing-md);
+  border: 1px solid var(--nvbh-danger);
+  border-radius: var(--nvbh-radius-md);
+  background: transparent;
+  color: var(--nvbh-danger);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-quan-ly-cuoc-hen__filter-reset:hover {
+  background: var(--nvbh-danger);
+  color: white;
+}
+
+/* Content */
+.nvbh-quan-ly-cuoc-hen__content {
+  margin-bottom: var(--nvbh-spacing-lg);
+}
+
+.nvbh-quan-ly-cuoc-hen__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--nvbh-spacing-md);
+}
+
+/* Appointment Card */
+.nvbh-appointment-card {
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-lg);
+  padding: var(--nvbh-spacing-md);
+  cursor: pointer;
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--nvbh-shadow-lg);
+  border-color: var(--nvbh-glass-border-hover);
+}
+
+.nvbh-appointment-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--nvbh-spacing-md);
+  padding-bottom: var(--nvbh-spacing-sm);
+  border-bottom: 1px solid var(--nvbh-glass-border);
+}
+
+.nvbh-appointment-card__time {
+  font-size: 0.875rem;
+  color: var(--nvbh-text-tertiary);
+  font-weight: 500;
+}
+
+.nvbh-appointment-card__body {
+  margin-bottom: var(--nvbh-spacing-md);
+}
+
+.nvbh-appointment-card__customer {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--nvbh-text-primary);
+  margin: 0 0 var(--nvbh-spacing-xs) 0;
+}
+
+.nvbh-appointment-card__room {
+  font-size: 0.9375rem;
+  color: var(--nvbh-text-secondary);
+  margin: 0 0 var(--nvbh-spacing-xs) 0;
+}
+
+.nvbh-appointment-card__price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--nvbh-primary);
+  margin: 0;
+}
+
+.nvbh-appointment-card__actions {
+  display: flex;
+  gap: var(--nvbh-spacing-sm);
+  flex-wrap: wrap;
+}
+
+.nvbh-appointment-card__btn {
+  flex: 1;
+  min-width: 80px;
+  padding: var(--nvbh-spacing-xs) var(--nvbh-spacing-sm);
+  border: none;
+  border-radius: var(--nvbh-radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-appointment-card__btn--primary {
+  background: var(--nvbh-primary);
+  color: white;
+}
+
+.nvbh-appointment-card__btn--primary:hover {
+  background: var(--nvbh-primary-dark);
+}
+
+.nvbh-appointment-card__btn--secondary {
+  background: var(--nvbh-secondary);
+  color: white;
+}
+
+.nvbh-appointment-card__btn--secondary:hover {
+  background: var(--nvbh-secondary-dark);
+}
+
+.nvbh-appointment-card__btn--danger {
+  background: transparent;
+  color: var(--nvbh-danger);
+  border: 1px solid var(--nvbh-danger);
+}
+
+.nvbh-appointment-card__btn--danger:hover {
+  background: var(--nvbh-danger);
+  color: white;
+}
+
+/* Pagination */
+.nvbh-quan-ly-cuoc-hen__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--nvbh-spacing-md);
+  padding: var(--nvbh-spacing-md);
+  background: var(--nvbh-glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-lg);
+}
+
+.nvbh-quan-ly-cuoc-hen__pagination button {
+  padding: var(--nvbh-spacing-sm) var(--nvbh-spacing-md);
+  border: 1px solid var(--nvbh-glass-border);
+  border-radius: var(--nvbh-radius-md);
+  background: var(--nvbh-glass-bg);
+  color: var(--nvbh-text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nvbh-transition-base);
+}
+
+.nvbh-quan-ly-cuoc-hen__pagination button:hover:not(:disabled) {
+  background: var(--nvbh-primary);
+  color: white;
+  border-color: var(--nvbh-primary);
+}
+
+.nvbh-quan-ly-cuoc-hen__pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.nvbh-quan-ly-cuoc-hen__pagination span {
+  font-size: 0.9375rem;
+  color: var(--nvbh-text-secondary);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nvbh-quan-ly-cuoc-hen__grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .nvbh-quan-ly-cuoc-hen {
+    padding: var(--nvbh-spacing-md);
+  }
+  
+  .nvbh-quan-ly-cuoc-hen__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .nvbh-quan-ly-cuoc-hen__search {
+    max-width: 100%;
+  }
+  
+  .nvbh-quan-ly-cuoc-hen__tabs {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .nvbh-quan-ly-cuoc-hen__filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .nvbh-quan-ly-cuoc-hen__filter-group {
+    min-width: 100%;
+  }
+  
+  .nvbh-quan-ly-cuoc-hen__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nvbh-appointment-card__actions {
+    flex-direction: column;
+  }
+  
+  .nvbh-appointment-card__btn {
+    min-width: 100%;
+    padding: var(--nvbh-spacing-sm);
+  }
+}
+
+
+
+
+
+
+

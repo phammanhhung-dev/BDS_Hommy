@@ -1,0 +1,212 @@
+/**
+ * Video Call Notification Styles
+ * BEM Naming Convention
+ */
+
+.video-call-notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.video-call-notification__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  pointer-events: all;
+}
+
+.video-call-notification__container {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 32px;
+  min-width: 400px;
+  max-width: 500px;
+  pointer-events: all;
+  z-index: 1;
+}
+
+/* Header */
+.video-call-notification__header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.video-call-notification__icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.video-call-notification__icon {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+}
+
+.video-call-notification__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Body */
+.video-call-notification__body {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.video-call-notification__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background: #f1f5f9;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.video-call-notification__avatar svg {
+  width: 60px;
+  height: 60px;
+  color: #64748b;
+}
+
+.video-call-notification__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.video-call-notification__caller-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.video-call-notification__caller-status {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Actions */
+.video-call-notification__actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.video-call-notification__button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 80px;
+  height: 80px;
+  border: none;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #ffffff;
+}
+
+.video-call-notification__button:active {
+  transform: scale(0.95);
+}
+
+.video-call-notification__button svg {
+  width: 28px;
+  height: 28px;
+}
+
+.video-call-notification__button--reject {
+  background: #ef4444;
+}
+
+.video-call-notification__button--reject:hover {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.video-call-notification__button--accept {
+  background: #10b981;
+}
+
+.video-call-notification__button--accept:hover {
+  background: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .video-call-notification__container {
+    min-width: 320px;
+    max-width: 90vw;
+    padding: 24px;
+  }
+
+  .video-call-notification__icon-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .video-call-notification__icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .video-call-notification__title {
+    font-size: 20px;
+  }
+
+  .video-call-notification__avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .video-call-notification__avatar svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .video-call-notification__caller-name {
+    font-size: 18px;
+  }
+
+  .video-call-notification__button {
+    width: 70px;
+    height: 70px;
+  }
+
+  .video-call-notification__button svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+
