@@ -182,8 +182,12 @@ const Dashboard = () => {
                   return dates.map((date, i) => {
                     const day = date.getDate();
                     const isToday = date.toDateString() === today.toDateString();
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const d = String(date.getDate()).padStart(2, '0');
+                    const localDateStr = `${year}-${month}-${d}`;
                     const dateStr = date.toISOString().split('T')[0];
-                    const hasAppointments = data.lichLamViecTuan?.[dateStr] > 0;
+                    const hasAppointments = (data.lichLamViecTuan?.[localDateStr] > 0) || (data.lichLamViecTuan?.[dateStr] > 0);
 
                     return (
                       <div

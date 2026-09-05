@@ -914,7 +914,16 @@ class NhanVienBanHangController {
           hieuSuat7Ngay,
           cuocHenHomNay,
           lichLamViecTuan: lichLamViecTuan.reduce((acc, item) => {
-            acc[item.Ngay] = item.SoCa;
+            let key = item.Ngay;
+            if (item.Ngay instanceof Date) {
+              const year = item.Ngay.getFullYear();
+              const month = String(item.Ngay.getMonth() + 1).padStart(2, '0');
+              const day = String(item.Ngay.getDate()).padStart(2, '0');
+              key = `${year}-${month}-${day}`;
+            } else if (typeof item.Ngay === 'string') {
+              key = item.Ngay.split('T')[0];
+            }
+            acc[key] = item.SoCa;
             return acc;
           }, {}),
           activities: activities.slice(0, 5) // Chỉ lấy 5 activities gần nhất

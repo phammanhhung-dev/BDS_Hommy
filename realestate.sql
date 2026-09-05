@@ -5518,6 +5518,142 @@ ALTER TABLE `nguoidung`
 --
 ALTER TABLE `yeucauruttien`
   ADD CONSTRAINT `fk_yeucauruttien_nguoidung` FOREIGN KEY (`NguoiDungID`) REFERENCES `nguoidung` (`NguoiDungID`);
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- =========================================================================
+-- DỮ LIỆU BỔ SUNG: MODULE NHÂN VIÊN BÁN HÀNG (Sales Hub) & LIÊN KẾT
+-- Tài khoản: tk_nvbh1 (NguoiDungID: 259) | tk_nvdh1 (NguoiDungID: 262)
+-- Dự án: Khu Căn Hộ Hommy Premier Landmark (DuAnID: 39)
+-- =========================================================================
+
+-- 1. Người dùng: tk_nvbh1, ChuDA1, tk_nvdh1, Khach3
+INSERT INTO `nguoidung` (`NguoiDungID`, `TenDayDu`, `Email`, `VaiTroHoatDongID`, `SoDienThoai`, `MatKhauHash`, `TrangThai`, `TrangThaiXacMinh`, `NgaySinh`, `DiaChi`, `SoCCCD`, `NgayCapCCCD`, `AnhCCCDMatTruoc`, `AnhCCCDMatSau`, `AnhSelfie`, `TaoLuc`, `CapNhatLuc`) VALUES
+(259, 'tk_nvbh1', 'tk_nvbh1@gmail.com', 2, '0711998772', 'e10adc3949ba59abbe56e057f20f883e', 'HoatDong', 'ChuaXacMinh', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-07-13 03:36:12', '2026-07-13 17:26:24'),
+(260, 'ChuDA1', 'ChuDA1@gmail.com', 3, '0977697288', 'e10adc3949ba59abbe56e057f20f883e', 'HoatDong', 'ChuaXacMinh', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-07-13 03:49:29', '2026-07-13 17:26:39'),
+(262, 'tk_nvdh1', 'tk_nvdh1@gmail.com', 4, '0744998771', 'e10adc3949ba59abbe56e057f20f883e', 'HoatDong', 'ChuaXacMinh', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-07-13 15:20:07', '2026-07-13 17:27:09'),
+(269, 'Khach3', 'khach3@gmail.com', 3, '0947886994', 'e10adc3949ba59abbe56e057f20f883e', 'HoatDong', 'ChuaXacMinh', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-08-21 09:35:39', '2026-08-31 17:48:04')
+ON DUPLICATE KEY UPDATE `NguoiDungID` = VALUES(`NguoiDungID`);
+
+-- 2. Hồ sơ nhân viên bán hàng
+INSERT INTO `hosonhanvien` (`HoSoID`, `NguoiDungID`, `QuanLyID`, `MaNhanVien`, `KhuVucChinhID`, `KhuVucPhuTrachID`, `TyLeHoaHong`, `NgayBatDau`, `NgayKetThuc`, `GhiChu`) VALUES
+(18, 259, 262, 'NV0259', NULL, NULL, '50.00', '2026-08-29 17:00:00', NULL, NULL)
+ON DUPLICATE KEY UPDATE `HoSoID` = VALUES(`HoSoID`);
+
+-- 3. Dự án 39: Khu Căn Hộ Hommy Premier Landmark
+INSERT INTO `duan` (`DuAnID`, `TenDuAn`, `DiaChi`, `ViDo`, `KinhDo`, `ChuDuAnID`, `ChinhSachCocID`, `BangHoaHong`, `SoThangCocToiThieu`, `YeuCauPheDuyetChu`, `PhuongThucVao`, `TrangThai`, `LyDoNgungHoatDong`, `NguoiNgungHoatDongID`, `NgungHoatDongLuc`, `YeuCauMoLai`, `NoiDungGiaiTrinh`, `ThoiGianGuiYeuCau`, `NguoiXuLyYeuCauID`, `ThoiGianXuLyYeuCau`, `LyDoTuChoiMoLai`, `TaoLuc`, `CapNhatLuc`, `TrangThaiDuyetHoaHong`, `NguoiDuyetHoaHongID`, `ThoiGianDuyetHoaHong`, `LyDoTuChoiHoaHong`, `ThongTinMoRong`) VALUES
+(39, 'Khu Căn Hộ Hommy Premier Landmark', '720A Điện Biên Phủ, Phường 22, Quận Bình Thạnh, TP. Hồ Chí Minh', '10.7768890', '106.7008060', 269, 1, '[{"soThang":6,"tyLe":30},{"soThang":12,"tyLe":70}]', 1, 0, 'Thẻ từ / Vân tay bảo vệ', 'HoatDong', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-02 21:06:32', '2026-09-05 10:25:17', 'DaDuyet', NULL, NULL, NULL, NULL)
+ON DUPLICATE KEY UPDATE `DuAnID` = VALUES(`DuAnID`);
+
+-- 4. Tin đăng dự án 39
+INSERT INTO `tindang` (`TinDangID`, `DuAnID`, `KhuVucID`, `ChinhSachCocID`, `TieuDe`, `URL`, `MoTa`, `TienIch`, `GiaDien`, `GiaNuoc`, `GiaDichVu`, `MoTaGiaDichVu`, `ThongTinMoRong`, `TrangThai`, `LoaiGiaoDich`, `LoaiBDS`, `GiaTien`, `DienTichDat`, `DienTichSuDung`, `SoTang`, `SoPhongNgu`, `SoPhongTam`, `Huong`, `PhapLy`, `NamXayDung`, `NoiThat`, `LyDoTuChoi`, `DuyetBoiNhanVienID`, `TaoLuc`, `CapNhatLuc`, `DuyetLuc`, `ChuDuAnID`, `GoiTin`, `TrangThaiThanhToan`, `NgayHetHan`) VALUES
+(87, 39, 1, NULL, 'Căn Hộ Hommy Premier 3 Phòng Ngủ View Sông Sài Gòn', '["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"]', 'Bán căn hộ góc 3 phòng ngủ view sông cực đẹp tại Hommy Premier Landmark. Diện tích 95m2, thiết kế hiện đại, nội thất cao cấp sang trọng. Sổ hồng chính chủ, hỗ trợ vay ngân hàng 70%.', NULL, NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Ban', 'CanHo', '4500000000.00', '95.00', '95.00', NULL, 3, 2, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-02 21:06:32', '2026-09-03 15:54:16', NULL, 269, 'basic', 'DaThanhToan', NULL),
+(88, 39, 1, NULL, 'Cho Thuê Biệt Thự Nguyên Căn 4 Phòng Ngủ Hommy Premier Landmark', '["https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"]', 'Cho thuê biệt thự song lập sang trọng đầy đủ nội thất nhập khẩu. 4 phòng ngủ khép kín, gara ô tô, sân vườn rộng mát. Thích hợp làm văn phòng công ty hoặc gia đình sinh sống lâu dài.', NULL, NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Thue', 'NhaNguyenCan', '35000000.00', '220.00', '220.00', NULL, 4, 4, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-02 21:06:32', '2026-09-03 15:54:16', NULL, 269, 'basic', 'DaThanhToan', NULL),
+(89, 39, 1, NULL, 'Căn Hộ Cao Cấp 2PN Vinhomes Golden River - Bến Nghé Quận 1', '["https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80"]', 'Bán căn hộ cao cấp tại dự án Vinhomes Golden River Ba Son, Quận 1. Thiết kế sang trọng view sông Sài Gòn thoáng mát, đầy đủ tiện ích chuẩn quốc tế, hồ bơi tràn bờ, phòng gym cao cấp.', 'Hồ bơi, Gym, An ninh 24/7, Chỗ đậu xe hơi, Trung tâm thương mại', NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Ban', 'CanHo', '6800000000.00', '78.00', '78.00', NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-03 15:54:16', '2026-09-03 15:54:16', NULL, 269, '', 'DaThanhToan', NULL),
+(90, 39, 1, NULL, 'Biệt Thự Sân Vườn Thảo Điền 250m2 Hồ Bơi Riêng', '["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"]', 'Biệt thự đơn lập Thảo Điền đẳng cấp, không gian sân vườn hồ bơi riêng biệt. Khu vực an ninh, dân trí cao, thuận tiện di chuyển vào trung tâm thành phố.', 'Sân vườn, Hồ bơi riêng, Gara ô tô, BBQ ngoài trời', NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Ban', 'BietThu', '28500000000.00', '250.00', '380.00', NULL, 5, 5, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-03 15:54:16', '2026-09-03 15:54:16', NULL, 269, '', 'DaThanhToan', NULL),
+(91, 39, 1, NULL, 'Cho Thuê Căn Hộ Studio Cao Cấp Landmark 81 Full Nội Thất', '["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"]', 'Cho thuê căn hộ studio hiện đại tại toà tháp Landmark 81, nội thất cao cấp nhập khẩu, view công viên và sông Sài Gòn. Tự do giờ giấc, dịch vụ dọn phòng chuyên nghiệp.', 'Máy lạnh, Tủ lạnh, Tivi, Máy giặt, Hồ bơi, Gym, Thang máy', NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Thue', 'CanHo', '14500000.00', '48.00', '48.00', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-03 15:54:16', '2026-09-03 15:54:16', NULL, 269, '', 'DaThanhToan', NULL),
+(92, 39, 1, NULL, 'Cho Thuê Shophouse Liền Kề Khu Đô Thị Sala Thủ Thiêm', '["https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"]', 'Cho thuê shophouse mặt tiền đường lớn khu đô thị kiểu mẫu Sala Thủ Thiêm. Rất thích hợp làm trụ sở văn phòng, showroom trưng bày hoặc kinh doanh F&B cao cấp.', 'Mặt tiền đường 24m, Vỉa hè rộng, Hầm để xe, Thang máy tốc độ cao', NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Thue', 'Shophouse', '65000000.00', '168.00', '450.00', NULL, 4, 5, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-03 15:54:16', '2026-09-03 15:54:16', NULL, 269, '', 'DaThanhToan', NULL),
+(93, 39, 1, NULL, 'Cho Thuê Căn Hộ 2 Phòng Ngủ Full Nội Thất Vinhomes Central Park', '["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"]', 'Cho thuê căn hộ 2 phòng ngủ tòa Park, view nội khu và công viên 14ha xanh mát. Nhà trang bị đầy đủ nội thất cao cấp: tivi, tủ lạnh, máy giặt, sofa da, giường đệm cao cấp chỉ việc xách vali vào ở.', 'Công viên 14ha, Hồ bơi, Bến du thuyền, TTTM Vincom, Bệnh viện Vinmec, Trường học Vinschool', NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Thue', 'CanHo', '22000000.00', '75.00', '75.00', NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-03 15:56:21', '2026-09-03 15:56:21', NULL, 269, '', 'DaThanhToan', NULL),
+(94, 39, 1, NULL, 'Cho Thuê Nhà Phố Mặt Tiền Đường Nguyễn Thị Minh Khai Quận 1', '["https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"]', 'Cho thuê nhà nguyên căn mặt tiền đường lớn trung tâm Quận 1. Kết cấu 1 trệt 3 lầu sân thượng, diện tích sàn 320m2. Vị trí đắc địa, lề đường rộng đậu xe thuận tiện kinh doanh thẩm mỹ viện, nha khoa, văn phòng đại diện.', 'Mặt tiền đường lớn, Chỗ đậu ô tô, Thang máy, Hệ thống PCCC đạt chuẩn', NULL, NULL, NULL, NULL, NULL, 'DaDuyet', 'Thue', 'NhaPho', '45000000.00', '80.00', '320.00', NULL, 4, 4, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-03 15:56:21', '2026-09-03 15:56:21', NULL, 269, '', 'DaThanhToan', NULL)
+ON DUPLICATE KEY UPDATE `TinDangID` = VALUES(`TinDangID`);
+
+-- 5. Phòng thuộc Dự án 39
+INSERT INTO `phong` (`PhongID`, `DuAnID`, `TenPhong`, `TrangThai`, `GiaChuan`, `DienTichChuan`, `MoTaPhong`, `HinhAnhPhong`, `TaoLuc`, `CapNhatLuc`) VALUES
+(36, 39, 'LM81-0501', 'Trong', '25000000.00', '110.00', NULL, NULL, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(34, 39, 'LM81-0802', 'DaThue', '12000000.00', '45.00', NULL, NULL, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(33, 39, 'LM81-1205', 'DaThue', '18000000.00', '75.00', NULL, NULL, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(37, 39, 'LM81-1506', 'Trong', '16000000.00', '70.00', NULL, NULL, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(35, 39, 'LM81-2104', 'Trong', '15000000.00', '68.00', NULL, NULL, '2026-09-05 10:25:17', '2026-09-05 10:25:17')
+ON DUPLICATE KEY UPDATE `PhongID` = VALUES(`PhongID`);
+
+-- 6. Liên kết phòng với tin đăng
+INSERT INTO `phong_tindang` (`PhongTinDangID`, `PhongID`, `TinDangID`, `GiaTinDang`, `DienTichTinDang`, `MoTaTinDang`, `HinhAnhTinDang`, `ThuTuHienThi`, `TaoLuc`) VALUES
+(73, 35, 89, '15000000.00', NULL, NULL, NULL, 0, '2026-09-05 10:25:17'),
+(72, 36, 88, '25000000.00', NULL, NULL, NULL, 0, '2026-09-05 10:25:17'),
+(75, 37, 93, '16000000.00', NULL, NULL, NULL, 0, '2026-09-05 10:25:17'),
+(71, 33, 87, '18000000.00', NULL, NULL, NULL, 0, '2026-09-05 10:25:17'),
+(74, 34, 91, '12000000.00', NULL, NULL, NULL, 0, '2026-09-05 10:25:17')
+ON DUPLICATE KEY UPDATE `PhongTinDangID` = VALUES(`PhongTinDangID`);
+
+-- 7. Ca làm việc nhân viên bán hàng tk_nvbh1
+INSERT INTO `lichlamviec` (`LichID`, `NhanVienBanHangID`, `BatDau`, `KetThuc`) VALUES
+(17, 259, '2026-08-31 01:00:00', '2026-08-31 05:00:00'),
+(18, 259, '2026-09-01 01:00:00', '2026-09-01 05:00:00'),
+(19, 259, '2026-09-02 06:30:00', '2026-09-02 10:30:00'),
+(20, 259, '2026-09-03 01:00:00', '2026-09-03 05:00:00'),
+(21, 259, '2026-09-04 01:00:00', '2026-09-04 10:00:00'),
+(22, 259, '2026-09-05 01:00:00', '2026-09-05 12:00:00'),
+(23, 259, '2026-09-06 02:00:00', '2026-09-06 10:00:00'),
+(24, 259, '2026-09-07 01:00:00', '2026-09-07 05:00:00'),
+(25, 259, '2026-09-08 01:00:00', '2026-09-08 10:00:00'),
+(26, 259, '2026-09-09 01:00:00', '2026-09-09 05:00:00'),
+(27, 259, '2026-09-10 06:30:00', '2026-09-10 10:30:00'),
+(28, 259, '2026-09-11 01:00:00', '2026-09-11 10:00:00'),
+(29, 259, '2026-09-12 01:00:00', '2026-09-12 05:00:00')
+ON DUPLICATE KEY UPDATE `LichID` = VALUES(`LichID`);
+
+-- 8. Cuộc hẹn khách hàng
+INSERT INTO `cuochen` (`CuocHenID`, `KhachHangID`, `NhanVienBanHangID`, `PhongID`, `TinDangID`, `ThoiGianHen`, `TrangThai`, `PheDuyetChuDuAn`, `LyDoTuChoi`, `PhuongThucVao`, `ThoiGianPheDuyet`, `SoLanDoiLich`, `GhiChuKetQua`, `TaoLuc`, `CapNhatLuc`, `GhiChu`, `ChuDuAnID`) VALUES
+(23, 245, 259, 35, 89, '2026-09-01 02:30:00', 'HoanThanh', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Khách ưng căn 2PN view sông, lên phương án ký hợp đồng.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Khách ưng căn 2PN view sông, lên phương án ký hợp đồng.', 269),
+(24, 2, 259, 33, 87, '2026-09-03 03:00:00', 'HoanThanh', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Khách xem căn 3PN, thỏa thuận cọc và ký hợp đồng thuê 1 năm.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Khách xem căn 3PN, thỏa thuận cọc và ký hợp đồng thuê 1 năm.', 269),
+(25, 7, 259, 34, 91, '2026-09-04 07:30:00', 'HoanThanh', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Khách chốt cọc căn hộ Studio cao cấp Landmark 81.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Khách chốt cọc căn hộ Studio cao cấp Landmark 81.', 269),
+(26, 2, 259, 33, 87, '2026-09-05 02:30:00', 'HoanThanh', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Bàn giao chìa khóa và kiểm tra trang thiết bị nội thất căn hộ.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Bàn giao chìa khóa và kiểm tra trang thiết bị nội thất căn hộ.', 269),
+(27, 7, 259, 34, 91, '2026-09-05 07:00:00', 'HoanThanh', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Hoàn tất thủ tục nghiệm thu nhận phòng P.0802.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Hoàn tất thủ tục nghiệm thu nhận phòng P.0802.', 269),
+(28, 245, 259, 35, 89, '2026-09-05 04:35:17', 'DaXacNhan', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Dẫn khách Thám Tử Kiên xem căn 2PN Vinhomes Golden River lần 2 trước khi đặt cọc.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Dẫn khách Thám Tử Kiên xem căn 2PN Vinhomes Golden River lần 2 trước khi đặt cọc.', 269),
+(29, 229, 259, 36, 88, '2026-09-06 03:00:00', 'ChoXacNhan', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Khách đăng ký khảo sát mặt bằng kinh doanh Shophouse Sala.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Khách đăng ký khảo sát mặt bằng kinh doanh Shophouse Sala.', 269),
+(30, 2, 259, 37, 93, '2026-09-07 08:30:00', 'ChoXacNhan', 'DaPheDuyet', NULL, NULL, NULL, 0, 'Khách muốn xem thêm căn 2PN Vinhomes Central Park cho gia đình bạn.', '2026-09-05 10:25:17', '2026-09-05 10:25:17', 'Khách muốn xem thêm căn 2PN Vinhomes Central Park cho gia đình bạn.', 269)
+ON DUPLICATE KEY UPDATE `CuocHenID` = VALUES(`CuocHenID`);
+
+-- 9. Hợp đồng thuê đã xác thực (tính thu nhập tháng: 8.100.000 ₫)
+INSERT INTO `hopdong` (`HopDongID`, `TinDangID`, `PhongID`, `DuAnID`, `NhanVienBanHangID`, `KhachHangID`, `NgayBatDau`, `NgayKetThuc`, `GiaThueCuoiCung`, `SoTienCoc`, `BaoCaoLuc`, `MauHopDongID`, `NoiDungSnapshot`, `FileScanPath`, `noidunghopdong`, `TrangThai`) VALUES
+(6, 87, 33, 39, 259, 2, '2026-09-02 17:00:00', '2027-09-02 17:00:00', '18000000.00', '18000000.00', '2026-09-03 04:30:00', NULL, NULL, NULL, 'Hợp đồng thuê căn hộ Landmark 81 P.1205 - Khách hàng Trần Thị Khách Hàng', 'xacthuc'),
+(7, 91, 34, 39, 259, 7, '2026-09-03 17:00:00', '2027-03-03 17:00:00', '12000000.00', '12000000.00', '2026-09-04 09:00:00', NULL, NULL, NULL, 'Hợp đồng thuê căn hộ Studio Landmark 81 P.0802 - Khách hàng Thành Nam', 'xacthuc')
+ON DUPLICATE KEY UPDATE `HopDongID` = VALUES(`HopDongID`);
+
+-- 10. Giao dịch cọc
+INSERT INTO `giaodich` (`GiaoDichID`, `ViID`, `SoTien`, `Loai`, `TrangThai`, `KhoaDinhDanh`, `TinDangLienQuanID`, `GiaoDichThamChieuID`, `ThoiGian`, `KenhThanhToan`, `MaGiaoDichNCC`, `ChungTuDinhKemURL`, `HoaDonDT_ID`) VALUES
+(8, NULL, '5000000.00', 'COC_GIU_CHO', 'DaThanhToan', '16fc2dcf-a914-11f1-8437-088fc38347cb', 89, NULL, '2026-09-05 09:30:00', 'CHUYEN_KHOAN', NULL, NULL, NULL),
+(9, NULL, '18000000.00', 'COC_AN_NINH', 'DaThanhToan', '16fc4ec5-a914-11f1-8437-088fc38347cb', 87, NULL, '2026-09-03 04:15:00', 'CHUYEN_KHOAN', NULL, NULL, NULL),
+(10, NULL, '12000000.00', 'COC_AN_NINH', 'DaThanhToan', '16fca1b1-a914-11f1-8437-088fc38347cb', 91, NULL, '2026-09-04 08:45:00', 'CHUYEN_KHOAN', NULL, NULL, NULL)
+ON DUPLICATE KEY UPDATE `GiaoDichID` = VALUES(`GiaoDichID`);
+
+INSERT INTO `coc` (`CocID`, `GiaoDichID`, `TinDangID`, `PhongID`, `Loai`, `SoTien`, `TTL_Gio`, `HetHanLuc`, `TrangThai`, `BienBanBanGiaoID`, `GhiChu`, `TaoLuc`, `CapNhatLuc`, `ChinhSachCocID`, `QuyTacGiaiToaSnapshot`, `TyLePhatCocGiuChoSnapshot`, `SoNgayGiaiToaSnapshot`, `HopDongID`, `LyDoGiaiToa`, `LyDoKhauTru`) VALUES
+(6, 8, 89, 35, 'CocGiuCho', '5000000.00', 48, '2026-09-07 09:30:00', 'HieuLuc', NULL, NULL, '2026-09-05 09:30:00', '2026-09-05 09:30:00', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(7, 9, 87, 33, 'CocAnNinh', '18000000.00', NULL, NULL, 'HieuLuc', NULL, NULL, '2026-09-03 04:15:00', '2026-09-03 04:15:00', 1, NULL, NULL, NULL, 6, NULL, NULL),
+(8, 10, 91, 34, 'CocAnNinh', '12000000.00', NULL, NULL, 'HieuLuc', NULL, NULL, '2026-09-04 08:45:00', '2026-09-04 08:45:00', 1, NULL, NULL, NULL, 7, NULL, NULL)
+ON DUPLICATE KEY UPDATE `CocID` = VALUES(`CocID`);
+
+-- 11. Hội thoại và tin nhắn tư vấn khách hàng
+INSERT INTO `cuochoithoai` (`CuocHoiThoaiID`, `NguCanhID`, `NguCanhLoai`, `TieuDe`, `ThoiDiemTinNhanCuoi`, `DangHoatDong`, `TaoLuc`, `CapNhatLuc`) VALUES
+(233, 87, 'TinDang', 'Trò chuyện với Trần Thị Khách Hàng', '2026-09-05 08:55:17', 1, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(234, 89, 'TinDang', 'Hẹn xem phòng với Thám Tử Kiên', '2026-09-05 09:55:17', 1, '2026-09-05 10:25:17', '2026-09-05 10:25:17')
+ON DUPLICATE KEY UPDATE `CuocHoiThoaiID` = VALUES(`CuocHoiThoaiID`);
+
+INSERT INTO `thanhviencuochoithoai` (`CuocHoiThoaiID`, `NguoiDungID`, `ThamGiaLuc`, `TinNhanCuoiDocLuc`) VALUES
+(233, 2, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(233, 259, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(234, 245, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(234, 259, '2026-09-05 10:25:17', '2026-09-05 10:25:17')
+ON DUPLICATE KEY UPDATE `CuocHoiThoaiID` = VALUES(`CuocHoiThoaiID`);
+
+INSERT INTO `tinnhan` (`TinNhanID`, `CuocHoiThoaiID`, `NguoiGuiID`, `NoiDung`, `ThoiGian`, `DaXoa`) VALUES
+(2164, 233, 2, 'Chào bạn, mình đã ký xác nhận hợp đồng điện tử rồi nhé.', '2026-09-05 07:25:17', 0),
+(2165, 233, 259, 'Dạ em chào chị Hằng! Em đã nhận được thông tin xác nhận. Chúc chị chuyển về nhà mới thật nhiều may mắn ạ!', '2026-09-05 08:25:17', 0),
+(2166, 233, 2, 'Cảm ơn em đã tư vấn nhiệt tình nhé!', '2026-09-05 08:55:17', 0),
+(2167, 234, 245, 'Chào bạn, lát 18:30 mình ghé xem căn hộ nhé.', '2026-09-05 09:40:17', 0),
+(2168, 234, 259, 'Dạ vâng anh Kiên, em đang chuẩn bị thẻ thang máy và sẵn sàng đón anh tại sảnh ạ!', '2026-09-05 09:55:17', 0)
+ON DUPLICATE KEY UPDATE `TinNhanID` = VALUES(`TinNhanID`);
+
+-- 12. Thông báo hệ thống cho tk_nvbh1
+INSERT INTO `thongbao` (`ThongBaoID`, `NguoiNhanID`, `Kenh`, `TieuDe`, `NoiDung`, `Payload`, `TrangThai`, `SoLanThu`, `TaoLuc`, `GuiLuc`) VALUES
+(153, 259, 'in-app', 'Đăng nhập thành công', 'Tài khoản của bạn vừa đăng nhập thành công vào hệ thống lúc 17:17:40 5/9/2026.', '{"type":"tin-dang","subType":"dang_nhap","icon":"🔐"}', 'ChuaDoc', 0, '2026-09-05 10:17:40', '2026-09-05 10:17:40'),
+(154, 259, 'in-app', 'Lịch hẹn sắp diễn ra', 'Bạn có cuộc hẹn dẫn khách Thám Tử Kiên xem phòng LM81-2104 trong chưa đầy 2 giờ nữa.', '{"type":"cuoc-hen","icon":"📅"}', 'ChuaDoc', 0, '2026-09-05 10:25:17', '2026-09-05 10:25:17'),
+(155, 259, 'in-app', 'Hợp đồng đã xác thực', 'Hợp đồng thuê căn hộ LM81-1205 đã được xác thực thành công. Hoa hồng của bạn là 6.300.000 ₫.', '{"type":"hop-dong","icon":"🎉"}', 'DaDoc', 0, '2026-09-03 10:25:17', '2026-09-03 10:25:17'),
+(156, 259, 'in-app', 'Giao dịch cọc thành công', 'Khách hàng Thành Nam đã hoàn tất cọc an ninh 12.000.000 ₫ cho phòng LM81-0802.', '{"type":"giao-dich","icon":"💰"}', 'DaDoc', 0, '2026-09-04 10:25:17', '2026-09-04 10:25:17')
+ON DUPLICATE KEY UPDATE `ThongBaoID` = VALUES(`ThongBaoID`);
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
