@@ -4,6 +4,8 @@
   "description": "Hệ thống quản lý bất động sản tích hợp dự đoán giá bằng học máy",
   "scripts": {
     "dev": "npm --prefix client run dev",
+    "test": "npm --prefix server test",
+    "test:client": "npm --prefix client test",
     "download-kyc-models": "node scripts/download-kyc-models.js",
     "setup-kyc": "npm run download-kyc-models",
     "seed:local": "node server/scripts/seed_local.js"

@@ -7,8 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Scratch / Temp files (browser profiles, one-off scripts)
+# Scratch / Temp files (browser profiles, one-off scripts, debug dumps)
 scratch/
+temp_*
+tmp_*
+_tmp_*
+*output*.txt
+*.tmp
+current_diff.txt
+*-grep-*.txt
 
 node_modules
 dist

@@ -46,13 +46,18 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "rootDir": "..",
     "testMatch": [
-      "**/tests/**/*.test.js"
+      "<rootDir>/tests/**/*.test.js"
+    ],
+    "moduleDirectories": [
+      "<rootDir>/server/node_modules",
+      "node_modules"
     ],
     "collectCoverageFrom": [
-      "controllers/**/*.js",
-      "models/**/*.js",
-      "services/**/*.js"
+      "server/controllers/**/*.js",
+      "server/models/**/*.js",
+      "server/services/**/*.js"
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
