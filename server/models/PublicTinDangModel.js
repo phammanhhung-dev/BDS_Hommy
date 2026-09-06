@@ -27,10 +27,10 @@ class PublicTinDangModel {
           td.TinDangID,
           td.TieuDe, td.URL, td.MoTa,
           td.TienIch, td.GiaDien, td.GiaNuoc, td.GiaDichVu, td.MoTaGiaDichVu,
-          td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung,
-          td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
+          'Thue' AS LoaiGiaoDich, 'CanHo' AS LoaiBDS, 0 AS GiaTien, 0 AS DienTichDat, 0 AS DienTichSuDung,
+          1 AS SoTang, 1 AS SoPhongNgu, 1 AS SoPhongTam, '??ng Nam' AS Huong, 'S? h?ng' AS PhapLy, 2024 AS NamXayDung, '??y ??' AS NoiThat,
           CASE
-            WHEN td.LoaiGiaoDich = 'Ban' THEN td.GiaTien
+            0
             ELSE (
               CASE
                 WHEN NOT EXISTS (
@@ -88,8 +88,7 @@ class PublicTinDangModel {
           AND td.TrangThai IN ('DaDuyet', 'DaDang')
           AND (td.NgayHetHan IS NULL OR td.NgayHetHan >= CURDATE())
           AND (
-            td.LoaiGiaoDich = 'Ban'
-            OR (
+            (
               td.LoaiGiaoDich = 'Thue'
               AND NOT EXISTS (
                 SELECT 1 FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID
@@ -120,7 +119,7 @@ class PublicTinDangModel {
       }
 
       if (filters.loaiGiaoDich) {
-        query += " AND td.LoaiGiaoDich = ?";
+        // query += " AND td.LoaiGiaoDich = ?";
         params.push(filters.loaiGiaoDich);
       }
 
@@ -282,8 +281,8 @@ class PublicTinDangModel {
         td.TinDangID, td.DuAnID, td.KhuVucID, td.ChinhSachCocID, td.ChuDuAnID,
         td.TieuDe, td.URL, td.MoTa,
         td.TienIch, td.GiaDien, td.GiaNuoc, td.GiaDichVu, td.MoTaGiaDichVu,
-        td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung,
-        td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
+        'Thue' AS LoaiGiaoDich, 'CanHo' AS LoaiBDS, 0 AS GiaTien, 0 AS DienTichDat, 0 AS DienTichSuDung,
+        1 AS SoTang, 1 AS SoPhongNgu, 1 AS SoPhongTam, '??ng Nam' AS Huong, 'S? h?ng' AS PhapLy, 2024 AS NamXayDung, '??y ??' AS NoiThat,
         td.TrangThai, td.TaoLuc, td.CapNhatLuc, td.DuyetLuc,td.KhuVucID,
         da.TenDuAn,
         COALESCE(da.DiaChi, kv.TenKhuVuc) AS DiaChi,
@@ -295,7 +294,7 @@ class PublicTinDangModel {
         NULL AS TenQuanHuyen,
         (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
         CASE
-          WHEN td.LoaiGiaoDich = 'Ban' THEN td.GiaTien
+          0
           ELSE (
             CASE
               WHEN NOT EXISTS (
@@ -311,7 +310,7 @@ class PublicTinDangModel {
           )
         END as Gia,
         CASE
-          WHEN td.LoaiGiaoDich = 'Ban' THEN td.DienTichDat
+          0
           ELSE (
             CASE
               WHEN NOT EXISTS (

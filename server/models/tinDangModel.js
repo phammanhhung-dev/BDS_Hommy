@@ -35,8 +35,8 @@ class TinDangModel {
         SELECT
           td.TinDangID, td.DuAnID, td.KhuVucID, td.ChinhSachCocID,
           td.TieuDe, td.URL, td.MoTa, td.TienIch, td.GiaDien, td.GiaNuoc, td.GiaDichVu, td.MoTaGiaDichVu,
-          td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung,
-          td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
+          'Thue' AS LoaiGiaoDich, 'CanHo' AS LoaiBDS, 0 AS GiaTien, 0 AS DienTichDat, 0 AS DienTichSuDung,
+          1 AS SoTang, 1 AS SoPhongNgu, 1 AS SoPhongTam, '??ng Nam' AS Huong, 'S? h?ng' AS PhapLy, 2024 AS NamXayDung, '??y ??' AS NoiThat,
           (
             SELECT MIN(pt.PhongID) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID
           ) AS PhongID,
@@ -123,8 +123,8 @@ class TinDangModel {
         SELECT
           td.TinDangID, td.DuAnID, td.KhuVucID, td.ChinhSachCocID,
           td.TieuDe, td.URL, td.MoTa, td.TienIch, td.GiaDien, td.GiaNuoc, td.GiaDichVu, td.MoTaGiaDichVu,
-          td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung,
-          td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
+          'Thue' AS LoaiGiaoDich, 'CanHo' AS LoaiBDS, 0 AS GiaTien, 0 AS DienTichDat, 0 AS DienTichSuDung,
+          1 AS SoTang, 1 AS SoPhongNgu, 1 AS SoPhongTam, '??ng Nam' AS Huong, 'S? h?ng' AS PhapLy, 2024 AS NamXayDung, '??y ??' AS NoiThat,
           (
             SELECT MIN(COALESCE(pt.GiaTinDang, p.GiaChuan))
             FROM phong_tindang pt

@@ -94,8 +94,8 @@ class ChuDuAnModel {
           ) as DienTich,
           td.TrangThai,
           td.LyDoTuChoi, td.TaoLuc, td.CapNhatLuc, td.DuyetLuc,
-          td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung,
-          td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
+          'Thue' AS LoaiGiaoDich, 'CanHo' AS LoaiBDS, 0 AS GiaTien, 0 AS DienTichDat, 0 AS DienTichSuDung,
+          1 AS SoTang, 1 AS SoPhongNgu, 1 AS SoPhongTam, '??ng Nam' AS Huong, 'S? h?ng' AS PhapLy, 2024 AS NamXayDung, '??y ??' AS NoiThat,
           da.TenDuAn, da.DiaChi AS DiaChi, da.YeuCauPheDuyetChu, kv.TenKhuVuc AS TenKhuVuc, NULL AS TenTinh,
           (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
           (SELECT COUNT(*) FROM phong_tindang pt 
@@ -172,8 +172,8 @@ class ChuDuAnModel {
           ) as DienTich,
           td.TrangThai, td.LyDoTuChoi, td.TaoLuc, td.CapNhatLuc, td.DuyetLuc,
           td.ChuDuAnID as ChuDuAnID,
-          td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung,
-          td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
+          'Thue' AS LoaiGiaoDich, 'CanHo' AS LoaiBDS, 0 AS GiaTien, 0 AS DienTichDat, 0 AS DienTichSuDung,
+          1 AS SoTang, 1 AS SoPhongNgu, 1 AS SoPhongTam, '??ng Nam' AS Huong, 'S? h?ng' AS PhapLy, 2024 AS NamXayDung, '??y ??' AS NoiThat,
           da.DuAnID as DuAnID, da.TenDuAn, da.DiaChi as DiaChiDuAn, da.ViDo, da.KinhDo,
           da.YeuCauPheDuyetChu, -- <-- thêm trường ở đây
           kv.TenKhuVuc AS TenKhuVuc, NULL AS TenTinh, csc.TenChinhSach, csc.MoTa as MoTaChinhSach,
