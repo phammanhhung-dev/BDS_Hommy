@@ -3,7 +3,7 @@
  */
 
 const MauHopDongModel = require('../models/MauHopDongModel');
-const TinDangModel = require('../models/TinDangModel');
+const TinDangModel = require('../models/tinDangModel');
 const NguoiDungModel = require('../models/NguoiDungModel');
 
 class HopDongTemplateService {

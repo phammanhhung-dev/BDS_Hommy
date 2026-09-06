@@ -7,7 +7,7 @@
 const NhanVienBanHangService = require('../services/NhanVienBanHangService');
 const LichLamViecModel = require('../models/LichLamViecModel');
 const BaoCaoThuNhapModel = require('../models/BaoCaoThuNhapModel');
-const CuocHenModel = require('../models/CuocHenModel');
+const CuocHenModel = require('../models/cuocHenModel');
 const NhatKyHeThongService = require('../services/NhatKyHeThongService');
 
 class NhanVienBanHangController {

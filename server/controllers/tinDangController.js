@@ -4,7 +4,7 @@
  * Tách từ ChuDuAnController.js theo domain-driven design
  */
 
-const TinDangModel = require('../models/TinDangModel');
+const TinDangModel = require('../models/tinDangModel');
 const NhatKyHeThongService = require('../services/NhatKyHeThongService');
 
 class TinDangController {
