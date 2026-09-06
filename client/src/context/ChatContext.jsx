@@ -46,7 +46,7 @@ export const ChatProvider = ({ children }) => {
       if (response.status === 401) {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        window.location.href = '/login';
+        if (!window.location.pathname.startsWith('/login')) { window.location.href = '/login'; }
         return;
       }
 
@@ -90,7 +90,7 @@ export const ChatProvider = ({ children }) => {
       if (response.status === 401) {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        window.location.href = '/login';
+        if (!window.location.pathname.startsWith('/login')) { window.location.href = '/login'; }
         return null;
       }
 

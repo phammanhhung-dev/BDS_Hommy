@@ -38,7 +38,7 @@ axiosClient.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      if (!window.location.pathname.startsWith('/login')) { window.location.href = '/login'; }
     }
 
     // Ghi log lỗi hoặc xử lý lỗi chung

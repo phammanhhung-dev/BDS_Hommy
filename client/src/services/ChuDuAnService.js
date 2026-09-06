@@ -30,7 +30,7 @@ const handleResponse = async (response) => {
     if (response.status === 401) {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      if (!window.location.pathname.startsWith('/login')) { window.location.href = '/login'; }
       throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
     }
 

@@ -193,7 +193,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     console.log('👋 [Auth] Đã đăng xuất');
     // Force reload để clear React state hoàn toàn
-    window.location.href = '/login';
+    if (!window.location.pathname.startsWith('/login')) { window.location.href = '/login'; }
   };
 
   // Cập nhật user sau khi đăng nhập
