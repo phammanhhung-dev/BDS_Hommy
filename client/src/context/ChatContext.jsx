@@ -30,6 +30,12 @@ export const ChatProvider = ({ children }) => {
    */
   const loadConversations = useCallback(async () => {
     try {
+      const token = localStorage.getItem('token');
+      if (!token || token === 'null' || token === 'undefined') {
+        setConversations([]);
+        return;
+      }
+
       setLoading(true);
       const authHeader = getAuthHeaderValue();
       const response = await fetch(
@@ -46,7 +52,7 @@ export const ChatProvider = ({ children }) => {
       if (response.status === 401) {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        if (!window.location.pathname.startsWith('/login')) { window.location.href = '/login'; }
+        setConversations([]);
         return;
       }
 

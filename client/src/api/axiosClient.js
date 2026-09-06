@@ -38,7 +38,11 @@ axiosClient.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
-      if (!window.location.pathname.startsWith('/login')) { window.location.href = '/login'; }
+      const publicPaths = ['/', '/login', '/dangky', '/nha-dat-ban', '/nha-dat-cho-thue', '/du-an', '/wiki-bds', '/phan-tich-danh-gia', '/tin-tuc-bds'];
+      const isPublicPath = publicPaths.some(p => window.location.pathname === p || window.location.pathname.startsWith('/bai-viet/') || window.location.pathname.startsWith('/tin-dang/') || window.location.pathname.startsWith('/du-an/'));
+      if (!isPublicPath && !window.location.pathname.startsWith('/login')) {
+        window.location.href = '/login';
+      }
     }
 
     // Ghi log lỗi hoặc xử lý lỗi chung

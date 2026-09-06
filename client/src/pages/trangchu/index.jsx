@@ -95,22 +95,93 @@ const CATEGORY_ROUTES = {
   office: "/nha-dat-cho-thue",
 };
 
-const NEWS_ITEMS = [
+const FALLBACK_NEWS = [
   {
-    slug: "xu-huong-bat-dong-san-2025",
-    title: "Xu hướng bất động sản năm 2025: Đầu tư vào đâu?",
-    date: "Hôm nay",
-    image:
-      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=300&q=80",
+    BaiVietID: 1,
+    Slug: "top-10-khu-vuc-sinh-vien-tphcm-2024",
+    TieuDe: "Top 10 khu vực sinh viên tại TP.HCM năm 2024",
+    TomTat: "Khám phá những khu vực lý tưởng cho sinh viên với giá cả hợp lý và tiện nghi đầy đủ...",
+    HinhAnh: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80",
+    TaoLuc: new Date("2025-07-15T08:00:00Z")
   },
   {
-    slug: "meo-tim-bat-dong-san-ngan-sach",
-    title: "Mẹo tìm kiếm bất động sản phù hợp với ngân sách",
-    date: "2 ngày trước",
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=300&q=80",
+    BaiVietID: 2,
+    Slug: "meo-tim-phong-tro-gia-re",
+    TieuDe: "Mẹo tìm phòng trọ giá rẻ nhưng chất lượng",
+    TomTat: "Bạn đang tìm kiếm phòng trọ tốt với ngân sách eo hẹp? Hãy bỏ túi những bí quyết này...",
+    HinhAnh: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    TaoLuc: new Date("2025-07-20T10:30:00Z")
   },
+  {
+    BaiVietID: 3,
+    Slug: "top-5-tien-ich-can-ho",
+    TieuDe: "Top 5 dịch vụ tiện ích xung quanh khu căn hộ",
+    TomTat: "Những tiện ích nào bạn nên xem xét trước khi chọn thuê nhà? Hãy cùng tìm hiểu...",
+    HinhAnh: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    TaoLuc: new Date("2025-07-25T14:15:00Z")
+  },
+  {
+    BaiVietID: 4,
+    Slug: "xu-huong-bat-dong-san-2025",
+    TieuDe: "Xu hướng bất động sản năm 2025: Đầu tư vào đâu?",
+    TomTat: "Tổng quan các xu hướng chính của thị trường bất động sản 2025 và dòng vốn thông minh...",
+    HinhAnh: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=600&q=80",
+    TaoLuc: new Date("2025-08-01T09:00:00Z")
+  }
+];
 
+const FALLBACK_ANALYSIS = [
+  {
+    BaiVietID: 11,
+    Slug: "phan-tich-thi-truong-q2-2024",
+    TieuDe: "Phân tích thị trường nhà đất quý 2",
+    TomTat: "Thị trường nhà đất có những biến động gì trong quý 2? Cập nhật các xu hướng mới nhất..."
+  },
+  {
+    BaiVietID: 12,
+    Slug: "gia-bat-dong-san-thang-7",
+    TieuDe: "Giá bất động sản tháng 7",
+    TomTat: "Phân tích chi tiết biến động giá bất động sản tại TP. HCM trong tháng 7..."
+  },
+  {
+    BaiVietID: 13,
+    Slug: "xu-huong-dau-tu-2025",
+    TieuDe: "Xu hướng đầu tư năm 2025",
+    TomTat: "Nên đầu tư vào loại hình bất động sản nào trong giai đoạn hiện tại để tối ưu dòng tiền?"
+  },
+  {
+    BaiVietID: 14,
+    Slug: "khu-vuc-phat-trien-tiem-nang",
+    TieuDe: "Khu vực phát triển trọng điểm",
+    TomTat: "Top các khu vực có tiềm năng phát triển hạ tầng và gia tăng giá trị mạnh nhất..."
+  }
+];
+
+const FALLBACK_WIKI = [
+  {
+    BaiVietID: 5,
+    Slug: "luu-y-ky-hop-dong-thue-nha",
+    TieuDe: "Lưu ý khi ký hợp đồng thuê nhà",
+    TomTat: "Những điều bạn cần kiểm tra kỹ lưỡng trước khi ký tên vào hợp đồng thuê nhà..."
+  },
+  {
+    BaiVietID: 6,
+    Slug: "cach-trang-tri-phong-tro-20m2",
+    TieuDe: "Cách trang trí phòng trọ 20m² đẹp mắt",
+    TomTat: "Với diện tích nhỏ, làm thế nào để bạn có một căn phòng vừa đẹp vừa tiện nghi?..."
+  },
+  {
+    BaiVietID: 7,
+    Slug: "cach-dang-tin-hieu-qua",
+    TieuDe: "Cách đăng tin bất động sản hiệu quả",
+    TomTat: "Hướng dẫn chi tiết cách đăng tin bất động sản thu hút và nhanh chóng có khách chốt."
+  },
+  {
+    BaiVietID: 8,
+    Slug: "kinh-nghiem-mua-nha-lan-dau",
+    TieuDe: "Kinh nghiệm mua nhà lần đầu",
+    TomTat: "Cẩm nang cho người mua nhà lần đầu: cân đối tài chính, kiểm tra quy hoạch và pháp lý."
+  }
 ];
 
 const FEATURED_PROJECTS = [
@@ -185,9 +256,9 @@ function TrangChu() {
   const [tindangs, setTindangs] = useState([]);
   const [stats, setStats] = useState(null);
   const [projects, setProjects] = useState([]);
-  const [newsPosts, setNewsPosts] = useState([]);
-  const [wikiPosts, setWikiPosts] = useState([]);
-  const [analysisPosts, setAnalysisPosts] = useState([]);
+  const [newsPosts, setNewsPosts] = useState(FALLBACK_NEWS);
+  const [wikiPosts, setWikiPosts] = useState(FALLBACK_WIKI);
+  const [analysisPosts, setAnalysisPosts] = useState(FALLBACK_ANALYSIS);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [addingFavId, setAddingFavId] = useState(null);
@@ -232,9 +303,15 @@ function TrangChu() {
 
   const fetchNews = async () => {
     try {
-      const res = await baiVietPublicApi.getAll({ loai: "TinTuc", limit: 2 });
+      const res = await baiVietPublicApi.getAll({ loai: "TinTuc", limit: 4 });
+      let list = [];
       if (res?.data?.success && Array.isArray(res.data.data)) {
-        setNewsPosts(res.data.data);
+        list = res.data.data;
+      } else if (Array.isArray(res?.data)) {
+        list = res.data;
+      }
+      if (list.length > 0) {
+        setNewsPosts(list);
       }
     } catch (err) {
       console.error("Lỗi lấy tin tức trang chủ:", err);
@@ -244,8 +321,14 @@ function TrangChu() {
   const fetchWiki = async () => {
     try {
       const res = await baiVietPublicApi.getAll({ loai: "Wiki", limit: 4 });
+      let list = [];
       if (res?.data?.success && Array.isArray(res.data.data)) {
-        setWikiPosts(res.data.data);
+        list = res.data.data;
+      } else if (Array.isArray(res?.data)) {
+        list = res.data;
+      }
+      if (list.length > 0) {
+        setWikiPosts(list);
       }
     } catch (err) {
       console.error("Lỗi lấy cẩm nang trang chủ:", err);
@@ -255,8 +338,14 @@ function TrangChu() {
   const fetchAnalysis = async () => {
     try {
       const res = await baiVietPublicApi.getAll({ loai: "PhanTich", limit: 4 });
+      let list = [];
       if (res?.data?.success && Array.isArray(res.data.data)) {
-        setAnalysisPosts(res.data.data);
+        list = res.data.data;
+      } else if (Array.isArray(res?.data)) {
+        list = res.data;
+      }
+      if (list.length > 0) {
+        setAnalysisPosts(list);
       }
     } catch (err) {
       console.error("Lỗi lấy phân tích trang chủ:", err);
@@ -499,33 +588,33 @@ function TrangChu() {
                 <>
                   {/* Left: Featured Large Article */}
                   <div className="top-news-featured">
-                    <Link to={`/bai-viet/${newsPosts[0].BaiVietID || newsPosts[0].id}`} className="top-news-featured__img-link">
+                    <Link to={`/bai-viet/${newsPosts[0].Slug || newsPosts[0].BaiVietID || newsPosts[0].id}`} className="top-news-featured__img-link">
                       <img src={newsPosts[0].HinhAnh} alt={newsPosts[0].TieuDe} className="top-news-featured__img" />
                     </Link>
                     <div className="top-news-featured__content">
                       <h3 className="top-news-featured__title">
-                        <Link to={`/bai-viet/${newsPosts[0].BaiVietID || newsPosts[0].id}`}>{newsPosts[0].TieuDe}</Link>
+                        <Link to={`/bai-viet/${newsPosts[0].Slug || newsPosts[0].BaiVietID || newsPosts[0].id}`}>{newsPosts[0].TieuDe}</Link>
                       </h3>
                       <p className="top-news-featured__summary">{newsPosts[0].TomTat || newsPosts[0].MoTa}</p>
                       <time className="top-news-featured__time">
-                        {new Date(newsPosts[0].TaoLuc).toLocaleDateString("vi-VN")}
+                        {newsPosts[0].TaoLuc ? new Date(newsPosts[0].TaoLuc).toLocaleDateString("vi-VN") : "Mới cập nhật"}
                       </time>
                     </div>
                   </div>
 
                   {/* Right: Small Articles List */}
                   <div className="top-news-list">
-                    {newsPosts.slice(1, 4).map((item) => (
-                      <article key={item.BaiVietID} className="top-news-item">
-                        <Link to={`/bai-viet/${item.BaiVietID || item.id}`} className="top-news-item__img-link">
+                    {newsPosts.slice(1, 4).map((item, idx) => (
+                      <article key={item.BaiVietID || item.Slug || idx} className="top-news-item">
+                        <Link to={`/bai-viet/${item.Slug || item.BaiVietID || item.id}`} className="top-news-item__img-link">
                           <img src={item.HinhAnh} alt={item.TieuDe} className="top-news-item__img" />
                         </Link>
                         <div className="top-news-item__content">
                           <h4 className="top-news-item__title">
-                            <Link to={`/bai-viet/${item.BaiVietID || item.id}`}>{item.TieuDe}</Link>
+                            <Link to={`/bai-viet/${item.Slug || item.BaiVietID || item.id}`}>{item.TieuDe}</Link>
                           </h4>
                           <time className="top-news-item__time">
-                            {new Date(item.TaoLuc).toLocaleDateString("vi-VN")}
+                            {item.TaoLuc ? new Date(item.TaoLuc).toLocaleDateString("vi-VN") : "Mới cập nhật"}
                           </time>
                         </div>
                       </article>
@@ -533,7 +622,7 @@ function TrangChu() {
                   </div>
                 </>
               ) : (
-                <div className="top-news-empty">Đang tải tin tức...</div>
+                <div className="top-news-empty">Chưa có tin tức nào</div>
               )}
             </div>
           </div>
@@ -943,7 +1032,7 @@ function TrangChu() {
             </div>
             <div className="analysis-grid">
               {analysisPosts.length > 0 ? (
-                analysisPosts.map((item, index) => {
+                analysisPosts.slice(0, 4).map((item, index) => {
                   const icons = [
                     <FaBuilding size={40} />,
                     <FaHome size={40} />,
@@ -952,20 +1041,20 @@ function TrangChu() {
                   ];
                   const icon = icons[index % 4];
                   return (
-                    <article key={item.BaiVietID} className="analysis-card">
+                    <article key={item.BaiVietID || item.Slug || index} className="analysis-card">
                       <div className="analysis-card__icon" aria-hidden="true">
                         {icon}
                       </div>
                       <h3 className="analysis-card__title">{item.TieuDe}</h3>
                       <p className="analysis-card__desc">{item.TomTat}</p>
-                      <Link to={`/bai-viet/${item.BaiVietID}`} className="analysis-card__link">
+                      <Link to={`/bai-viet/${item.Slug || item.BaiVietID || index}`} className="analysis-card__link">
                         Xem chi tiết <FaArrowRight size={12} aria-hidden="true" />
                       </Link>
                     </article>
                   );
                 })
               ) : (
-                <div className="analysis-empty">Đang tải phân tích...</div>
+                <div className="analysis-empty">Chưa có bài phân tích nào</div>
               )}
             </div>
           </div>
@@ -983,14 +1072,14 @@ function TrangChu() {
             </div>
             <nav className="wiki-grid" aria-label="Wiki bất động sản">
               {wikiPosts.length > 0 ? (
-                wikiPosts.map((item) => (
-                  <Link to={`/bai-viet/${item.BaiVietID}`} key={item.BaiVietID} className="wiki-card">
+                wikiPosts.slice(0, 4).map((item, idx) => (
+                  <Link to={`/bai-viet/${item.Slug || item.BaiVietID || idx}`} key={item.BaiVietID || item.Slug || idx} className="wiki-card">
                     <h3 className="wiki-card__title">{item.TieuDe}</h3>
                     <p className="wiki-card__desc">{item.TomTat}</p>
                   </Link>
                 ))
               ) : (
-                <div className="wiki-empty">Đang tải cẩm nang...</div>
+                <div className="wiki-empty">Chưa có bài viết cẩm nang nào</div>
               )}
             </nav>
           </div>
