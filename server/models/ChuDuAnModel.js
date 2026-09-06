@@ -96,15 +96,14 @@ class ChuDuAnModel {
           td.LyDoTuChoi, td.TaoLuc, td.CapNhatLuc, td.DuyetLuc,
           td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung,
           td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
-          da.TenDuAn, da.DiaChi AS DiaChi, da.YeuCauPheDuyetChu, kv.CommuneName AS TenKhuVuc, np.ProvinceName AS TenTinh,
+          da.TenDuAn, da.DiaChi AS DiaChi, da.YeuCauPheDuyetChu, kv.TenKhuVuc AS TenKhuVuc, NULL AS TenTinh,
           (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
           (SELECT COUNT(*) FROM phong_tindang pt 
            JOIN phong p ON pt.PhongID = p.PhongID 
            WHERE pt.TinDangID = td.TinDangID AND p.TrangThai = 'Trong') as SoPhongTrong
         FROM tindang td
         LEFT JOIN duan da ON td.DuAnID = da.DuAnID
-        LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
-        LEFT JOIN legacy_provinces np ON kv.ProvinceID = np.ProvinceID
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
         WHERE td.ChuDuAnID = ?
         AND td.TrangThai != 'LuuTru'
       `;
@@ -177,7 +176,7 @@ class ChuDuAnModel {
           td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
           da.DuAnID as DuAnID, da.TenDuAn, da.DiaChi as DiaChiDuAn, da.ViDo, da.KinhDo,
           da.YeuCauPheDuyetChu, -- <-- thêm trường ở đây
-          kv.CommuneName AS TenKhuVuc, np.ProvinceName AS TenTinh, csc.TenChinhSach, csc.MoTa as MoTaChinhSach,
+          kv.TenKhuVuc AS TenKhuVuc, NULL AS TenTinh, csc.TenChinhSach, csc.MoTa as MoTaChinhSach,
           nd.TenDayDu as TenChuDuAn, nd.Email as EmailChuDuAn,
           (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
           (SELECT COUNT(*) FROM phong_tindang pt
@@ -185,8 +184,7 @@ class ChuDuAnModel {
            WHERE pt.TinDangID = td.TinDangID AND p.TrangThai = 'Trong') as SoPhongTrong
         FROM tindang td
         LEFT JOIN duan da ON td.DuAnID = da.DuAnID
-        LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
-        LEFT JOIN legacy_provinces np ON kv.ProvinceID = np.ProvinceID
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
         LEFT JOIN chinhsachcoc csc ON td.ChinhSachCocID = csc.ChinhSachCocID
         LEFT JOIN nguoidung nd ON td.ChuDuAnID = nd.NguoiDungID
         WHERE td.TinDangID = ?

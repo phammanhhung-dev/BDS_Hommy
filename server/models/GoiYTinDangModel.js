@@ -444,7 +444,7 @@ class GoiYTinDangModel {
          UNION ALL
          SELECT 
            lc.CommuneID AS KhuVucID, 
-           CONCAT(lc.CommuneName, IF(nd.DistrictName IS NOT NULL AND lc.CommuneName NOT LIKE CONCAT('%(', nd.DistrictName, ')%'), CONCAT(' (', nd.DistrictName, ')'), '')) AS TenKhuVuc, 
+           CONCAT(lc.CommuneName, IF(nNULL IS NOT NULL AND lc.CommuneName NOT LIKE CONCAT('%(', nNULL, ')%'), CONCAT(' (', nNULL, ')'), '')) AS TenKhuVuc, 
            lc.ProvinceID AS ParentKhuVucID 
          FROM legacy_communes lc
          LEFT JOIN new_districts nd ON lc.DistrictID = nd.DistrictID

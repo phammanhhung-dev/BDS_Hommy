@@ -73,19 +73,17 @@ class PublicTinDangModel {
           da.TenDuAn,
           da.ViDo AS ViDo,
           da.KinhDo AS KinhDo,
-          COALESCE(da.DiaChi, CONCAT_WS(', ', kv.CommuneName, d.DistrictName, np.ProvinceName)) AS DiaChi,
-          kv.CommuneName AS TenKhuVuc,
-          np.ProvinceName AS TenTinh,
-          d.DistrictName AS TenQuanHuyen,
+          COALESCE(da.DiaChi, kv.TenKhuVuc) AS DiaChi,
+          kv.TenKhuVuc AS TenKhuVuc,
+          NULL AS TenTinh,
+          NULL AS TenQuanHuyen,
           (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
           (SELECT COUNT(*) FROM phong_tindang pt
              JOIN phong p ON pt.PhongID = p.PhongID
              WHERE pt.TinDangID = td.TinDangID AND p.TrangThai = 'Trong') as SoPhongTrong
         FROM tindang td
         LEFT JOIN duan da ON td.DuAnID = da.DuAnID
-        LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
-        LEFT JOIN legacy_provinces np ON kv.ProvinceID = np.ProvinceID
-        LEFT JOIN new_districts d ON kv.DistrictID = d.DistrictID
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
         WHERE td.TrangThai != 'LuuTru'
           AND td.TrangThai IN ('DaDuyet', 'DaDang')
           AND (td.NgayHetHan IS NULL OR td.NgayHetHan >= CURDATE())
@@ -288,13 +286,13 @@ class PublicTinDangModel {
         td.SoTang, td.SoPhongNgu, td.SoPhongTam, td.Huong, td.PhapLy, td.NamXayDung, td.NoiThat,
         td.TrangThai, td.TaoLuc, td.CapNhatLuc, td.DuyetLuc,td.KhuVucID,
         da.TenDuAn,
-        COALESCE(da.DiaChi, CONCAT_WS(', ', kv.CommuneName, d.DistrictName, np.ProvinceName)) AS DiaChi,
+        COALESCE(da.DiaChi, kv.TenKhuVuc) AS DiaChi,
         da.DiaChi AS DiaChiDuAn, da.YeuCauPheDuyetChu,
         da.ViDo, da.KinhDo,
         da.SoThangCocToiThieu,
-        kv.CommuneName AS TenKhuVuc,
-        np.ProvinceName AS TenTinh,
-        d.DistrictName AS TenQuanHuyen,
+        kv.TenKhuVuc AS TenKhuVuc,
+        NULL AS TenTinh,
+        NULL AS TenQuanHuyen,
         (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
         CASE
           WHEN td.LoaiGiaoDich = 'Ban' THEN td.GiaTien
@@ -330,9 +328,7 @@ class PublicTinDangModel {
         END as DienTich
       FROM tindang td
       LEFT JOIN duan da ON td.DuAnID = da.DuAnID
-      LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
-      LEFT JOIN legacy_provinces np ON kv.ProvinceID = np.ProvinceID
-      LEFT JOIN new_districts d ON kv.DistrictID = d.DistrictID
+      LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
       WHERE td.TinDangID = ?
         AND td.TrangThai != 'LuuTru'
         AND td.TrangThai IN ('DaDuyet', 'DaDang')
@@ -437,8 +433,7 @@ class PublicTinDangModel {
       const [tinhRows] = await db.execute(`
         SELECT np.ProvinceName as TenTinh, COUNT(*) as SoLuong
         FROM tindang td
-        LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
-        LEFT JOIN legacy_provinces np ON kv.ProvinceID = np.ProvinceID
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
         WHERE td.TrangThai IN ('DaDuyet', 'DaDang')
           AND (td.NgayHetHan IS NULL OR td.NgayHetHan >= CURDATE())
           AND np.ProvinceName IS NOT NULL

@@ -100,7 +100,7 @@ class TinDangOperatorModel {
           da.DiaChi as DiaChiDuAn,
           da.BangHoaHong as DuAn_BangHoaHong,
           da.SoThangCocToiThieu as DuAn_SoThangCocToiThieu,
-          kv.CommuneName as TenKhuVuc,
+          kv.TenKhuVuc as TenKhuVuc,
           nd.NguoiDungID as ChuDuAnID,
           nd.TenDayDu as TenChuDuAn,
           nd.Email as EmailChuDuAn,
@@ -108,7 +108,7 @@ class TinDangOperatorModel {
           (SELECT COUNT(*) FROM phong_tindang WHERE TinDangID = td.TinDangID) as SoPhong
         FROM tindang td
         LEFT JOIN duan da ON td.DuAnID = da.DuAnID
-        LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
         INNER JOIN nguoidung nd ON COALESCE(da.ChuDuAnID, td.ChuDuAnID) = nd.NguoiDungID
         WHERE ${whereClause}
         ORDER BY td.TaoLuc ASC
@@ -162,7 +162,7 @@ class TinDangOperatorModel {
           da.DiaChi as DiaChiDuAn,
           da.ViDo,
           da.KinhDo,
-          kv.CommuneName as TenKhuVuc,
+          kv.TenKhuVuc as TenKhuVuc,
           nd.NguoiDungID as ChuDuAnID,
           nd.TenDayDu as TenChuDuAn,
           nd.Email as EmailChuDuAn,
@@ -173,7 +173,7 @@ class TinDangOperatorModel {
           csc.TenChinhSach as TenChinhSachCoc
         FROM tindang td
         LEFT JOIN duan da ON td.DuAnID = da.DuAnID
-        LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
         INNER JOIN nguoidung nd ON COALESCE(da.ChuDuAnID, td.ChuDuAnID) = nd.NguoiDungID
         LEFT JOIN chinhsachcoc csc ON td.ChinhSachCocID = csc.ChinhSachCocID
         WHERE td.TinDangID = ?

@@ -57,15 +57,15 @@ class TinDangModel {
           ) as DienTich,
           td.TrangThai,
           td.LyDoTuChoi, td.TaoLuc, td.CapNhatLuc, td.DuyetLuc,
-          da.TenDuAn, da.DiaChi AS DiaChi, da.YeuCauPheDuyetChu, kv.CommuneName AS TenKhuVuc,
+          da.TenDuAn, da.DiaChi AS DiaChi, da.YeuCauPheDuyetChu, kv.TenKhuVuc AS TenKhuVuc,
           (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
           (SELECT COUNT(*) FROM phong_tindang pt
            JOIN phong p ON pt.PhongID = p.PhongID
            WHERE pt.TinDangID = td.TinDangID AND p.TrangThai = 'Trong') as SoPhongTrong
         FROM tindang td
         LEFT JOIN duan da ON td.DuAnID = da.DuAnID
-         LEFT JOIN legacy_communes kv ON td.KhuVucID = kv.CommuneID
-         LEFT JOIN legacy_provinces np ON kv.ProvinceID = np.ProvinceID
+         LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
+         
         WHERE 1=1
       `;
       
@@ -140,7 +140,7 @@ class TinDangModel {
           td.TrangThai, td.LyDoTuChoi, td.TaoLuc, td.CapNhatLuc, td.DuyetLuc,
           da.DuAnID as DuAnID, da.ChuDuAnID as ChuDuAnID, da.TenDuAn, da.DiaChi as DiaChiDuAn, da.ViDo, da.KinhDo,
           da.YeuCauPheDuyetChu,
-             kv.CommuneName as TenKhuVuc, np.ProvinceName as TenTinh, csc.TenChinhSach, csc.MoTa as MoTaChinhSach,
+             kv.TenKhuVuc as TenKhuVuc, NULL as TenTinh, csc.TenChinhSach, csc.MoTa as MoTaChinhSach,
           nd.TenDayDu as TenChuDuAn, nd.Email as EmailChuDuAn,
           (SELECT COUNT(*) FROM phong_tindang pt WHERE pt.TinDangID = td.TinDangID) as TongSoPhong,
           (SELECT COUNT(*) FROM phong_tindang pt
