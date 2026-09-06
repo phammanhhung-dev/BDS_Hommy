@@ -48,7 +48,8 @@ class BaiVietModel {
       const [rows] = await db.execute(query, params);
       return rows;
     } catch (err) {
-      throw new Error(`Lỗi khi lấy danh sách bài viết: ${err.message}`);
+      console.error("new Error caught in BaiVietModel", err.message);
+      return [];
     }
   }
 
@@ -92,7 +93,8 @@ class BaiVietModel {
 
       return rows[0] || null;
     } catch (err) {
-      throw new Error(`Lỗi khi lấy chi tiết bài viết: ${err.message}`);
+      console.error("new Error caught in BaiVietModel", err.message);
+      return null;
     }
   }
 }

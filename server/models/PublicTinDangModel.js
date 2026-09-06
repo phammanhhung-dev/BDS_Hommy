@@ -62,10 +62,14 @@ class PublicTinDangModel {
         'SELECT COUNT(*) as TongDuAn FROM duan'
       );
 
+      const tong = tongTinRows[0]?.TongTinDang || 0;
       return {
-        TongTinDang: tongTinRows[0]?.TongTinDang || 0,
+        tong,
+        TongTinDang: tong,
         TongDuAn: tongDuAnRows[0]?.TongDuAn || 0,
-        DanhSachTinh: []
+        DanhSachTinh: [],
+        loaiBds: [],
+        tinh: []
       };
     } catch (error) {
       console.error('[PublicTinDangModel] Error in layThongKeTrangChu:', error);

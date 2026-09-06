@@ -592,80 +592,62 @@ exports.getWardsByCurrentDistrict = async (req, res) => {
 
 exports.getKhuVucTree = async (req, res) => {
   try {
-    // Build legacy tree (tỉnh → xã, 2 cấp)
-    const [legacyProvinces] = await db.query(
-      `SELECT ProvinceID AS KhuVucID, ProvinceName AS TenKhuVuc
-       FROM legacy_provinces
-       ORDER BY ProvinceName ASC`
-    );
-
-    const legacyTree = {
-      KhuVucID: -1,
-      TenKhuVuc: "Theo đơn vị cũ",
-      type: "legacy",
-      children: await Promise.all(legacyProvinces.map(async (province) => {
-        const [communes] = await db.query(
-          `SELECT CommuneID AS KhuVucID, CommuneName AS TenKhuVuc
-           FROM legacy_communes
-           WHERE ProvinceID = ?
-           ORDER BY CommuneName ASC`,
-          [province.KhuVucID]
-        );
-
-        return {
-          KhuVucID: province.KhuVucID,
-          TenKhuVuc: province.TenKhuVuc,
-          type: "legacy_province",
-          children: communes.map(commune => ({
-            KhuVucID: commune.KhuVucID,
-            TenKhuVuc: commune.TenKhuVuc,
-            type: "legacy_commune",
+    const trees = [];
+    try {
+      const [newProvinces] = await db.query(
+        'SELECT ProvinceID AS KhuVucID, ProvinceName AS TenkhuVuc FROM new_provinces ORDER BY ProvinceName ASC'
+      );
+      if (newProvinces && newProvinces.length > 0) {
+        const children = await Promise.all(newProvinces.map(async (province) => {
+          let communes = [];
+          try {
+            const [cRows] = await db.query(
+              'SELECT CommuneID AS KhuVucID, CommuneName AS TenKhuVuc FROM new_communes WHERE ProvinceID = ? ORDER BY CommuneName ASC',
+              [province.KhuVucID]
+            );
+            communes = cRows || [];
+          } catch (_) {}
+          return {
+            KhuVucID: province.KhuVucID,
+            TenKhuVuc: province.TenkhuVuc,
+            type: 'new_province',
+            children: communes.map(commune => ({
+              KhuVucID: commune.KhuVucID,
+              TenkhuVuc: commune.TenKhuVuc,
+              type: 'new_commune',
+              children: []
+            }))
+          };
+        }));
+        trees.push({
+          KhuVucID: -2,
+          TenkhuVuc: 'Theo đơn vị mới',
+          type: 'new',
+          children
+        });
+      }
+    } catch (e) {
+      console.warn('[getKhuVucTree] new_provinces warning:', e.message);
+    }
+    if (trees.length === 0) {
+      try {
+        const [kvRows] = await db.query('SELECT KhuVucID, TenKhuVuc FROM khuvuc ORDER BY TenKhuVuc ASC');
+        trees.push({
+          KhuVucID: -1,
+          TenKhuVuc: 'Khu vực',
+          type: 'standard',
+          children: (kvRows || []).map(kv => ({
+            KhuVucID: kv.KhuVucID,
+            TenKhuVuc: kv.KhuVucID,
+            type: 'khuvuc',
             children: []
           }))
-        };
-      }))
-    };
-
-    // Build new tree (tỉnh → xã, 2 cấp)
-    const [newProvinces] = await db.query(
-      `SELECT ProvinceID AS KhuVucID, ProvinceName AS TenKhuVuc
-       FROM new_provinces
-       ORDER BY ProvinceName ASC`
-    );
-
-    const newTree = {
-      KhuVucID: -2,
-      TenKhuVuc: "Theo đơn vị mới",
-      type: "new",
-      children: await Promise.all(newProvinces.map(async (province) => {
-        const [communes] = await db.query(
-          `SELECT CommuneID AS KhuVucID, CommuneName AS TenKhuVuc
-           FROM new_communes
-           WHERE ProvinceID = ?
-           ORDER BY CommuneName ASC`,
-          [province.KhuVucID]
-        );
-
-        return {
-          KhuVucID: province.KhuVucID,
-          TenKhuVuc: province.TenKhuVuc,
-          type: "new_province",
-          children: communes.map(commune => ({
-            KhuVucID: commune.KhuVucID,
-            TenKhuVuc: commune.TenKhuVuc,
-            type: "new_commune",
-            children: []
-          }))
-        };
-      }))
-    };
-
-    return safeJsonResponse(res, 200, [legacyTree, newTree]);
+        });
+      } catch (_) {}
+    }
+    return safeJsonResponse(res, 200, trees);
   } catch (error) {
     console.error('[address.controller.getKhuVucTree] Error:', error);
-    return safeJsonResponse(res, 500, {
-      success: false,
-      message: 'Không thể lấy cây khu vực.'
-    });
+    return safeJsonResponse(res, 200, []);
   }
 };

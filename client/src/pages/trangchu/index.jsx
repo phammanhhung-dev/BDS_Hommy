@@ -472,7 +472,7 @@ function TrangChu() {
 
         <section className="trangchu__stats" aria-label="Thông số nổi bật">
           {[
-            { value: stats ? `${stats.tong.toLocaleString("vi-VN")}+` : "50.000+", label: t("homepage.stats.newListings") || "tin đăng mới mỗi tháng" },
+            { value: `${Number(stats?.tong ?? stats?.TongTinDang ?? 50000).toLocaleString("vi-VN")}+`, label: t("homepage.stats.newListings") || "tin đăng mới mỗi tháng" },
             { value: "120+", label: t("homepage.stats.areas") || "khu vực được cập nhật" },
             { value: "4.9/5", label: t("homepage.stats.trust") || "độ tin cậy từ người dùng" },
           ].map((item, index) => (
