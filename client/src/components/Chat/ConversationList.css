@@ -125,17 +125,44 @@
 
 .conversation-item-title {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  color: #1f2937;
+  color: #0f172a;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.conversation-item-role-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  text-transform: uppercase;
+}
+
+.conversation-item-context {
+  font-size: 11px;
+  color: #0d9488;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: #f0fdfa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  max-width: fit-content;
 }
 
 .conversation-item-time {
-  font-size: 12px;
-  color: #9ca3af;
+  font-size: 11px;
+  color: #94a3b8;
   flex-shrink: 0;
 }
 

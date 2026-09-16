@@ -360,21 +360,32 @@ class CuocHenModel {
       const [rows] = await db.execute(
         `
         SELECT 
-          ch.CuocHenID, ch.TinDangID, ch.PhongID, ch.KhachHangID,
+          ch.CuocHenID, ch.TinDangID, ch.PhongID, ch.ChuDuAnID, ch.KhachHangID,
           ch.NhanVienBanHangID, ch.ThoiGianHen, ch.TrangThai,
-          ch.GhiChu, ch.GhiChuKetQua, ch.PheDuyetChuDuAn,
+          ch.GhiChu, ch.GhiChu as GhiChuKhach, ch.GhiChuKetQua, ch.PheDuyetChuDuAn,
           ch.TaoLuc, ch.CapNhatLuc,
-          COALESCE(p.TenPhong, 'BĐS Nguyên Căn / Nhà Đất') as TenPhong,
+          COALESCE(td.TieuDe, 'Bất động sản') as TieuDeTinDang,
+          COALESCE(td.GiaTien, pt.GiaTinDang, p.GiaChuan, 0) as Gia,
+          td.LoaiGiaoDich, td.LoaiBDS, td.DienTichSuDung, td.DienTichDat,
+          p.TenPhong as TenPhong,
           p.TrangThai as TrangThaiPhong,
-          COALESCE(da.TenDuAn, td.TieuDe, 'Dự án BĐS') as TenDuAn,
-          COALESCE(da.DiaChi, td.DiaChi, '') as DiaChi,
+          td.TrangThai as TrangThaiTinDang,
+          da.DuAnID,
+          da.TenDuAn,
+          COALESCE(da.DiaChi, CONCAT_WS(', ', COALESCE(nc.CommuneName, lc.CommuneName), ndist.DistrictName, nprov.ProvinceName), kv.TenKhuVuc, '') AS DiaChi,
           da.ViDo, da.KinhDo,
-          kh.TenDayDu as TenKhachHang, kh.SoDienThoai as SDTKhachHang,
-          nv.TenDayDu as TenNhanVien, nv.SoDienThoai as SDTNhanVien
+          kh.TenDayDu as TenKhachHang, kh.SoDienThoai as SDTKhachHang, kh.SoDienThoai as SoDienThoaiKhach, kh.Email as EmailKhachHang, kh.TrangThaiXacMinh as TrangThaiXacMinhKhach,
+          nv.TenDayDu as TenNhanVien, nv.SoDienThoai as SDTNhanVien, nv.SoDienThoai as SoDienThoaiNV, nv.Email as EmailNhanVien
         FROM cuochen ch
         LEFT JOIN tindang td ON ch.TinDangID = td.TinDangID
         LEFT JOIN phong p ON ch.PhongID = p.PhongID
+        LEFT JOIN phong_tindang pt ON (p.PhongID = pt.PhongID AND pt.TinDangID = ch.TinDangID)
         LEFT JOIN duan da ON (td.DuAnID = da.DuAnID OR p.DuAnID = da.DuAnID)
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
+        LEFT JOIN new_communes nc ON td.KhuVucID = nc.CommuneID
+        LEFT JOIN legacy_communes lc ON td.KhuVucID = lc.CommuneID
+        LEFT JOIN new_districts ndist ON COALESCE(nc.DistrictID, lc.DistrictID) = ndist.DistrictID
+        LEFT JOIN legacy_provinces nprov ON ndist.ProvinceID = nprov.ProvinceID
         LEFT JOIN nguoidung kh ON ch.KhachHangID = kh.NguoiDungID
         LEFT JOIN nguoidung nv ON ch.NhanVienBanHangID = nv.NguoiDungID
         WHERE ch.CuocHenID = ?
@@ -399,18 +410,28 @@ class CuocHenModel {
       let query = `
         SELECT 
           ch.CuocHenID, ch.PhongID, ch.TinDangID, ch.ChuDuAnID, ch.KhachHangID, ch.NhanVienBanHangID,
-          ch.TrangThai, ch.PheDuyetChuDuAn, ch.ThoiGianHen, ch.GhiChu, ch.GhiChuKetQua as GhiChu, ch.TaoLuc, ch.CapNhatLuc,
+          ch.TrangThai, ch.PheDuyetChuDuAn, ch.ThoiGianHen, ch.GhiChu, ch.GhiChu as GhiChuKhach, ch.GhiChuKetQua, ch.TaoLuc, ch.CapNhatLuc,
           COALESCE(td.TieuDe, 'Bất động sản') as TieuDeTinDang,
           COALESCE(td.GiaTien, pt.GiaTinDang, p.GiaChuan, 0) as Gia,
-          COALESCE(p.TenPhong, td.TieuDe, 'BĐS Nguyên Căn / Nhà Đất') as TenPhong,
-          COALESCE(da.TenDuAn, td.TieuDe, 'Dự án / Nhà Đất') as TenDuAn,
-          kh.TenDayDu as TenKhachHang, kh.SoDienThoai as SDTKhachHang, kh.SoDienThoai as SoDienThoaiKhach,
-          nv.TenDayDu as TenNhanVien, nv.SoDienThoai as SDTNhanVien, nv.SoDienThoai as SoDienThoaiNV
+          td.LoaiGiaoDich, td.LoaiBDS, td.DienTichSuDung, td.DienTichDat,
+          p.TenPhong as TenPhong,
+          p.TrangThai as TrangThaiPhong,
+          td.TrangThai as TrangThaiTinDang,
+          da.DuAnID,
+          da.TenDuAn,
+          COALESCE(da.DiaChi, CONCAT_WS(', ', COALESCE(nc.CommuneName, lc.CommuneName), ndist.DistrictName, nprov.ProvinceName), kv.TenKhuVuc, '') AS DiaChi,
+          kh.TenDayDu as TenKhachHang, kh.SoDienThoai as SDTKhachHang, kh.SoDienThoai as SoDienThoaiKhach, kh.Email as EmailKhachHang, kh.TrangThaiXacMinh as TrangThaiXacMinhKhach,
+          nv.TenDayDu as TenNhanVien, nv.SoDienThoai as SDTNhanVien, nv.SoDienThoai as SoDienThoaiNV, nv.Email as EmailNhanVien
         FROM cuochen ch
         LEFT JOIN tindang td ON ch.TinDangID = td.TinDangID
         LEFT JOIN phong p ON ch.PhongID = p.PhongID
         LEFT JOIN phong_tindang pt ON (p.PhongID = pt.PhongID AND pt.TinDangID = ch.TinDangID)
         LEFT JOIN duan da ON (td.DuAnID = da.DuAnID OR p.DuAnID = da.DuAnID)
+        LEFT JOIN khuvuc kv ON td.KhuVucID = kv.KhuVucID
+        LEFT JOIN new_communes nc ON td.KhuVucID = nc.CommuneID
+        LEFT JOIN legacy_communes lc ON td.KhuVucID = lc.CommuneID
+        LEFT JOIN new_districts ndist ON COALESCE(nc.DistrictID, lc.DistrictID) = ndist.DistrictID
+        LEFT JOIN legacy_provinces nprov ON ndist.ProvinceID = nprov.ProvinceID
         LEFT JOIN nguoidung kh ON ch.KhachHangID = kh.NguoiDungID
         LEFT JOIN nguoidung nv ON ch.NhanVienBanHangID = nv.NguoiDungID
         WHERE (ch.ChuDuAnID = ? OR td.ChuDuAnID = ? OR da.ChuDuAnID = ?)

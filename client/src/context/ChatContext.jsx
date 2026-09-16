@@ -121,6 +121,13 @@ export const ChatProvider = ({ children }) => {
     const handleNewMessage = (message) => {
       // Cập nhật conversations và unread count
       setConversations(prev => {
+        const exists = prev.some(conv => conv.CuocHoiThoaiID === message.CuocHoiThoaiID);
+        if (!exists) {
+          // Nếu nhận tin nhắn từ cuộc hội thoại mới chưa có trong danh sách -> reload
+          loadConversations();
+          return prev;
+        }
+
         const updated = prev.map(conv => {
           if (conv.CuocHoiThoaiID === message.CuocHoiThoaiID) {
             // Nếu không phải conversation đang active, tăng unread
@@ -152,6 +159,9 @@ export const ChatProvider = ({ children }) => {
           return conv;
         });
 
+        // Sắp xếp lại để cuộc trò chuyện có tin nhắn mới nhất lên đầu danh sách
+        updated.sort((a, b) => new Date(b.ThoiDiemTinNhanCuoi || 0) - new Date(a.ThoiDiemTinNhanCuoi || 0));
+
         // Tính lại tổng unread
         const totalUnread = updated.reduce((sum, conv) => sum + (conv.SoTinChuaDoc || 0), 0);
         setUnreadCount(totalUnread);
@@ -165,7 +175,7 @@ export const ChatProvider = ({ children }) => {
     return () => {
       socket.off('new_message', handleNewMessage);
     };
-  }, [socket, activeConversationId]);
+  }, [socket, activeConversationId, loadConversations]);
 
   /**
    * Mark conversation as read
@@ -201,24 +211,44 @@ export const ChatProvider = ({ children }) => {
     if (!socket) return;
 
     const handleIncomingCall = (callData) => {
-      setIncomingCall(callData);
+      setIncomingCall({
+        ...callData,
+        callerName: callData.callerName || callData.nguoiGoiTen || 'Người dùng',
+        roomUrl: callData.roomUrl || callData.RoomUrl
+      });
     };
 
     socket.on('incoming_call', handleIncomingCall);
+    socket.on('video_call_incoming', handleIncomingCall);
 
     return () => {
       socket.off('incoming_call', handleIncomingCall);
+      socket.off('video_call_incoming', handleIncomingCall);
     };
   }, [socket]);
 
   const acceptCall = () => {
     if (incomingCall?.roomUrl) {
-      window.open(incomingCall.roomUrl, '_blank');
+      const width = 1280;
+      const height = 720;
+      const left = (window.screen.width - width) / 2;
+      const top = (window.screen.height - height) / 2;
+      window.open(
+        incomingCall.roomUrl,
+        'VideoCallWindow',
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
+      );
     }
     setIncomingCall(null);
   };
 
   const declineCall = () => {
+    if (incomingCall?.cuocHoiThoaiID && socket) {
+      socket.emit('answer_video_call', {
+        cuocHoiThoaiID: incomingCall.cuocHoiThoaiID,
+        accepted: false
+      });
+    }
     setIncomingCall(null);
   };
 

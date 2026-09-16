@@ -43,29 +43,108 @@ function DinhGiaAI() {
       keywords: "định giá nhà đất, định giá AI, học máy, bất động sản Hommy"
     });
 
-    // Load provinces
-    const fetchProvinces = async () => {
+    // Khởi tạo danh sách tỉnh thành và tự động đồng bộ tham số URL
+    const initData = async () => {
       try {
         const res = await axios.get(buildApiUrl('/api/address/provinces/legacy'));
         if (res?.data?.success && Array.isArray(res.data.data)) {
-          // Chỉ lấy 5 tỉnh thành theo yêu cầu AI
-          const targetProvinces = ["TP. Hồ Chí Minh", "Hà Nội", "Đà Nẵng", "Bình Dương", "Đồng Nai"];
+          // Các tỉnh thành trọng điểm theo mô hình AI (ưu tiên TP. Hồ Chí Minh đứng đầu)
+          const targetKeywords = ["hồ chí minh", "hà nội", "đà nẵng", "bình dương", "đồng nai"];
           const filtered = res.data.data.filter(p => {
-             const name = p.TenKhuVuc || p.ProvinceName || p.name || '';
-             return targetProvinces.some(tp => name.includes(tp) || tp.includes(name));
+            const name = (p.TenKhuVuc || p.ProvinceName || p.name || '').toLowerCase();
+            return targetKeywords.some(kw => name.includes(kw));
           });
-          setProvinces(filtered.length > 0 ? filtered : res.data.data);
+
+          // Sắp xếp theo thứ tự ưu tiên: TP. Hồ Chí Minh -> Hà Nội -> Đà Nẵng -> Bình Dương -> Đồng Nai
+          filtered.sort((a, b) => {
+            const nameA = (a.TenKhuVuc || a.ProvinceName || '').toLowerCase();
+            const nameB = (b.TenKhuVuc || b.ProvinceName || '').toLowerCase();
+            const idxA = targetKeywords.findIndex(kw => nameA.includes(kw));
+            const idxB = targetKeywords.findIndex(kw => nameB.includes(kw));
+            return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+          });
+
+          const provinceList = filtered.length > 0 ? filtered : res.data.data;
+          setProvinces(provinceList);
+
+          // Đọc params từ URL
+          const dienTichParam = searchParams.get("dienTich") || searchParams.get("dien_tich");
+          const soPhongNguParam = searchParams.get("soPhongNgu") || searchParams.get("so_phong_ngu");
+          const soPhongTamParam = searchParams.get("soPhongTam") || searchParams.get("so_phong_tam");
+          const quanHuyenParam = searchParams.get("quanHuyen") || searchParams.get("quan_huyen");
+          const tinhThanhParam = searchParams.get("tinhThanh") || searchParams.get("tinh_thanh");
+          const loaiBdsParam = searchParams.get("loaiBds") || searchParams.get("loai_bds");
+
+          // Xác định tỉnh thành được chọn (ưu tiên theo query params, mặc định là TP. Hồ Chí Minh)
+          let selectedProv = null;
+          if (tinhThanhParam) {
+            selectedProv = provinceList.find(p => {
+              const pName = (p.TenKhuVuc || p.ProvinceName || '').toLowerCase();
+              return pName.includes(tinhThanhParam.toLowerCase());
+            });
+          }
+          if (!selectedProv) {
+            selectedProv = provinceList.find(p => 
+              (p.TenKhuVuc || p.ProvinceName || '').toLowerCase().includes('hồ chí minh')
+            ) || provinceList[0];
+          }
+
+          let initialDistricts = [];
+          let selectedDist = null;
+
+          if (selectedProv) {
+            try {
+              const dRes = await axios.get(buildApiUrl(`/api/address/districts/${selectedProv.KhuVucID}`));
+              if (dRes?.data?.success && Array.isArray(dRes.data.data)) {
+                initialDistricts = dRes.data.data;
+                setDistricts(initialDistricts);
+
+                if (quanHuyenParam) {
+                  const targetQ = quanHuyenParam.trim().toLowerCase();
+                  selectedDist = initialDistricts.find(d => {
+                    const dName = (d.TenKhuVuc || d.DistrictName || '').toLowerCase();
+                    return dName.includes(targetQ) || targetQ.includes(dName);
+                  });
+                }
+              }
+            } catch (dErr) {
+              console.error("Lỗi load districts ban đầu:", dErr);
+            }
+          }
+
+          const initialForm = {
+            dienTich: dienTichParam || "",
+            soPhongNgu: soPhongNguParam || "2",
+            soPhongTam: soPhongTamParam || "2",
+            tinhThanhId: selectedProv ? String(selectedProv.KhuVucID) : "",
+            tinhThanhName: selectedProv ? (selectedProv.TenKhuVuc || selectedProv.ProvinceName || "") : "Thành phố Hồ Chí Minh",
+            quanHuyenId: selectedDist ? String(selectedDist.KhuVucID) : "",
+            quanHuyenName: selectedDist ? (selectedDist.TenKhuVuc || selectedDist.DistrictName || "") : (quanHuyenParam || ""),
+            loaiBds: loaiBdsParam || "CanHo"
+          };
+
+          setFormData(initialForm);
+
+          if (dienTichParam && parseFloat(dienTichParam) > 0) {
+            runValuation(initialForm);
+          }
         }
       } catch (err) {
-        console.error("Lỗi load provinces:", err);
+        console.error("Lỗi khởi tạo danh sách tỉnh thành:", err);
       }
     };
-    fetchProvinces();
-  }, []);
 
+    initData();
+  }, [searchParams]);
+
+  // Load danh sách quận/huyện khi người dùng đổi tỉnh/thành phố trên giao diện
   useEffect(() => {
     if (!formData.tinhThanhId) {
       setDistricts([]);
+      return;
+    }
+    // Tránh gọi lại nếu districts hiện tại đã thuộc tỉnh thành này
+    if (districts.length > 0 && String(districts[0]?.ProvinceID) === String(formData.tinhThanhId)) {
       return;
     }
     const fetchDistricts = async () => {
@@ -80,6 +159,7 @@ function DinhGiaAI() {
     };
     fetchDistricts();
   }, [formData.tinhThanhId]);
+
   const fetchRecommendedProperties = async (quanHuyen, loaiBds, price) => {
     setRecLoading(true);
     try {
@@ -87,13 +167,17 @@ function DinhGiaAI() {
       const minGia = Math.max(0, price * 0.7);
       const maxGia = price * 1.3;
 
-      const res = await tinDangPublicApi.getAll({
-        quanHuyen: quanHuyen,
+      const queryParams = {
         loaiBDS: loaiBds,
         minGia: minGia,
         maxGia: maxGia,
         limit: 4
-      });
+      };
+      if (quanHuyen && String(quanHuyen).trim()) {
+        queryParams.quanHuyen = String(quanHuyen).trim();
+      }
+
+      const res = await tinDangPublicApi.getAll(queryParams);
 
       if (res?.data?.success && Array.isArray(res.data.data)) {
         setRecommendedList(res.data.data);
@@ -125,8 +209,8 @@ function DinhGiaAI() {
         dien_tich: area,
         so_phong_ngu: parseInt(data.soPhongNgu, 10),
         so_phong_tam: parseInt(data.soPhongTam, 10),
-        tinh_thanh: data.tinhThanhName,
-        quan_huyen: data.quanHuyenName,
+        tinh_thanh: data.tinhThanhName || "TP. Hồ Chí Minh",
+        quan_huyen: data.quanHuyenName || "",
         loai_bds: data.loaiBds
       };
 
@@ -149,30 +233,6 @@ function DinhGiaAI() {
       setLoading(false);
     }
   };
-
-  // Đọc params từ URL khi mount hoặc params thay đổi
-  useEffect(() => {
-    const dienTichParam = searchParams.get("dienTich") || searchParams.get("dien_tich");
-    const soPhongNguParam = searchParams.get("soPhongNgu") || searchParams.get("so_phong_ngu");
-    const soPhongTamParam = searchParams.get("soPhongTam") || searchParams.get("so_phong_tam");
-    const quanHuyenParam = searchParams.get("quanHuyen") || searchParams.get("quan_huyen");
-    const loaiBdsParam = searchParams.get("loaiBds") || searchParams.get("loai_bds");
-
-    if (dienTichParam || soPhongNguParam || soPhongTamParam || quanHuyenParam || loaiBdsParam) {
-      const newFormData = {
-        dienTich: dienTichParam || "",
-        soPhongNgu: soPhongNguParam || "2",
-        soPhongTam: soPhongTamParam || "2",
-        quanHuyen: quanHuyenParam || "Bình Thạnh",
-        loaiBds: loaiBdsParam || "CanHo"
-      };
-      setFormData(newFormData);
-
-      if (dienTichParam && parseFloat(dienTichParam) > 0) {
-        runValuation(newFormData);
-      }
-    }
-  }, [searchParams]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -409,7 +469,7 @@ function DinhGiaAI() {
                     <FaCheckCircle color="#10b981" /> {t("valuation.accuracyTitle") || "Đánh giá độ chính xác (R² Score: 99.8%)"}
                   </h4>
                   <ul className="dg-tips-list">
-                    <li>{t("valuation.accuracyDetail1", { district: formData.quanHuyenName }) || `Khu vực <strong>${formData.quanHuyenName}</strong> là khu vực giao dịch sôi động.`}</li>
+                    <li>{t("valuation.accuracyDetail1", { district: formData.quanHuyenName || formData.tinhThanhName || "TP. Hồ Chí Minh" }) || `Khu vực <strong>${formData.quanHuyenName || formData.tinhThanhName || "TP. Hồ Chí Minh"}</strong> là khu vực giao dịch sôi động.`}</li>
                     <li>{t("valuation.accuracyDetail2", { type: formData.loaiBds === "CanHo" ? (t("valuation.apartment") || "Căn hộ chung cư") : (t("valuation.house") || "Nhà riêng / Nhà phố") }) || `Loại hình <strong>${formData.loaiBds === "CanHo" ? "Căn hộ chung cư" : "Nhà riêng"}</strong> có xu hướng ổn định về giá trị sử dụng.`}</li>
                     <li>{t("valuation.accuracyDetail3", { area: formData.dienTich }) || `Thông số diện tích ${formData.dienTich} m² đạt mức tối ưu cho nhu cầu định cư.`}</li>
                   </ul>
@@ -425,7 +485,7 @@ function DinhGiaAI() {
             <h3 className="dg-rec-title">
               <FaHome /> Bất động sản phù hợp đề xuất cho bạn
             </h3>
-            <p className="dg-rec-subtitle">Các căn hộ / nhà riêng đang giao dịch tại khu vực {formData.quanHuyenName} có giá trị gần với giá dự báo</p>
+            <p className="dg-rec-subtitle">Các căn hộ / nhà riêng đang giao dịch tại khu vực {formData.quanHuyenName || formData.tinhThanhName || "TP. Hồ Chí Minh"} có giá trị gần với giá dự báo</p>
 
             {recLoading ? (
               <div className="dg-rec-loading">
@@ -433,7 +493,7 @@ function DinhGiaAI() {
                 <span>Đang tìm kiếm bất động sản phù hợp...</span>
               </div>
             ) : recommendedList.length === 0 ? (
-              <div className="dg-rec-empty">Hiện không có bất động sản nào đang đăng bán/cho thuê phù hợp với mức giá này tại khu vực {formData.quanHuyenName}.</div>
+              <div className="dg-rec-empty">Hiện không có bất động sản nào đang đăng bán/cho thuê phù hợp với mức giá này tại khu vực {formData.quanHuyenName || formData.tinhThanhName || "TP. Hồ Chí Minh"}.</div>
             ) : (
               <div className="dg-rec-grid">
                 {recommendedList.map((item) => {

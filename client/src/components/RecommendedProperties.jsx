@@ -5,25 +5,8 @@ import tinDangPublicApi from "../api/tinDangPublicApi";
 import yeuThichApi from "../api/yeuThichApi";
 import { getRecentViewedIds, addRecentViewedId } from "../utils/recentViews";
 import { getStaticUrl } from "../config/api";
+import { useFavoriteToggle, getCurrentUserId } from "../hooks/useFavoriteToggle";
 import "./RecommendedProperties.css";
-
-// Helper lấy ID người dùng hiện tại từ localStorage
-const getCurrentUserId = () => {
-  try {
-    const raw = localStorage.getItem("user") || localStorage.getItem("currentUser");
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      const actual = parsed.user ?? parsed;
-      const id = actual?.NguoiDungID ?? actual?.id ?? actual?.userId;
-      if (id) return Number(id);
-    }
-  } catch {
-    /* ignore */
-  }
-  const idKey = localStorage.getItem("userId");
-  if (idKey && !isNaN(Number(idKey))) return Number(idKey);
-  return null;
-};
 
 // Helper định dạng tiền tệ
 const formatPrice = (g) => {
@@ -72,8 +55,8 @@ export default function RecommendedProperties({ title, limit = 4 }) {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [toastMessage, setToastMessage] = useState(null);
-  const [favoriteLoadingId, setFavoriteLoadingId] = useState(null);
+
+  const { handleToggleFavorite, toastMessage, favoriteLoadingId } = useFavoriteToggle(setProperties);
 
   const navigate = useNavigate();
 
@@ -109,83 +92,6 @@ export default function RecommendedProperties({ title, limit = 4 }) {
   useEffect(() => {
     fetchRecommendations();
   }, [limit]);
-
-  // Hiển thị thông báo nhỏ tự ẩn
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 2500);
-  };
-
-  // Xử lý lưu / bỏ lưu tin yêu thích nhanh (Toggle)
-  const handleToggleFavorite = async (e, tin) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const tinId = tin?.TinDangID ?? tin?.id;
-    if (!tinId) return;
-
-    const userId = getCurrentUserId();
-    if (!userId) {
-      showToast("Vui lòng đăng nhập để lưu tin bất động sản!");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1200);
-      return;
-    }
-
-    const isFav = !!tin.isFavorite;
-    const nextFav = !isFav;
-    setFavoriteLoadingId(tinId);
-
-    // 1. Optimistic UI update ngay lập tức trên thẻ BĐS
-    setProperties((prev) =>
-      prev.map((item) =>
-        (item.TinDangID ?? item.id) === tinId ? { ...item, isFavorite: nextFav } : item
-      )
-    );
-
-    // 2. Bắn sự kiện đồng bộ số đếm trên Header ngay lập tức
-    window.dispatchEvent(
-      new CustomEvent("favoritesUpdated", {
-        detail: { tinId, isFavorite: nextFav, tinDang: tin }
-      })
-    );
-
-    try {
-      // 3. Gọi API toggle yêu thích chính thức
-      const res = await yeuThichApi.toggle({ NguoiDungID: userId, TinDangID: tinId });
-      const actualFav = res?.data?.isFavorite ?? nextFav;
-      showToast(actualFav ? "Đã lưu vào danh sách yêu thích ♥" : "Đã xóa khỏi danh sách yêu thích");
-    } catch (err) {
-      console.warn("[RecommendedProperties] Toggle favorite error:", err);
-      // Fallback gọi remove hoặc add nếu toggle gặp sự cố
-      try {
-        if (nextFav) {
-          await yeuThichApi.add({ NguoiDungID: userId, TinDangID: tinId });
-          showToast("Đã lưu vào danh sách yêu thích ♥");
-        } else {
-          await yeuThichApi.remove(userId, tinId);
-          showToast("Đã xóa khỏi danh sách yêu thích");
-        }
-      } catch (fallbackErr) {
-        console.error("[RecommendedProperties] Rollback favorite error:", fallbackErr);
-        // Rollback giao diện nếu cả 2 đều lỗi
-        setProperties((prev) =>
-          prev.map((item) =>
-            (item.TinDangID ?? item.id) === tinId ? { ...item, isFavorite: isFav } : item
-          )
-        );
-        window.dispatchEvent(
-          new CustomEvent("favoritesUpdated", {
-            detail: { tinId, isFavorite: isFav, tinDang: tin }
-          })
-        );
-        showToast("Không thể cập nhật yêu thích. Vui lòng thử lại!");
-      }
-    } finally {
-      setFavoriteLoadingId(null);
-    }
-  };
 
   // Xử lý khi click vào Card: Ghi nhận vào recent_viewed_ids
   const handleCardClick = (tinId) => {

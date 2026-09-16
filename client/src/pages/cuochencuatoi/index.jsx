@@ -114,18 +114,12 @@ const ChatPanel = ({ cuocHen, onClose }) => {
     const partnerName = cuocHen.TenNhanVien || 'Nhân viên';
 
     // Tạo Room ID
-    const rawRoomId = `daphongtro_chat_${conversationId}`;
+    const rawRoomId = `hommy_chat_${conversationId}`;
     const secureRoomId = btoa(rawRoomId).replace(/=/g, '');
 
-    // Mã hóa thông tin user
-    const userInfo = {
-      username: currentUserName,
-      userid: currentUserId,
-      partner_name: partnerName,
-      timestamp: Date.now()
-    };
-    const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(userInfo))));
-    const roomUrl = `https://jbcalling.site/room/${secureRoomId}?data=${encodedData}`;
+    // URL phòng gọi Jitsi Meet
+    const displayName = encodeURIComponent(currentUserName);
+    const roomUrl = `https://meet.jit.si/hommy_call_${secureRoomId}#userInfo.displayName="${displayName}"&config.prejoinPageEnabled=false`;
     
     // Emit socket event để thông báo nhân viên
     if (socket && socketConnected) {

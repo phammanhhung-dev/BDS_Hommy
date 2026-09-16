@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getApiBaseUrl } from '../config/api';
+import { getAuthHeaderValue } from '../utils/authToken';
 import useSocket from './useSocket';
 
 /**
@@ -45,7 +46,10 @@ export const useChat = (cuocHoiThoaiID) => {
     // Tin nhắn mới
     const handleNewMessage = (message) => {
       if (message.CuocHoiThoaiID === cuocHoiThoaiID) {
-        setMessages(prev => [...prev, message]);
+        setMessages(prev => {
+          if (prev.some(m => m.TinNhanID === message.TinNhanID)) return prev;
+          return [...prev, message];
+        });
       }
     };
 
@@ -148,10 +152,15 @@ export const useChat = (cuocHoiThoaiID) => {
   const loadMessages = useCallback(async (limit = 50, offset = 0) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const authHeader = getAuthHeaderValue();
       const response = await fetch(
         `${getApiBaseUrl()}/api/chat/conversations/${cuocHoiThoaiID}/messages?limit=${limit}&offset=${offset}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { 
+          headers: { 
+            Authorization: authHeader || `Bearer ${localStorage.getItem('token')}` 
+          },
+          credentials: 'include'
+        }
       );
 
       const result = await response.json();

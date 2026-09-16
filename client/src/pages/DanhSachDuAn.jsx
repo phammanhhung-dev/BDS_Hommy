@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import duAnPublicApi from "../api/duAnPublicApi";
 import { useTranslation } from "../context/LanguageContext";
 import { setPageSEO } from "../utils/seo";
-import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaSearch,
+  FaChevronLeft,
+  FaChevronRight,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight
+} from "react-icons/fa";
 import "./trangchu/trangchu.css";
+import "./DanhSachTinDang.css";
 
 function DanhSachDuAn() {
   const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [duans, setDuans] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [keyword, setKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   const translateStatus = (status) => {
     if (!status) return t("projects.statusOpen") || "Đang mở bán";
@@ -35,8 +48,20 @@ function DanhSachDuAn() {
       title: `${t("projects.title") || "Dự án bất động sản nổi bật"} - Hommy`,
       description: t("projects.loading") || "Khám phá danh sách các dự án bất động sản nổi bật.",
     });
-    fetchDuAns();
-  }, []);
+  }, [t]);
+
+  useEffect(() => {
+    const qParams = new URLSearchParams(location.search);
+    const kw = qParams.get("keyword") || "";
+    setKeyword(kw);
+    const pageParam = parseInt(qParams.get("page"), 10);
+    if (!isNaN(pageParam) && pageParam > 0) {
+      setCurrentPage(pageParam);
+    } else {
+      setCurrentPage(1);
+    }
+    fetchDuAns(kw);
+  }, [location.search]);
 
   const fetchDuAns = async (searchKeyword = "") => {
     setLoading(true);
@@ -64,7 +89,63 @@ function DanhSachDuAn() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchDuAns(keyword);
+    const qParams = new URLSearchParams(location.search);
+    if (keyword.trim()) {
+      qParams.set("keyword", keyword.trim());
+    } else {
+      qParams.delete("keyword");
+    }
+    qParams.delete("page");
+    setCurrentPage(1);
+    navigate({ search: qParams.toString() ? `?${qParams.toString()}` : "" });
+  };
+
+  // Tính toán phân trang
+  const totalItems = duans.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+  const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+  const currentDuAns = duans.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    const safePage = Math.min(Math.max(1, newPage), totalPages);
+    setCurrentPage(safePage);
+    const qParams = new URLSearchParams(location.search);
+    if (safePage === 1) {
+      qParams.delete("page");
+    } else {
+      qParams.set("page", safePage);
+    }
+    const newSearch = qParams.toString();
+    navigate({ search: newSearch ? `?${newSearch}` : "" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    const pages = [];
+    pages.push(1);
+
+    if (safeCurrentPage > 3) {
+      pages.push("...");
+    }
+
+    const start = Math.max(2, safeCurrentPage - 1);
+    const end = Math.min(totalPages - 1, safeCurrentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (safeCurrentPage < totalPages - 2) {
+      pages.push("...");
+    }
+
+    pages.push(totalPages);
+    return pages;
   };
 
   return (
@@ -111,9 +192,9 @@ function DanhSachDuAn() {
             </div>
           )}
 
-          {!loading && !error && duans.length > 0 && (
+          {!loading && !error && currentDuAns.length > 0 && (
             <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "24px" }}>
-              {duans.map((duan, index) => {
+              {currentDuAns.map((duan, index) => {
                 let parsedMeta = {};
                 try {
                   if (duan.ThongTinMoRong) {
@@ -176,6 +257,90 @@ function DanhSachDuAn() {
                   </Link>
                 );
               })}
+            </div>
+          )}
+
+          {/* Phân trang (Pagination) */}
+          {!loading && !error && totalPages > 1 && (
+            <div className="dstd-pagination-container">
+              <div className="dstd-pagination-info">
+                {t("common.showing") || "Hiển thị"}{" "}
+                <strong>{totalItems === 0 ? 0 : startIndex + 1} - {endIndex}</strong>{" "}
+                {t("common.of") || "trên tổng số"}{" "}
+                <strong>{totalItems}</strong> {t("common.projects") || "dự án"}
+              </div>
+
+              <nav className="dstd-pagination-nav" aria-label="Phân trang danh sách dự án">
+                {totalPages > 4 && (
+                  <button
+                    type="button"
+                    className="dstd-page-btn"
+                    disabled={safeCurrentPage === 1}
+                    onClick={() => handlePageChange(1)}
+                    title="Trang đầu tiên"
+                  >
+                    <FaAngleDoubleLeft size={12} />
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  className="dstd-page-btn dstd-page-nav-btn"
+                  disabled={safeCurrentPage === 1}
+                  onClick={() => handlePageChange(safeCurrentPage - 1)}
+                  title="Trang trước"
+                >
+                  <FaChevronLeft size={11} />
+                  <span>{t("common.previous") || "Trước"}</span>
+                </button>
+
+                <div className="dstd-page-numbers">
+                  {getPageNumbers().map((p, idx) => {
+                    if (p === "...") {
+                      return (
+                        <span key={`ellipsis-${idx}`} className="dstd-page-ellipsis">
+                          ...
+                        </span>
+                      );
+                    }
+                    const isActive = p === safeCurrentPage;
+                    return (
+                      <button
+                        key={`page-${p}`}
+                        type="button"
+                        className={`dstd-page-btn ${isActive ? "active" : ""}`}
+                        onClick={() => handlePageChange(p)}
+                        aria-current={isActive ? "page" : undefined}
+                      >
+                        {p}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  type="button"
+                  className="dstd-page-btn dstd-page-nav-btn"
+                  disabled={safeCurrentPage === totalPages}
+                  onClick={() => handlePageChange(safeCurrentPage + 1)}
+                  title="Trang sau"
+                >
+                  <span>{t("common.next") || "Sau"}</span>
+                  <FaChevronRight size={11} />
+                </button>
+
+                {totalPages > 4 && (
+                  <button
+                    type="button"
+                    className="dstd-page-btn"
+                    disabled={safeCurrentPage === totalPages}
+                    onClick={() => handlePageChange(totalPages)}
+                    title="Trang cuối cùng"
+                  >
+                    <FaAngleDoubleRight size={12} />
+                  </button>
+                )}
+              </nav>
             </div>
           )}
 

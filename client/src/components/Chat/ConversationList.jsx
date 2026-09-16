@@ -31,6 +31,22 @@ export const ConversationList = ({ conversations, activeId, onSelect, onVideoCal
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
+  const getPartnerInfo = (conv) => {
+    const other = conv.ThanhVienKhac?.[0];
+    if (other) {
+      let roleLabel = '';
+      if (other.VaiTroHoatDongID === 1) roleLabel = 'Khách hàng';
+      else if (other.VaiTroHoatDongID === 2) roleLabel = 'NVBH';
+      else if (other.VaiTroHoatDongID === 3) roleLabel = 'Chủ dự án';
+      return {
+        name: other.TenDayDu || other.tenDayDu || 'Người dùng',
+        role: roleLabel,
+        avatar: other.AnhDaiDien
+      };
+    }
+    return { name: conv.TieuDe || 'Cuộc trò chuyện', role: '', avatar: null };
+  };
+
   if (loading) {
     return (
       <div className="conversation-list">
@@ -53,62 +69,73 @@ export const ConversationList = ({ conversations, activeId, onSelect, onVideoCal
         </div>
       ) : (
         <div className="conversation-list-items">
-          {conversations.map((conv) => (
-            <div
-              key={conv.CuocHoiThoaiID}
-              className={`conversation-item ${activeId === conv.CuocHoiThoaiID ? 'active' : ''}`}
-              onClick={() => onSelect(conv.CuocHoiThoaiID)}
-            >
-              <div className="conversation-item-avatar">
-                {conv.ThanhVienKhac && conv.ThanhVienKhac[0]?.AnhDaiDien ? (
-                  <img src={conv.ThanhVienKhac[0].AnhDaiDien} alt="" />
-                ) : (
-                  <div className="conversation-item-avatar-placeholder">
-                    <HiOutlineUserGroup />
-                  </div>
-                )}
-              </div>
-
-              <div className="conversation-item-content">
-                <div className="conversation-item-header">
-                  <h4 className="conversation-item-title">
-                    {conv.TieuDe || 
-                     (conv.ThanhVienKhac && conv.ThanhVienKhac.map(m => m.TenDayDu).join(', ')) ||
-                     'Cuộc trò chuyện'
-                    }
-                  </h4>
-                  <span className="conversation-item-time">
-                    {formatTime(conv.ThoiDiemTinNhanCuoi)}
-                  </span>
-                </div>
-
-                <div className="conversation-item-preview">
-                  <p className="conversation-item-last-message">
-                    {truncateMessage(conv.TinNhanCuoi)}
-                  </p>
-                  {conv.SoTinChuaDoc > 0 && (
-                    <span className="conversation-item-unread-badge">
-                      {conv.SoTinChuaDoc}
-                    </span>
+          {conversations.map((conv) => {
+            const partner = getPartnerInfo(conv);
+            return (
+              <div
+                key={conv.CuocHoiThoaiID}
+                className={`conversation-item ${activeId === conv.CuocHoiThoaiID ? 'active' : ''}`}
+                onClick={() => onSelect(conv.CuocHoiThoaiID)}
+              >
+                <div className="conversation-item-avatar">
+                  {partner.avatar ? (
+                    <img src={partner.avatar} alt="" />
+                  ) : (
+                    <div className="conversation-item-avatar-placeholder">
+                      <HiOutlineUserGroup />
+                    </div>
                   )}
                 </div>
-              </div>
 
-              {/* Nút Video Call */}
-              {onVideoCall && (
-                <button
-                  className="conversation-item-video-call"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onVideoCall(conv);
-                  }}
-                  title="Gọi video"
-                >
-                  <HiOutlineVideoCamera />
-                </button>
-              )}
-            </div>
-          ))}
+                <div className="conversation-item-content">
+                  <div className="conversation-item-header">
+                    <h4 className="conversation-item-title">
+                      {partner.name}
+                      {partner.role && (
+                        <span className="conversation-item-role-tag">
+                          {partner.role}
+                        </span>
+                      )}
+                    </h4>
+                    <span className="conversation-item-time">
+                      {formatTime(conv.ThoiDiemTinNhanCuoi)}
+                    </span>
+                  </div>
+
+                  {conv.TieuDe && (
+                    <div className="conversation-item-context" title={conv.TieuDe}>
+                      {truncateMessage(conv.TieuDe, 35)}
+                    </div>
+                  )}
+
+                  <div className="conversation-item-preview">
+                    <p className="conversation-item-last-message">
+                      {truncateMessage(conv.TinNhanCuoi) || <em>Chưa có tin nhắn</em>}
+                    </p>
+                    {conv.SoTinChuaDoc > 0 && (
+                      <span className="conversation-item-unread-badge">
+                        {conv.SoTinChuaDoc}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Nút Video Call */}
+                {onVideoCall && (
+                  <button
+                    className="conversation-item-video-call"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onVideoCall(conv);
+                    }}
+                    title="Gọi video"
+                  >
+                    <HiOutlineVideoCamera />
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

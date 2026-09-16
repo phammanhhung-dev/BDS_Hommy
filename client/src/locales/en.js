@@ -201,6 +201,7 @@ export default {
     subtitle: "Instantly predict the value of your house or apartment based on real market data",
     mlBadge: "Artificial Intelligence (Machine Learning)",
     formTitle: "Property Specifications",
+    provinceLabel: "Province / City",
     districtLabel: "Location (District)",
     typeLabel: "Property Type",
     apartment: "Apartment",

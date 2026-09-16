@@ -1,9 +1,68 @@
 const db = require('../config/db');
 
+const resolveAddressFromText = (item) => {
+  if (!item) return item;
+
+  if (!item.TenQuanHuyen || !item.TenTinh) {
+    const diaChi = item.DiaChi || '';
+    if (diaChi) {
+      const parts = diaChi.split(',').map(s => s.trim()).filter(Boolean);
+
+      // 1. Tìm quận/huyện
+      if (!item.TenQuanHuyen) {
+        const districtPart = parts.find(p => /^(Quận|Huyện|Thị xã|TP\.|Thành phố\s+(Thủ Đức|Dĩ An|Biên Hòa|Thuận An|Tân Uyên))/i.test(p));
+        if (districtPart) {
+          item.TenQuanHuyen = districtPart;
+        } else if (parts.length >= 2) {
+          const lastPart = parts[parts.length - 1];
+          if (/Hồ Chí Minh|Hà Nội|Đà Nẵng|Bình Dương|Đồng Nai/i.test(lastPart) && parts.length >= 3) {
+            item.TenQuanHuyen = parts[parts.length - 2];
+          } else {
+            item.TenQuanHuyen = lastPart;
+          }
+        }
+      }
+
+      // 2. Tìm tỉnh/thành
+      if (!item.TenTinh) {
+        const provPart = parts.find(p => /(Hồ Chí Minh|Hà Nội|Đà Nẵng|Bình Dương|Đồng Nai|Bình Thuận|Bình Phước|Cần Thơ|Hải Phòng)/i.test(p));
+        if (provPart) {
+          item.TenTinh = provPart;
+        } else if (/hồ chí minh|sài gòn|hcm/i.test(diaChi)) {
+          item.TenTinh = 'Thành phố Hồ Chí Minh';
+        }
+      }
+    }
+
+    // 3. Fallback tìm quận/huyện trong Tiêu đề hoặc Mô tả
+    if (!item.TenQuanHuyen) {
+      const text = `${item.TieuDe || ''} ${item.MoTa || ''}`;
+      const match = text.match(/(Quận\s+\d+|Quận\s+[A-ZÀ-Ỹa-zà-ỹ\s]+|Huyện\s+[A-ZÀ-Ỹa-zà-ỹ\s]+|Thành phố\s+Thủ Đức|Thủ Đức)/i);
+      if (match) {
+        item.TenQuanHuyen = match[0].trim();
+      }
+    }
+
+    if (!item.TenTinh && item.TenQuanHuyen) {
+      item.TenTinh = 'Thành phố Hồ Chí Minh';
+    }
+  }
+
+  return item;
+};
+
 class PublicTinDangModel {
   static async layTatCaTinDang(filters = {}) {
     try {
+      const params = [];
+      let selectFavorite = '0 AS isFavorite, ';
+      if (filters.userId) {
+        selectFavorite = '(CASE WHEN EXISTS (SELECT 1 FROM yeuthich yt WHERE yt.TinDangID = td.TinDangID AND yt.NguoiDungID = ?) THEN 1 ELSE 0 END) AS isFavorite, ';
+        params.push(filters.userId);
+      }
+
       let query = 'SELECT ' +
+        selectFavorite +
         'td.TinDangID, td.DuAnID, td.KhuVucID, td.ChinhSachCocID, td.ChuDuAnID, ' +
         'td.TieuDe, td.URL, td.MoTa, td.TienIch, td.GiaDien, td.GiaNuoc, td.GiaDichVu, td.MoTaGiaDichVu, ' +
         'td.LoaiGiaoDich, td.LoaiBDS, td.GiaTien, td.DienTichDat, td.DienTichSuDung, ' +
@@ -26,8 +85,6 @@ class PublicTinDangModel {
         'LEFT JOIN new_districts ndist ON COALESCE(nc.DistrictID, lc.DistrictID) = ndist.DistrictID ' +
         'LEFT JOIN legacy_provinces nprov ON ndist.ProvinceID = nprov.ProvinceID ' +
         'WHERE td.TrangThai IN (\'DaDuyet\', \'DaDang\')';
-      
-      const params = [];
 
       if (filters.duAnId) {
         query += ' AND td.DuAnID = ?';
@@ -81,7 +138,10 @@ class PublicTinDangModel {
       }
 
       const [rows] = await db.execute(query, params);
-      return rows;
+      return rows.map(r => resolveAddressFromText({
+        ...r,
+        isFavorite: Boolean(r.isFavorite)
+      }));
     } catch (error) {
       console.error('[PublicTinDangModel] Error in layTatCaTinDang:', error);
       throw error;
@@ -206,6 +266,7 @@ class PublicTinDangModel {
         'WHERE pt.TinDangID = ?', [tinDangId]);
 
       tinDang.DanhSachPhong = phongRows;
+      resolveAddressFromText(tinDang);
       return tinDang;
     } catch (error) {
       console.error('[PublicTinDangModel] Error in layChiTietTinDang:', error);

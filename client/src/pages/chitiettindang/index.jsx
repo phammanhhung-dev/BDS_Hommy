@@ -76,6 +76,42 @@ const toMySqlDateTime = (input) => {
   return null;
 };
 
+// Trích xuất quận/huyện và tỉnh/thành từ thông tin tin đăng
+const getResolvedAddress = (item) => {
+  let district = item?.TenQuanHuyen || "";
+  let province = item?.TenTinh || item?.TenTinhThanh || "";
+
+  if (!district && item?.DiaChi) {
+    const parts = item.DiaChi.split(',').map(s => s.trim()).filter(Boolean);
+    const dPart = parts.find(p => /^(Quận|Huyện|Thị xã|TP\.|Thành phố\s+(Thủ Đức|Dĩ An|Biên Hòa|Thuận An|Tân Uyên))/i.test(p));
+    if (dPart) {
+      district = dPart;
+    } else if (parts.length >= 2) {
+      const lastPart = parts[parts.length - 1];
+      if (/Hồ Chí Minh|Hà Nội|Đà Nẵng|Bình Dương|Đồng Nai/i.test(lastPart) && parts.length >= 3) {
+        district = parts[parts.length - 2];
+      } else {
+        district = lastPart;
+      }
+    }
+  }
+
+  if (!district) {
+    const text = `${item?.TieuDe || ''} ${item?.MoTa || ''}`;
+    const match = text.match(/(Quận\s+\d+|Quận\s+[A-ZÀ-Ỹa-zà-ỹ\s]+|Huyện\s+[A-ZÀ-Ỹa-zà-ỹ\s]+|Thành phố\s+Thủ Đức|Thủ Đức)/i);
+    if (match) district = match[0].trim();
+  }
+
+  if (!province && item?.DiaChi) {
+    const parts = item.DiaChi.split(',').map(s => s.trim()).filter(Boolean);
+    const pPart = parts.find(p => /(Hồ Chí Minh|Hà Nội|Đà Nẵng|Bình Dương|Đồng Nai|Bình Thuận|Bình Phước)/i.test(p));
+    if (pPart) province = pPart;
+  }
+  if (!province) province = "Thành phố Hồ Chí Minh";
+
+  return { district, province };
+};
+
 // Modal / Dialog chat trực tiếp với người đăng tin
 const ListingChatModal = ({ tinDang, onClose }) => {
   const { findOrCreateConversation } = useChatContext();
@@ -254,7 +290,7 @@ const ListingChatBody = ({ conversationId }) => {
           </div>
         )}
       </div>
-      <div style={{ borderTop: '1px solid #e2e8f0', padding: '12px', background: '#fff' }}>
+      <div style={{ background: '#fff' }}>
         <MessageInput onSendMessage={sendMessage} isConnected={isConnected} />
       </div>
     </>
@@ -602,7 +638,7 @@ const ChiTietTinDang = () => {
       if (!tinDang) return;
       
       const area = parseFloat(tinDang.DienTichSuDung || tinDang.DienTich || tinDang.DienTichDat || 0);
-      const district = tinDang.TenQuanHuyen || "";
+      const { district, province } = getResolvedAddress(tinDang);
       const loaiBds = tinDang.LoaiBDS === "NhaO" ? "NhaO" : "CanHo";
       
       if (!area || area <= 0 || !district) {
@@ -617,6 +653,7 @@ const ChiTietTinDang = () => {
           dien_tich: area,
           so_phong_ngu: parseInt(tinDang.SoPhongNgu, 10) || 2,
           so_phong_tam: parseInt(tinDang.SoPhongTam, 10) || 2,
+          tinh_thanh: province,
           quan_huyen: district,
           loai_bds: loaiBds
         };
@@ -1883,7 +1920,7 @@ const ChiTietTinDang = () => {
                 {aiPriceError && (
                   <div className="ctd-ai-val-error">
                     <p>{aiPriceError}</p>
-                    <Link to={`/dinh-gia-ai?dienTich=${tinDang.DienTichSuDung || tinDang.DienTich || ""}&quanHuyen=${tinDang.TenQuanHuyen || ""}&loaiBds=${tinDang.LoaiBDS || ""}`} className="ctd-ai-val-link-btn">
+                    <Link to={`/dinh-gia-ai?dienTich=${tinDang.DienTichSuDung || tinDang.DienTich || ""}&quanHuyen=${encodeURIComponent(getResolvedAddress(tinDang).district || tinDang.TenQuanHuyen || "")}&tinhThanh=${encodeURIComponent(getResolvedAddress(tinDang).province || tinDang.TenTinh || tinDang.TenTinhThanh || "")}&loaiBds=${encodeURIComponent(tinDang.LoaiBDS || "")}`} className="ctd-ai-val-link-btn">
                       Tự định giá thủ công
                     </Link>
                   </div>
@@ -1958,7 +1995,7 @@ const ChiTietTinDang = () => {
                     </div>
 
                     <Link 
-                      to={`/dinh-gia-ai?dienTich=${tinDang.DienTichSuDung || tinDang.DienTich || ""}&soPhongNgu=${tinDang.SoPhongNgu || "2"}&soPhongTam=${tinDang.SoPhongTam || "2"}&quanHuyen=${encodeURIComponent(tinDang.TenQuanHuyen || "")}&loaiBds=${encodeURIComponent(tinDang.LoaiBDS || "NhaO")}`} 
+                      to={`/dinh-gia-ai?dienTich=${tinDang.DienTichSuDung || tinDang.DienTich || ""}&soPhongNgu=${tinDang.SoPhongNgu || "2"}&soPhongTam=${tinDang.SoPhongTam || "2"}&quanHuyen=${encodeURIComponent(getResolvedAddress(tinDang).district || tinDang.TenQuanHuyen || "")}&tinhThanh=${encodeURIComponent(getResolvedAddress(tinDang).province || tinDang.TenTinh || tinDang.TenTinhThanh || "")}&loaiBds=${encodeURIComponent(tinDang.LoaiBDS || "NhaO")}`} 
                       className="ctd-ai-val-btn"
                     >
                       Tự định giá & xem các BĐS khác

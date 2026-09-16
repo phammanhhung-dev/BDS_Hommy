@@ -12,20 +12,18 @@ import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineCheck,
   HiOutlineBanknotes,
-  HiOutlineCalendar
+  HiOutlineCalendar,
+  HiOutlineBuildingOffice2,
+  HiOutlineHomeModern,
+  HiOutlineTag
 } from 'react-icons/hi2';
 
 /**
  * Modal Chi tiết Cuộc hẹn
  * Hiển thị đầy đủ thông tin cuộc hẹn và lịch sử
  */
-function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
+function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi, onOpenChat }) {
   if (!cuocHen) return null;
-
-  // Debug: Log cuộc hẹn data (commented out after testing)
-  // console.log('🔍 ModalChiTietCuocHen - cuocHen:', cuocHen);
-  // console.log('🔍 PheDuyetChuDuAn:', cuocHen.PheDuyetChuDuAn);
-  // console.log('🔍 TrangThai:', cuocHen.TrangThai);
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -40,9 +38,66 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
     });
   };
 
-  const formatCurrency = (value) => {
-    if (!value) return 'N/A';
-    return Number(value).toLocaleString('vi-VN') + ' ₫';
+  const mapLoaiBDS = (loai) => {
+    const map = {
+      CanHo: 'Căn hộ chung cư',
+      NhaPho: 'Nhà phố',
+      BietThu: 'Biệt thự',
+      DatO: 'Đất ở',
+      DatNen: 'Đất nền',
+      NhaNguyenCan: 'Nhà nguyên căn',
+      Shophouse: 'Shophouse / Thương mại',
+      PhongTro: 'Phòng trọ',
+      MatBang: 'Mặt bằng kinh doanh',
+      VanPhong: 'Văn phòng'
+    };
+    return map[loai] || loai || 'Bất động sản';
+  };
+
+  const formatPrice = (value, loaiGiaoDich) => {
+    if (!value || Number(value) === 0) return 'Thỏa thuận';
+    const num = Number(value);
+    let readable = '';
+    if (num >= 1_000_000_000) {
+      const ty = (num / 1_000_000_000).toFixed(num % 1_000_000_000 === 0 ? 0 : 2);
+      readable = `${ty} tỷ`;
+    } else if (num >= 1_000_000) {
+      const trieu = (num / 1_000_000).toFixed(num % 1_000_000 === 0 ? 0 : 1);
+      readable = `${trieu} triệu`;
+    }
+
+    if (loaiGiaoDich === 'ChoThue') {
+      return readable 
+        ? `${readable}/tháng (${num.toLocaleString('vi-VN')} ₫)` 
+        : `${num.toLocaleString('vi-VN')} ₫/tháng`;
+    }
+
+    if (readable) {
+      return `${readable} (${num.toLocaleString('vi-VN')} ₫)`;
+    }
+    return `${num.toLocaleString('vi-VN')} ₫`;
+  };
+
+  const formatTrangThaiBDS = (trangThaiPhong, trangThaiTinDang) => {
+    if (trangThaiPhong) {
+      const mapPhong = {
+        Trong: 'Còn trống',
+        DangThue: 'Đang thuê',
+        DaDatCoc: 'Đã đặt cọc',
+        BaoTri: 'Đang bảo trì'
+      };
+      return mapPhong[trangThaiPhong] || trangThaiPhong;
+    }
+    const mapTin = {
+      DaDuyet: 'Đang mở bán / Hiển thị',
+      DaDang: 'Đang đăng',
+      ChoDuyet: 'Chờ duyệt',
+      DaBan: 'Đã bán',
+      DaCoc: 'Đã đặt cọc',
+      TamDung: 'Tạm dừng',
+      HetHan: 'Hết hạn'
+    };
+    return mapTin[trangThaiTinDang] || trangThaiTinDang || 'Đang hoạt động';
   };
 
   const formatTrangThai = (trangThai, pheDuyet) => {
@@ -152,6 +207,28 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
                 <div>
                   <div className="modal-chi-tiet-cuoc-hen__detail-label">Họ tên</div>
                   <div className="modal-chi-tiet-cuoc-hen__detail-value">{cuocHen.TenKhachHang || 'N/A'}</div>
+                  {onOpenChat && cuocHen.KhachHangID && (
+                    <button
+                      type="button"
+                      onClick={() => onOpenChat(cuocHen, 'khachHang')}
+                      style={{
+                        marginTop: '4px',
+                        fontSize: '11px',
+                        padding: '2px 8px',
+                        borderRadius: '6px',
+                        border: '1px solid #10b981',
+                        background: '#ecfdf5',
+                        color: '#059669',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        fontWeight: '600'
+                      }}
+                    >
+                      <HiOutlineChatBubbleLeftRight /> Nhắn tin với Khách
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -175,7 +252,9 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
                 </div>
                 <div>
                   <div className="modal-chi-tiet-cuoc-hen__detail-label">Email</div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-value">N/A</div>
+                  <div className="modal-chi-tiet-cuoc-hen__detail-value">
+                    {cuocHen.EmailKhachHang || cuocHen.Email || 'Chưa cập nhật'}
+                  </div>
                 </div>
               </div>
 
@@ -197,13 +276,15 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
             </div>
           </div>
 
-          {/* Thông tin Phòng */}
+          {/* Thông tin Bất động sản / Dự án */}
           <div className="modal-chi-tiet-cuoc-hen__detail-section">
-            <h3 className="modal-chi-tiet-cuoc-hen__section-title">🏠 Thông tin Phòng</h3>
+            <h3 className="modal-chi-tiet-cuoc-hen__section-title">
+              {cuocHen.TenPhong ? '🏠 Thông tin Phòng & Bất động sản' : '🏢 Thông tin Bất động sản & Dự án'}
+            </h3>
             <div className="modal-chi-tiet-cuoc-hen__detail-grid">
-              <div className="modal-chi-tiet-cuoc-hen__detail-item">
+              <div className="modal-chi-tiet-cuoc-hen__detail-item modal-chi-tiet-cuoc-hen__detail-item--full-width">
                 <div className="modal-chi-tiet-cuoc-hen__detail-icon">
-                  <HiOutlineHome />
+                  <HiOutlineHomeModern />
                 </div>
                 <div>
                   <div className="modal-chi-tiet-cuoc-hen__detail-label">Tin đăng</div>
@@ -211,44 +292,92 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
                 </div>
               </div>
 
-              <div className="modal-chi-tiet-cuoc-hen__detail-item">
-                <div className="modal-chi-tiet-cuoc-hen__detail-icon">
-                  <HiOutlineHome />
+              {cuocHen.TenDuAn && cuocHen.TenDuAn !== cuocHen.TieuDeTinDang && (
+                <div className="modal-chi-tiet-cuoc-hen__detail-item">
+                  <div className="modal-chi-tiet-cuoc-hen__detail-icon">
+                    <HiOutlineBuildingOffice2 />
+                  </div>
+                  <div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-label">Dự án</div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-value">{cuocHen.TenDuAn}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-label">Phòng</div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-value">{cuocHen.TenPhong || 'N/A'}</div>
+              )}
+
+              {cuocHen.TenPhong ? (
+                <div className="modal-chi-tiet-cuoc-hen__detail-item">
+                  <div className="modal-chi-tiet-cuoc-hen__detail-icon">
+                    <HiOutlineHome />
+                  </div>
+                  <div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-label">Phòng</div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-value">{cuocHen.TenPhong}</div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="modal-chi-tiet-cuoc-hen__detail-item">
+                  <div className="modal-chi-tiet-cuoc-hen__detail-icon">
+                    <HiOutlineTag />
+                  </div>
+                  <div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-label">Loại Bất động sản</div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-value">{mapLoaiBDS(cuocHen.LoaiBDS)}</div>
+                  </div>
+                </div>
+              )}
+
+              {(cuocHen.DienTichSuDung || cuocHen.DienTichDat) && (
+                <div className="modal-chi-tiet-cuoc-hen__detail-item">
+                  <div className="modal-chi-tiet-cuoc-hen__detail-icon">
+                    <HiOutlineHome />
+                  </div>
+                  <div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-label">Diện tích</div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-value">
+                      {cuocHen.DienTichSuDung || cuocHen.DienTichDat} m²
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="modal-chi-tiet-cuoc-hen__detail-item">
                 <div className="modal-chi-tiet-cuoc-hen__detail-icon">
                   <HiOutlineBanknotes />
                 </div>
                 <div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-label">Giá thuê</div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-value">{formatCurrency(cuocHen.Gia)}/tháng</div>
+                  <div className="modal-chi-tiet-cuoc-hen__detail-label">
+                    {cuocHen.LoaiGiaoDich === 'Ban' ? 'Giá bán' : cuocHen.LoaiGiaoDich === 'ChoThue' ? 'Giá thuê' : 'Mức giá'}
+                  </div>
+                  <div className="modal-chi-tiet-cuoc-hen__detail-value" style={{ color: '#059669', fontWeight: '700' }}>
+                    {formatPrice(cuocHen.Gia, cuocHen.LoaiGiaoDich)}
+                  </div>
                 </div>
               </div>
 
               <div className="modal-chi-tiet-cuoc-hen__detail-item">
                 <div className="modal-chi-tiet-cuoc-hen__detail-icon">
-                  <HiOutlineMapPin />
+                  <HiOutlineCheck />
                 </div>
                 <div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-label">Địa chỉ</div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-value">N/A</div>
+                  <div className="modal-chi-tiet-cuoc-hen__detail-label">
+                    {cuocHen.TenPhong ? 'Trạng thái phòng' : 'Trạng thái BĐS'}
+                  </div>
+                  <div className="modal-chi-tiet-cuoc-hen__detail-value">
+                    <span className="room-badge" style={{ background: '#ecfdf5', color: '#059669', padding: '4px 10px', borderRadius: '6px', fontSize: '13px' }}>
+                      {formatTrangThaiBDS(cuocHen.TrangThaiPhong, cuocHen.TrangThaiTinDang)}
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="modal-chi-tiet-cuoc-hen__detail-item modal-chi-tiet-cuoc-hen__detail-item--full-width">
                 <div className="modal-chi-tiet-cuoc-hen__detail-icon">
-                  <HiOutlineCheck />
+                  <HiOutlineMapPin />
                 </div>
                 <div>
-                  <div className="modal-chi-tiet-cuoc-hen__detail-label">Trạng thái phòng</div>
+                  <div className="modal-chi-tiet-cuoc-hen__detail-label">Địa chỉ</div>
                   <div className="modal-chi-tiet-cuoc-hen__detail-value">
-                    <span className="room-badge">N/A</span>
+                    {cuocHen.DiaChi || 'Đang cập nhật'}
                   </div>
                 </div>
               </div>
@@ -267,20 +396,60 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
                   <div>
                     <div className="modal-chi-tiet-cuoc-hen__detail-label">Họ tên</div>
                     <div className="modal-chi-tiet-cuoc-hen__detail-value">{cuocHen.TenNhanVien}</div>
+                    {onOpenChat && cuocHen.NhanVienBanHangID && (
+                      <button
+                        type="button"
+                        onClick={() => onOpenChat(cuocHen, 'nhanVien')}
+                        style={{
+                          marginTop: '4px',
+                          fontSize: '11px',
+                          padding: '2px 8px',
+                          borderRadius: '6px',
+                          border: '1px solid #3b82f6',
+                          background: '#eff6ff',
+                          color: '#2563eb',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontWeight: '600'
+                        }}
+                      >
+                        <HiOutlineChatBubbleLeftRight /> Nhắn tin với NV
+                      </button>
+                    )}
                   </div>
                 </div>
 
                 <div className="modal-chi-tiet-cuoc-hen__detail-item">
                   <div className="modal-chi-tiet-cuoc-hen__detail-icon">
-                    <HiOutlineChatBubbleLeftRight />
+                    <HiOutlinePhone />
                   </div>
                   <div>
-                    <div className="modal-chi-tiet-cuoc-hen__detail-label">Liên hệ</div>
+                    <div className="modal-chi-tiet-cuoc-hen__detail-label">Số điện thoại</div>
                     <div className="modal-chi-tiet-cuoc-hen__detail-value">
-                      <span className="contact-note">Liên hệ qua tin nhắn hệ thống</span>
+                      {cuocHen.SDTNhanVien || cuocHen.SoDienThoaiNV ? (
+                        <a href={`tel:${cuocHen.SDTNhanVien || cuocHen.SoDienThoaiNV}`} className="modal-chi-tiet-cuoc-hen__phone-link">
+                          {cuocHen.SDTNhanVien || cuocHen.SoDienThoaiNV}
+                        </a>
+                      ) : (
+                        'N/A'
+                      )}
                     </div>
                   </div>
                 </div>
+
+                {cuocHen.EmailNhanVien && (
+                  <div className="modal-chi-tiet-cuoc-hen__detail-item">
+                    <div className="modal-chi-tiet-cuoc-hen__detail-icon">
+                      <HiOutlineEnvelope />
+                    </div>
+                    <div>
+                      <div className="modal-chi-tiet-cuoc-hen__detail-label">Email</div>
+                      <div className="modal-chi-tiet-cuoc-hen__detail-value">{cuocHen.EmailNhanVien}</div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -299,11 +468,11 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
           )}
 
           {/* Ghi chú từ khách hàng */}
-          {cuocHen.GhiChuKhach && (
+          {(cuocHen.GhiChuKhach || cuocHen.GhiChu) && (
             <div className="modal-chi-tiet-cuoc-hen__detail-section">
               <h3 className="modal-chi-tiet-cuoc-hen__section-title">📝 Ghi chú từ Khách hàng</h3>
               <div className="modal-chi-tiet-cuoc-hen__note-box">
-                <p>{cuocHen.GhiChuKhach}</p>
+                <p>{cuocHen.GhiChuKhach || cuocHen.GhiChu}</p>
               </div>
             </div>
           )}
@@ -380,14 +549,30 @@ function ModalChiTietCuocHen({ cuocHen, onClose, onPheDuyet, onTuChoi }) {
         {/* Footer Actions */}
         <div className="modal-chi-tiet-cuoc-hen__footer">
           <div className="modal-chi-tiet-cuoc-hen__footer-actions-left">
-            <button className="cda-btn cda-btn-secondary">
+            <button 
+              className="cda-btn cda-btn-secondary"
+              onClick={() => onOpenChat && onOpenChat(cuocHen, 'khachHang')}
+              disabled={!cuocHen.KhachHangID}
+              title={cuocHen.KhachHangID ? 'Nhắn tin với khách hàng' : 'Không có thông tin khách hàng'}
+            >
               <HiOutlineChatBubbleLeftRight />
-              Trò chuyện
+              Trò chuyện với Khách
             </button>
-            <button className="cda-btn cda-btn-secondary">
-              <HiOutlinePhone />
-              Gọi điện
-            </button>
+            {cuocHen.SDTKhachHang ? (
+              <a 
+                href={`tel:${cuocHen.SDTKhachHang}`} 
+                className="cda-btn cda-btn-secondary"
+                style={{ textDecoration: 'none' }}
+              >
+                <HiOutlinePhone />
+                Gọi điện
+              </a>
+            ) : (
+              <button className="cda-btn cda-btn-secondary" disabled title="Không có số điện thoại">
+                <HiOutlinePhone />
+                Gọi điện
+              </button>
+            )}
           </div>
 
           <div className="modal-chi-tiet-cuoc-hen__footer-actions-right">

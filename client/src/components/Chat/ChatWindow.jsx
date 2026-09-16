@@ -3,7 +3,7 @@
  * @component ChatWindow
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { HiOutlineArrowLeft, HiOutlineEllipsisVertical, HiOutlineVideoCamera } from 'react-icons/hi2';
 import useChat from '../../hooks/useChat';
@@ -12,12 +12,16 @@ import useSocket from '../../hooks/useSocket';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import viApi from '../../api/viApi';
+import { getApiBaseUrl } from '../../config/api';
+import { getAuthHeaderValue } from '../../utils/authToken';
 import './ChatWindow.css';
 
-export const ChatWindow = () => {
-  const { id } = useParams();
+export const ChatWindow = ({ conversationId: propConvId }) => {
+  const params = useParams();
+  const id = propConvId ? parseInt(propConvId) : (params.id ? parseInt(params.id) : null);
   const navigate = useNavigate();
   const { markConversationAsRead, conversations } = useChatContext();
+  const [convDetail, setConvDetail] = useState(null);
   const { socket, isConnected: socketConnected } = useSocket();
   const {
     messages,
@@ -28,7 +32,7 @@ export const ChatWindow = () => {
     loading,
     error,
     isConnected
-  } = useChat(parseInt(id));
+  } = useChat(id);
 
   // Get current user ID from localStorage
   let currentUserId = parseInt(localStorage.getItem('userId') || '0');
@@ -48,6 +52,26 @@ export const ChatWindow = () => {
     if (id) {
       markAsRead();
       markConversationAsRead(parseInt(id));
+
+      const fetchDetail = async () => {
+        try {
+          const authHeader = getAuthHeaderValue();
+          const res = await fetch(`${getApiBaseUrl()}/api/chat/conversations/${id}`, {
+            headers: {
+              Authorization: authHeader,
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+          });
+          const result = await res.json();
+          if (result.success && result.data) {
+            setConvDetail(result.data);
+          }
+        } catch (err) {
+          console.error('[ChatWindow] fetchDetail error:', err);
+        }
+      };
+      fetchDetail();
     }
   }, [id, markAsRead, markConversationAsRead]);
 
@@ -81,47 +105,42 @@ export const ChatWindow = () => {
     };
   }, []);
 
+  const conversationId = parseInt(id);
+  const activeConv = conversations.find(c => c.CuocHoiThoaiID === conversationId) || convDetail;
+
+  // Lấy tên người chat cùng (Partner)
+  let partnerName = '';
+  if (activeConv) {
+    if (activeConv.ThanhVienKhac && activeConv.ThanhVienKhac.length > 0) {
+      partnerName = activeConv.ThanhVienKhac.map(tv => tv.TenDayDu).filter(Boolean).join(', ');
+    } else if (activeConv.ThanhVien && activeConv.ThanhVien.length > 0) {
+      partnerName = activeConv.ThanhVien
+        .filter(tv => tv.NguoiDungID !== currentUserId)
+        .map(tv => tv.TenDayDu)
+        .filter(Boolean)
+        .join(', ');
+    }
+  }
+
   const handleVideoCall = () => {
-    // Tìm thông tin cuộc hội thoại để lấy tên người chat cùng
-    const conversationId = parseInt(id);
-    const conversation = conversations.find(c => c.CuocHoiThoaiID === conversationId);
-    
     // Lấy tên người dùng hiện tại
     const currentUserName = currentUser.TenDayDu || currentUser.tenDayDu || 'User';
-    
-    // Lấy tên người chat cùng (Partner)
-    let partnerName = '';
-    if (conversation && conversation.ThanhVienKhac && conversation.ThanhVienKhac.length > 0) {
-      partnerName = conversation.ThanhVienKhac[0].TenDayDu;
-    }
 
-    // 1. Tạo Room ID khó đoán hơn (Base64 encode)
-    // Ví dụ: daphongtro_chat_123 -> ZGFwaG9uZ3Ryb19jaGF0XzEyMw
-    // Loại bỏ dấu = ở cuối để URL đẹp hơn
-    const rawRoomId = `daphongtro_chat_${id}`;
+    // 1. Tạo Room ID an toàn
+    const rawRoomId = `hommy_chat_${id}`;
     const secureRoomId = btoa(rawRoomId).replace(/=/g, '');
 
-    // 2. Mã hóa thông tin user (Base64 với hỗ trợ tiếng Việt UTF-8)
-    const userInfo = {
-      username: currentUserName,
-      userid: currentUserId,
-      partner_name: partnerName,
-      timestamp: Date.now() // Thêm timestamp để tăng tính duy nhất
-    };
+    // 2. URL phòng gọi (sử dụng Jitsi Meet chuẩn WebRTC miễn phí và ổn định)
+    const displayName = encodeURIComponent(currentUserName);
+    const roomUrl = `https://meet.jit.si/hommy_call_${secureRoomId}#userInfo.displayName="${displayName}"&config.prejoinPageEnabled=false`;
     
-    // Encode: JSON -> UTF8 -> Base64
-    const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(userInfo))));
-
-    // URL cuối cùng: .../room/ZGFwaG9uZ3Ryb19jaGF0XzEyMw?data=eyJ1c2VybmFtZ...
-    const roomUrl = `https://jbcalling.site/room/${secureRoomId}?data=${encodedData}`;
-    
-    // 3. Emit socket event để thông báo cho NVBH (nếu là chủ dự án)
-    if (socket && socketConnected) {
+    // 3. Emit socket event để thông báo cho đối tác
+    if (socket && socketConnected && id) {
       socket.emit('initiate_video_call', {
-        cuocHoiThoaiID: conversationId,
+        cuocHoiThoaiID: id,
         roomUrl
       });
-      console.log('[ChatWindow] Emitted initiate_video_call event');
+      console.log('[ChatWindow] Emitted initiate_video_call event for conversation', id);
     }
     
     // 4. Mở window video call
@@ -137,25 +156,42 @@ export const ChatWindow = () => {
     );
   };
 
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate('/chu-du-an/tin-nhan');
+    }
+  };
+
   return (
     <div className="chat-window">
       {/* Header */}
       <div className="chat-window-header">
-        <button className="chat-window-back-btn" onClick={() => navigate('/chu-du-an/tin-nhan')}>
+        <button className="chat-window-back-btn" onClick={handleBack} title="Quay lại">
           <HiOutlineArrowLeft />
         </button>
         
         <div className="chat-window-header-info">
-          <h3>Cuộc trò chuyện</h3>
-          <p className="chat-window-status">
-            {!isConnected ? (
-              <span className="status-offline">Đang kết nối lại...</span>
-            ) : isTyping ? (
-              <span className="status-typing">Đang gõ...</span>
-            ) : (
-              <span className="status-online">Trực tuyến</span>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: '#0f172a' }}>
+            {partnerName || activeConv?.TieuDe || `Cuộc trò chuyện #${id}`}
+          </h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px', fontSize: '12px' }}>
+            {activeConv?.TieuDe && partnerName && (
+              <span style={{ color: '#64748b', maxWidth: '360px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {activeConv.TieuDe}
+              </span>
             )}
-          </p>
+            <span className="chat-window-status" style={{ margin: 0 }}>
+              {!isConnected ? (
+                <span className="status-offline">Đang kết nối lại...</span>
+              ) : isTyping ? (
+                <span className="status-typing">Đang gõ...</span>
+              ) : (
+                <span className="status-online">● Trực tuyến</span>
+              )}
+            </span>
+          </div>
         </div>
 
         <div className="chat-window-actions">

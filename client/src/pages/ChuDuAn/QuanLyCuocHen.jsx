@@ -20,7 +20,8 @@ import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineDocumentArrowDown,
   HiOutlineBell,
-  HiOutlineChartBar
+  HiOutlineChartBar,
+  HiOutlineBuildingOffice2
 } from 'react-icons/hi2';
 
 // Components
@@ -139,24 +140,39 @@ function QuanLyCuocHen() {
   };
 
   /**
-   * Mở cuộc trò chuyện với nhân viên bán hàng phụ trách cuộc hẹn
+   * Mở cuộc trò chuyện với khách hàng hoặc nhân viên phụ trách cuộc hẹn
+   * @param {Object} cuocHen 
+   * @param {string} target 'khachHang' | 'nhanVien'
    */
-  const handleOpenChat = async (cuocHen) => {
+  const handleOpenChat = async (cuocHen, target = 'khachHang') => {
     try {
-      // Kiểm tra có nhân viên bán hàng chưa
-      if (!cuocHen.NhanVienBanHangID) {
-        alert('⚠️ Cuộc hẹn này chưa có nhân viên bán hàng phụ trách.\nVui lòng gán nhân viên trước khi trò chuyện.');
-        return;
+      let targetUserId = null;
+      let targetName = '';
+      
+      if (target === 'nhanVien') {
+        if (!cuocHen.NhanVienBanHangID) {
+          alert('⚠️ Cuộc hẹn này chưa có nhân viên bán hàng phụ trách.');
+          return;
+        }
+        targetUserId = cuocHen.NhanVienBanHangID;
+        targetName = cuocHen.TenNhanVien || 'Nhân viên';
+      } else {
+        if (!cuocHen.KhachHangID) {
+          alert('⚠️ Không tìm thấy thông tin khách hàng để trò chuyện.');
+          return;
+        }
+        targetUserId = cuocHen.KhachHangID;
+        targetName = cuocHen.TenKhachHang || 'Khách hàng';
       }
 
       const payload = {
         NguCanhID: cuocHen.CuocHenID,
         NguCanhLoai: 'CuocHen',
-        ThanhVienIDs: [cuocHen.NhanVienBanHangID], // Chat với NVBH thay vì KhachHangID
-        TieuDe: `Cuộc hẹn #${cuocHen.CuocHenID} - ${cuocHen.TenPhong || cuocHen.TenTinDang}`
+        ThanhVienIDs: [targetUserId],
+        TieuDe: `Cuộc hẹn #${cuocHen.CuocHenID} - ${cuocHen.TieuDeTinDang || cuocHen.TenDuAn || 'BĐS'}`
       };
 
-      console.log('[QuanLyCuocHen] 📤 Creating chat conversation:', payload);
+      console.log('[QuanLyCuocHen] 📤 Creating chat conversation with', targetName, payload);
 
       const response = await chatApi.createConversation(payload);
       const result = response.data;
@@ -317,6 +333,22 @@ function QuanLyCuocHen() {
       month: '2-digit',
       year: 'numeric'
     });
+  };
+
+  const mapLoaiBDS = (loai) => {
+    const map = {
+      CanHo: 'Căn hộ',
+      NhaPho: 'Nhà phố',
+      BietThu: 'Biệt thự',
+      DatO: 'Đất ở',
+      DatNen: 'Đất nền',
+      NhaNguyenCan: 'Nhà nguyên căn',
+      Shophouse: 'Shophouse',
+      PhongTro: 'Phòng trọ',
+      MatBang: 'Mặt bằng',
+      VanPhong: 'Văn phòng'
+    };
+    return map[loai] || loai || 'Bất động sản';
   };
 
   const formatTrangThai = (trangThai, pheDuyet) => {
@@ -681,13 +713,27 @@ function QuanLyCuocHen() {
                               </td>
                               <td>
                                 <div className="property-cell">
-                                  <div className="property-room">
-                                    <HiOutlineHome className="cell-icon" />
-                                    {cuocHen.TenPhong || cuocHen.TieuDeTinDang || 'N/A'}
-                                  </div>
-                                  <div className="property-project">
-                                    {cuocHen.TenDuAn || 'Dự án N/A'}
-                                  </div>
+                                  {cuocHen.TenPhong ? (
+                                    <>
+                                      <div className="property-room">
+                                        <HiOutlineHome className="cell-icon" />
+                                        {cuocHen.TenPhong}
+                                      </div>
+                                      <div className="property-project">
+                                        {cuocHen.TenDuAn || cuocHen.TieuDeTinDang || 'Dự án N/A'}
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="property-room">
+                                        <HiOutlineBuildingOffice2 className="cell-icon" />
+                                        {cuocHen.TenDuAn || cuocHen.TieuDeTinDang || 'Bất động sản'}
+                                      </div>
+                                      <div className="property-project">
+                                        {mapLoaiBDS(cuocHen.LoaiBDS)} {cuocHen.DienTichSuDung ? `• ${cuocHen.DienTichSuDung} m²` : ''} {cuocHen.LoaiGiaoDich === 'Ban' ? '• Bán' : cuocHen.LoaiGiaoDich === 'ChoThue' ? '• Cho thuê' : ''}
+                                      </div>
+                                    </>
+                                  )}
                                 </div>
                               </td>
                               <td>
@@ -743,8 +789,8 @@ function QuanLyCuocHen() {
                                   </button>
                                   <button
                                     className="action-btn secondary"
-                                    title="Trò chuyện"
-                                    onClick={() => handleOpenChat(cuocHen)}
+                                    title="Trò chuyện với khách hàng"
+                                    onClick={() => handleOpenChat(cuocHen, 'khachHang')}
                                   >
                                     <HiOutlineChatBubbleLeftRight />
                                   </button>
@@ -815,14 +861,16 @@ function QuanLyCuocHen() {
                           <div className="cuoc-hen-mobile__section">
                             <div className="cuoc-hen-mobile__section-title">
                               <HiOutlineHome className="cell-icon" />
-                              Phòng / Dự án
+                              {cuocHen.TenPhong ? 'Phòng / Dự án' : 'Bất động sản'}
                             </div>
                             <div className="cuoc-hen-mobile__section-content">
                               <div className="cuoc-hen-mobile__primary-text">
-                                {cuocHen.TenPhong || 'N/A'}
+                                {cuocHen.TenPhong || cuocHen.TenDuAn || cuocHen.TieuDeTinDang || 'N/A'}
                               </div>
                               <div className="cuoc-hen-mobile__secondary-text">
-                                {cuocHen.TenDuAn || 'N/A'}
+                                {cuocHen.TenPhong 
+                                  ? (cuocHen.TenDuAn || cuocHen.TieuDeTinDang || '') 
+                                  : `${mapLoaiBDS(cuocHen.LoaiBDS)} ${cuocHen.DienTichSuDung ? `• ${cuocHen.DienTichSuDung} m²` : ''} ${cuocHen.LoaiGiaoDich === 'Ban' ? '• Bán' : cuocHen.LoaiGiaoDich === 'ChoThue' ? '• Cho thuê' : ''}`}
                               </div>
                             </div>
                           </div>
@@ -879,8 +927,8 @@ function QuanLyCuocHen() {
                             </button>
                             <button
                               className="action-btn secondary"
-                              title="Trò chuyện"
-                              onClick={() => handleOpenChat(cuocHen)}
+                              title="Trò chuyện với khách hàng"
+                              onClick={() => handleOpenChat(cuocHen, 'khachHang')}
                             >
                               <HiOutlineChatBubbleLeftRight />
                             </button>
@@ -939,6 +987,10 @@ function QuanLyCuocHen() {
             onTuChoi={(ch) => {
               setModalChiTiet({ open: false, cuocHen: null });
               handleTuChoi(ch);
+            }}
+            onOpenChat={(ch, target) => {
+              setModalChiTiet({ open: false, cuocHen: null });
+              handleOpenChat(ch, target);
             }}
           />
         )}

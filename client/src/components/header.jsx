@@ -173,6 +173,11 @@ function Header() {
             ? res.data.data
             : [];
         setFavorites(raw);
+        window.dispatchEvent(
+          new CustomEvent("favoritesLoaded", {
+            detail: { favorites: raw }
+          })
+        );
       } catch (err) {
         console.error("Lỗi lấy yêu thích:", err?.response?.data || err.message);
         setFavorites([]);

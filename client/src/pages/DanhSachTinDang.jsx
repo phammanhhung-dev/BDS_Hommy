@@ -10,6 +10,8 @@ import { injectJsonLd, removeJsonLd, setPageSEO, SITE_URL } from "../utils/seo";
 import { FaSearch, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import "./trangchu/trangchu.css";
 import "./DanhSachTinDang.css";
+import "../components/RecommendedProperties.css";
+import { useFavoriteToggle, getCurrentUserId } from "../hooks/useFavoriteToggle";
 
 function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
   const { loaiGiaoDich: paramLoaiGiaoDich } = useParams();
@@ -22,7 +24,7 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
   const [tindangs, setTindangs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [addingFavId, setAddingFavId] = useState(null);
+  const { handleToggleFavorite, toastMessage, favoriteLoadingId } = useFavoriteToggle(setTindangs);
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -167,6 +169,9 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
       const maxDienTich = queryParams.get("maxDienTich");
       if (maxDienTich) params.maxDienTich = parseFloat(maxDienTich);
       
+      const userId = getCurrentUserId();
+      if (userId) params.userId = userId;
+
       const res = await tinDangPublicApi.getAll(params);
       let raw = [];
       if (res?.data?.success && Array.isArray(res.data.data)) {
@@ -183,42 +188,7 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
     }
   };
 
-  const getCurrentUserId = () => {
-    try {
-      const raw = localStorage.getItem("user") || localStorage.getItem("currentUser");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        const actual = parsed.user ?? parsed;
-        const id = actual?.NguoiDungID ?? actual?.id ?? actual?.userId;
-        if (id) return Number(id);
-      }
-    } catch {
-      /* ignore */
-    }
-    const idKey = localStorage.getItem("userId");
-    if (idKey && !isNaN(Number(idKey))) return Number(idKey);
-    return null;
-  };
 
-  const handleAddFavorite = async (tin) => {
-    const tinId = tin?.TinDangID ?? tin?.id ?? tin?._id;
-    const userId = getCurrentUserId();
-    if (!userId) {
-      window.location.href = "/login";
-      return;
-    }
-    if (!tinId) return;
-    setAddingFavId(tinId);
-    try {
-      await yeuThichApi.add({ NguoiDungID: userId, TinDangID: tinId });
-      alert(t("homepage.addToFavorites") || "Đã thêm vào yêu thích");
-    } catch (err) {
-      console.error("Thêm yêu thích lỗi:", err?.response ?? err);
-      alert(t("header.removeFailed") || "Thêm yêu thích thất bại");
-    } finally {
-      setAddingFavId(null);
-    }
-  };
 
   const queryParams = new URLSearchParams(location.search);
   const isRecommend = queryParams.get("recommend") === "1";
@@ -345,10 +315,10 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
                     <ListingCard
                       key={tinId}
                       tinDang={tinDang}
-                      onAddFavorite={handleAddFavorite}
+                      onToggleFavorite={handleToggleFavorite}
                       t={t}
                       lazy
-                      disabled={addingFavId === tinId}
+                      disabled={favoriteLoadingId === tinId}
                     />
                   );
                 })
@@ -443,6 +413,13 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
       </main>
 
       <Footer />
+
+      {/* Toast thông báo yêu thích nổi */}
+      {toastMessage && (
+        <div className="rec-toast" role="status" aria-live="polite">
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
 }

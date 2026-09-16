@@ -41,8 +41,14 @@ export const MessageInput = ({ onSendMessage, onTyping, disabled = false }) => {
     }
 
     // Auto-resize textarea
-    e.target.style.height = 'auto';
-    e.target.style.height = e.target.scrollHeight + 'px';
+    e.target.style.height = '44px';
+    const scrollHeight = e.target.scrollHeight;
+    if (scrollHeight > 44) {
+      e.target.style.height = Math.min(scrollHeight, 120) + 'px';
+      e.target.style.overflowY = scrollHeight > 120 ? 'auto' : 'hidden';
+    } else {
+      e.target.style.overflowY = 'hidden';
+    }
   };
 
   const handleSubmit = (e) => {
@@ -56,7 +62,8 @@ export const MessageInput = ({ onSendMessage, onTyping, disabled = false }) => {
 
     // Reset textarea height
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = '44px';
+      textareaRef.current.style.overflowY = 'hidden';
     }
   };
 

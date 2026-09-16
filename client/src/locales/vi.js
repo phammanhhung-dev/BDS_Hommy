@@ -201,6 +201,7 @@ export default {
     subtitle: "Dự đoán giá trị căn nhà hoặc chung cư của bạn tức thì dựa trên dữ liệu thị trường thực tế",
     mlBadge: "Trí tuệ nhân tạo (Machine Learning)",
     formTitle: "Thông số bất động sản",
+    provinceLabel: "Tỉnh / Thành phố",
     districtLabel: "Khu vực (Quận / Huyện)",
     typeLabel: "Loại bất động sản",
     apartment: "Căn hộ chung cư",

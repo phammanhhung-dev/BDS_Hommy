@@ -7,8 +7,10 @@ import tinDangPublicApi from "../../api/tinDangPublicApi";
 import duAnPublicApi from "../../api/duAnPublicApi";
 import baiVietPublicApi from "../../api/baiVietPublicApi";
 import "./trangchu.css";
+import "../../components/RecommendedProperties.css";
 import SearchKhuVuc from "../../components/SearchKhuVuc";
 import yeuThichApi from "../../api/yeuThichApi";
+import { useFavoriteToggle, getCurrentUserId } from "../../hooks/useFavoriteToggle";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "../../context/LanguageContext";
 import ChatBot from "../../components/ChatBot/ChatBot";
@@ -257,6 +259,7 @@ function TrangChu() {
   const { t } = useTranslation();
   const location = useLocation();
   const [tindangs, setTindangs] = useState([]);
+  const { handleToggleFavorite, toastMessage, favoriteLoadingId } = useFavoriteToggle(setTindangs);
   const [stats, setStats] = useState(null);
   const [projects, setProjects] = useState([]);
   const [newsPosts, setNewsPosts] = useState(FALLBACK_NEWS);
@@ -421,7 +424,10 @@ function TrangChu() {
     setLoading(true);
     setError("");
     try {
-      const res = await tinDangPublicApi.getAll(params);
+      const userId = getCurrentUserId();
+      const queryParams = { ...params };
+      if (userId) queryParams.userId = userId;
+      const res = await tinDangPublicApi.getAll(queryParams);
       let raw = [];
       if (res?.data?.success && Array.isArray(res.data.data)) {
         raw = res.data.data;
@@ -468,42 +474,7 @@ function TrangChu() {
     fetchTinDangs(params);
   };
 
-  const getCurrentUserId = () => {
-    try {
-      const raw = localStorage.getItem("user") || localStorage.getItem("currentUser");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        const actual = parsed.user ?? parsed;
-        const id = actual?.NguoiDungID ?? actual?.id ?? actual?.userId;
-        if (id) return Number(id);
-      }
-    } catch {
-      /* ignore */
-    }
-    const idKey = localStorage.getItem("userId");
-    if (idKey && !isNaN(Number(idKey))) return Number(idKey);
-    return null;
-  };
 
-  const handleAddFavorite = async (tin) => {
-    const tinId = tin?.TinDangID ?? tin?.id ?? tin?._id;
-    const userId = getCurrentUserId();
-    if (!userId) {
-      window.location.href = "/login";
-      return;
-    }
-    if (!tinId) return;
-    setAddingFavId(tinId);
-    try {
-      await yeuThichApi.add({ NguoiDungID: userId, TinDangID: tinId });
-      alert("Đã thêm vào yêu thích");
-    } catch (err) {
-      console.error("Thêm yêu thích lỗi:", err?.response ?? err);
-      alert("Thêm yêu thích thất bại");
-    } finally {
-      setAddingFavId(null);
-    }
-  };
 
   const getCategoryCount = (key) => {
     if (!stats || !Array.isArray(stats.loaiBds)) return "0";
@@ -654,9 +625,9 @@ function TrangChu() {
                     <ListingCard
                       key={tinId}
                       tinDang={tinDang}
-                      onAddFavorite={handleAddFavorite}
+                      onToggleFavorite={handleToggleFavorite}
                       t={t}
-                      disabled={addingFavId === tinId}
+                      disabled={favoriteLoadingId === tinId}
                     />
                   );
                 })}
@@ -1097,6 +1068,13 @@ function TrangChu() {
 
       <ChatBot />
       <Footer />
+
+      {/* Toast thông báo yêu thích nổi */}
+      {toastMessage && (
+        <div className="rec-toast" role="status" aria-live="polite">
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
 }

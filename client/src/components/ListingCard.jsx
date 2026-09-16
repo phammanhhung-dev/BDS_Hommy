@@ -4,7 +4,7 @@ import { FaMapMarkerAlt, FaHeart, FaRegHeart } from "react-icons/fa";
 import { getStaticUrl } from "../config/api";
 import "./RecommendedProperties.css";
 
-function ListingCard({ tinDang, onAddFavorite, t, lazy = false, disabled = false }) {
+function ListingCard({ tinDang, onAddFavorite, onToggleFavorite, t, lazy = false, disabled = false }) {
   const tinId = tinDang.TinDangID ?? tinDang.id ?? tinDang._id;
   const imgSrc = getListingImage(tinDang);
   const areaText = tinDang.DienTich ? `${tinDang.DienTich} m²` : (tinDang.DienTichSuDung ? `${tinDang.DienTichSuDung} m²` : "—");
@@ -12,6 +12,16 @@ function ListingCard({ tinDang, onAddFavorite, t, lazy = false, disabled = false
   const detailUrl = `/tin-dang/${tinId}`;
   const priceText = formatPrice(tinDang.GiaTien || tinDang.Gia);
   const addressText = tinDang.full_display_address || tinDang.DiaChi || [tinDang.TenKhuVuc, tinDang.TenQuanHuyen, tinDang.TenTinh].filter(Boolean).join(', ') || "Đang cập nhật vị trí";
+
+  const handleFavoriteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onToggleFavorite) {
+      onToggleFavorite(e, tinDang);
+    } else if (onAddFavorite) {
+      onAddFavorite(e, tinDang);
+    }
+  };
 
   return (
     <article
@@ -38,10 +48,7 @@ function ListingCard({ tinDang, onAddFavorite, t, lazy = false, disabled = false
           className={`rec-card__favorite-btn bg-white/90 shadow-sm border border-gray-100 text-gray-600 hover:text-red-500 hover:border-gray-200 dark:bg-black/40 dark:border-white/20 dark:text-white/80 dark:hover:text-red-500 dark:hover:border-white/40 ${
             tinDang.isFavorite ? "is-active text-red-500 border-red-500/40" : ""
           }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onAddFavorite && onAddFavorite(tinDang);
-          }}
+          onClick={handleFavoriteClick}
           disabled={disabled}
           aria-label={tinDang.isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
         >

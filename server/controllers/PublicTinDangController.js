@@ -5,6 +5,29 @@ const RecommendationService = require("../services/recommendationService");
 class PublicTinDangController {
   static async getDanhSachTinDang(req, res) {
     try {
+      let userId = req.user?.id || req.user?.userId;
+      if (!userId && req.query.userId) {
+        const parsed = parseInt(req.query.userId, 10);
+        if (!isNaN(parsed) && parsed > 0) userId = parsed;
+      }
+      if (!userId) {
+        try {
+          const authHeader = req.header('Authorization');
+          if (authHeader && authHeader.startsWith('Bearer ')) {
+            const token = authHeader.slice(7);
+            if (token) {
+              const jwt = require('jsonwebtoken');
+              const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+              if (decoded && (decoded.userId || decoded.id)) {
+                userId = parseInt(decoded.userId || decoded.id, 10);
+              }
+            }
+          }
+        } catch {
+          // ignore invalid/expired token
+        }
+      }
+
       const filters = {
         onlyPublic: req.query.onlyPublic,
         trangThai: req.query.trangThai,
@@ -21,6 +44,7 @@ class PublicTinDangController {
         maxDienTich: req.query.maxDienTich,
         quanHuyen: req.query.quanHuyen || req.query.quan_huyen,
         tinhThanh: req.query.tinhThanh,
+        userId,
       };
       const data = await PublicTinDangModel.layTatCaTinDang(filters);
       return res.json({ success: true, data });

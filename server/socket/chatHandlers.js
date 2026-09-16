@@ -62,6 +62,9 @@ function setupChatHandlers(socket, io) {
 
   console.log(`[Socket.IO] User ${userId} connected (socket ID: ${socket.id})`);
 
+  // Tự động tham gia room cá nhân để nhận tin nhắn/thông báo real-time
+  socket.join(`user_${userId}`);
+
   /**
    * JOIN_CONVERSATION: Tham gia vào một cuộc hội thoại
    */
@@ -152,23 +155,27 @@ function setupChatHandlers(socket, io) {
         NoiDung: sanitizedNoiDung
       });
 
-      // Broadcast tin nhắn đến tất cả thành viên trong room
-      io.to(`conversation_${cuocHoiThoaiID}`).emit('new_message', tinNhan);
-
-      console.log(`[Socket.IO] Message sent: ${tinNhan.TinNhanID} in conversation ${cuocHoiThoaiID}`);
-
-      // Gửi thông báo cho NVBH nếu có trong cuộc hội thoại (async, không chờ)
       // Lấy danh sách thành viên và kiểm tra ai là NVBH
       const db = require('../config/db');
       const [thanhVienRows] = await db.execute(`
         SELECT tv.NguoiDungID, nd.VaiTroHoatDongID
         FROM thanhviencuochoithoai tv
         INNER JOIN nguoidung nd ON tv.NguoiDungID = nd.NguoiDungID
-        WHERE tv.CuocHoiThoaiID = ? AND tv.NguoiDungID != ?
-      `, [cuocHoiThoaiID, userId]);
+        WHERE tv.CuocHoiThoaiID = ?
+      `, [cuocHoiThoaiID]);
 
-      // VaiTroHoatDongID = 2 là NhanVienBanHang
-      const nvbhMembers = thanhVienRows.filter(member => member.VaiTroHoatDongID === 2);
+      // Broadcast tin nhắn đến room cuộc trò chuyện và user room của các thành viên
+      const targetRooms = [`conversation_${cuocHoiThoaiID}`];
+      thanhVienRows.forEach(member => {
+        targetRooms.push(`user_${member.NguoiDungID}`);
+      });
+      io.to(targetRooms).emit('new_message', tinNhan);
+
+      console.log(`[Socket.IO] Message sent: ${tinNhan.TinNhanID} in conversation ${cuocHoiThoaiID} to rooms:`, targetRooms);
+
+      // Gửi thông báo cho NVBH nếu có trong cuộc hội thoại (async, không chờ)
+      // VaiTroHoatDongID = 2 là NhanVienBanHang (loại trừ chính người gửi)
+      const nvbhMembers = thanhVienRows.filter(member => member.VaiTroHoatDongID === 2 && member.NguoiDungID !== userId);
       
       if (nvbhMembers.length > 0) {
         const ThongBaoService = require('../services/ThongBaoService');
@@ -301,14 +308,16 @@ function setupChatHandlers(socket, io) {
 
       // Gửi thông báo video call cho tất cả thành viên khác
       thanhVienRows.forEach(thanhVien => {
-        // Emit event video_call_incoming cho từng thành viên
-        io.to(`notifications:${thanhVien.NguoiDungID}`).emit('video_call_incoming', {
+        const callPayload = {
           cuocHoiThoaiID,
           nguoiGoiID: userId,
           nguoiGoiTen: nguoiGoi.TenDayDu,
+          callerName: nguoiGoi.TenDayDu,
           roomUrl,
           timestamp: new Date().toISOString()
-        });
+        };
+        io.to([`notifications:${thanhVien.NguoiDungID}`, `user_${thanhVien.NguoiDungID}`]).emit('video_call_incoming', callPayload);
+        io.to([`notifications:${thanhVien.NguoiDungID}`, `user_${thanhVien.NguoiDungID}`]).emit('incoming_call', callPayload);
 
         // Gửi thông báo trong-app cho NVBH (nếu là NVBH)
         if (thanhVien.VaiTroHoatDongID === 2) {

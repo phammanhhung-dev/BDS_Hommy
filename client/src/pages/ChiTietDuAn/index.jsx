@@ -20,6 +20,8 @@ import {
   FaHandshake
 } from "react-icons/fa";
 import "./ChiTietDuAn.css";
+import "../../components/RecommendedProperties.css";
+import { useFavoriteToggle } from "../../hooks/useFavoriteToggle";
 
 const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
@@ -34,6 +36,15 @@ function ChiTietDuAn() {
   const [duan, setDuan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const { handleToggleFavorite, toastMessage, favoriteLoadingId } = useFavoriteToggle((updater) => {
+    setDuan((prevDuan) => {
+      if (!prevDuan) return prevDuan;
+      const currentList = Array.isArray(prevDuan.tinDangs) ? prevDuan.tinDangs : [];
+      const updatedList = typeof updater === "function" ? updater(currentList) : updater;
+      return { ...prevDuan, tinDangs: updatedList };
+    });
+  });
 
   useEffect(() => {
     fetchProjectDetail();
@@ -257,6 +268,8 @@ function ChiTietDuAn() {
                       <ListingCard
                         key={item.TinDangID}
                         tinDang={item}
+                        onToggleFavorite={handleToggleFavorite}
+                        disabled={favoriteLoadingId === item.TinDangID}
                         t={t}
                       />
                     ))}
@@ -301,6 +314,13 @@ function ChiTietDuAn() {
       </main>
 
       <Footer />
+
+      {/* Toast thông báo yêu thích nổi */}
+      {toastMessage && (
+        <div className="rec-toast" role="status" aria-live="polite">
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
 }

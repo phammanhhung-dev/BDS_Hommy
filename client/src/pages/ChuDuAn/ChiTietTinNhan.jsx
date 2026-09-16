@@ -1,20 +1,11 @@
 /**
- * @fileoverview Chi tiết cuộc trò chuyện - ChatWindow wrapper
+ * @fileoverview Chi tiết cuộc trò chuyện - Wrapper chuyển tiếp đến TinNhan split-view
  * @component ChiTietTinNhan
  */
 
 import React from 'react';
-import ChuDuAnLayout from '../../layouts/ChuDuAnLayout';
-import { ChatProvider } from '../../context/ChatContext';
-import ChatWindow from '../../components/Chat/ChatWindow';
-import '../../styles/ChuDuAnDesignSystem.css';
+import TinNhan from './TinNhan';
 
 export default function ChiTietTinNhan() {
-  return (
-    <ChuDuAnLayout>
-      <ChatWindow />
-    </ChuDuAnLayout>
-  );
+  return <TinNhan />;
 }
-
-
