@@ -49,6 +49,7 @@ export default {
   common: {
     view: "Xem",
     viewAll: "Xem tất cả",
+    viewDetail: "Xem chi tiết",
     edit: "Sửa",
     delete: "Xóa",
     save: "Lưu",
@@ -57,6 +58,16 @@ export default {
     close: "Đóng",
     yes: "Có",
     no: "Không",
+    allListings: "Tất cả tin đăng",
+    showing: "Hiển thị",
+    of: "trên tổng số",
+    listings: "tin đăng",
+    previous: "Trước",
+    next: "Sau",
+    listingsIn: "Bất động sản tại {location}",
+    sellIn: "Nhà đất bán tại {location}",
+    rentIn: "Nhà đất cho thuê tại {location}",
+    searchResultsFor: "Kết quả tìm kiếm cho \"{keyword}\"",
   },
   // Homepage
   homepage: {

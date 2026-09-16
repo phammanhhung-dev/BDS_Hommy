@@ -49,6 +49,7 @@ export default {
   common: {
     view: "View",
     viewAll: "View all",
+    viewDetail: "View details",
     edit: "Edit",
     delete: "Delete",
     save: "Save",
@@ -57,6 +58,16 @@ export default {
     close: "Close",
     yes: "Yes",
     no: "No",
+    allListings: "All Listings",
+    showing: "Showing",
+    of: "of",
+    listings: "listings",
+    previous: "Previous",
+    next: "Next",
+    listingsIn: "Properties in {location}",
+    sellIn: "Properties for sale in {location}",
+    rentIn: "Properties for rent in {location}",
+    searchResultsFor: "Search results for \"{keyword}\"",
   },
   // Homepage
   homepage: {

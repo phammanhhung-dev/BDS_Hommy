@@ -223,12 +223,29 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
   const queryParams = new URLSearchParams(location.search);
   const isRecommend = queryParams.get("recommend") === "1";
   const isLatest = queryParams.get("latest") === "1";
+  const tinhThanh = queryParams.get("tinhThanh");
+  const keywordParam = queryParams.get("keyword");
 
-  const pageTitle = isRecommend
-    ? (t("homepage.recommendedForYou") || "Bất động sản dành cho bạn")
-    : isLatest
-    ? (t("homepage.latestListings") || "Tin đăng mới nhất")
-    : (loaiGiaoDich === 'Ban' ? (t("nav.sell") || "Nhà đất bán") : loaiGiaoDich === 'Thue' ? (t("nav.rent") || "Nhà đất cho thuê") : (t("common.allListings") || "Tất cả tin đăng"));
+  let pageTitle = t("common.allListings") || "Tất cả tin đăng";
+  if (isRecommend) {
+    pageTitle = t("homepage.recommendedForYou") || "Bất động sản dành cho bạn";
+  } else if (isLatest) {
+    pageTitle = t("homepage.latestListings") || "Tin đăng mới nhất";
+  } else if (tinhThanh) {
+    if (loaiGiaoDich === 'Ban') {
+      pageTitle = t("common.sellIn", { location: tinhThanh }) || `Nhà đất bán tại ${tinhThanh}`;
+    } else if (loaiGiaoDich === 'Thue') {
+      pageTitle = t("common.rentIn", { location: tinhThanh }) || `Nhà đất cho thuê tại ${tinhThanh}`;
+    } else {
+      pageTitle = t("common.listingsIn", { location: tinhThanh }) || `Bất động sản tại ${tinhThanh}`;
+    }
+  } else if (keywordParam) {
+    pageTitle = t("common.searchResultsFor", { keyword: keywordParam }) || `Kết quả tìm kiếm cho "${keywordParam}"`;
+  } else if (loaiGiaoDich === 'Ban') {
+    pageTitle = t("nav.sell") || "Nhà đất bán";
+  } else if (loaiGiaoDich === 'Thue') {
+    pageTitle = t("nav.rent") || "Nhà đất cho thuê";
+  }
 
   const totalItems = tindangs.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
