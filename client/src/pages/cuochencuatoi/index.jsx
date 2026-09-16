@@ -614,9 +614,7 @@ const AppointmentsContent = () => {
  */
 const Appointments = () => {
   return (
-    <ChatProvider>
-      <AppointmentsContent />
-    </ChatProvider>
+    <AppointmentsContent />
   );
 };
 

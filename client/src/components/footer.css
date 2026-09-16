@@ -1,11 +1,15 @@
 .footer {
   background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
   color: #e6eef8;
-  padding: 40px 20px 24px;
+  padding-top: 40px;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  padding-bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 0px)));
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   box-shadow: 0 -4px 24px rgba(2, 6, 23, 0.45);
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
 }
 
 .footer-inner {
@@ -178,4 +182,32 @@
 @media (max-width: 800px) {
   .footer-top { gap: 18px; }
   .footer-bottom { flex-direction: column; align-items:flex-start; gap:8px; }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-right: max(12px, env(safe-area-inset-right, 0px));
+  }
+  .subscribe-form input[type="email"] {
+    min-width: 0;
+    width: 100%;
+  }
+  .btn-primary {
+    width: 100%;
+    min-height: 44px;
+  }
+  .social-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .btn-primary:hover,
+  .social-btn:hover,
+  .footer-links ul li a:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
 }

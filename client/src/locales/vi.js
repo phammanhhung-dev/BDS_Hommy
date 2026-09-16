@@ -35,8 +35,8 @@ export default {
   // Search
   search: {
     keyword: "Từ khóa",
-    province: "Theo đơn vị",
-    district: "Tỉnh/Thành phố",
+    province: "Tỉnh/Thành phố",
+    district: "Quận/Huyện",
     ward: "Phường/Xã",
     search: "Tìm kiếm",
     searching: "Đang tìm...",

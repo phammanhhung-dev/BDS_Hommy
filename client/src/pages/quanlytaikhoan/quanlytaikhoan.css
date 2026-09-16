@@ -345,3 +345,41 @@
   }
 }
 
+
+.quan-ly-tai-khoan__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.quan-ly-tai-khoan__page-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  color: #475569;
+  transition: all 0.2s;
+}
+
+.quan-ly-tai-khoan__page-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.quan-ly-tai-khoan__page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quan-ly-tai-khoan__page-info {
+  font-weight: 500;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+

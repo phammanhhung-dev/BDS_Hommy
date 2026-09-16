@@ -20,7 +20,7 @@ export default function ThanhToanCoc() {
   const q = useQuery();
   const navigate = useNavigate();
 
-  const acc = q.get("acc") ?? "80349195777";
+  const acc = q.get("acc") ?? "00000162914";
   const bank = q.get("bank") ?? "TPBank";
   const amount = q.get("amount") ?? "2000";
   const order = q.get("order") ?? "10";

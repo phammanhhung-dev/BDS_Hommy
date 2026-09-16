@@ -19,6 +19,7 @@ class PublicTinDangController {
         minDienTich: req.query.minDienTich,
         maxDienTich: req.query.maxDienTich,
         quanHuyen: req.query.quanHuyen || req.query.quan_huyen,
+        tinhThanh: req.query.tinhThanh,
       };
       const data = await PublicTinDangModel.layTatCaTinDang(filters);
       return res.json({ success: true, data });

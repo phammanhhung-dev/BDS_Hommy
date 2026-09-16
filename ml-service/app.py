@@ -1,8 +1,10 @@
 import os
+import joblib
 import pickle
 import pandas as pd
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from features import add_features
 
 app = Flask(__name__)
 # Hỗ trợ gọi CORS trực tiếp từ React nếu cần thiết
@@ -16,13 +18,17 @@ def load_model():
     global model
     if os.path.exists(MODEL_PATH):
         try:
-            with open(MODEL_PATH, "rb") as f:
-                model = pickle.load(f)
-            print("Model loaded successfully from model.pkl!")
+            model = joblib.load(MODEL_PATH)
+            print("[INFO] Model loaded successfully from model.pkl!")
         except Exception as e:
-            print(f"Error loading model.pkl: {e}")
+            try:
+                with open(MODEL_PATH, "rb") as f:
+                    model = pickle.load(f)
+                print("[INFO] Model loaded via pickle fallback!")
+            except Exception as e2:
+                print(f"[ERROR] Error loading model.pkl: {e2}")
     else:
-        print("Warning: model.pkl does not exist. Run train.py first!")
+        print("[WARN] model.pkl does not exist. Run train.py first!")
 
 # Tải mô hình khi khởi động server
 load_model()
@@ -56,12 +62,10 @@ def predict():
             }), 400
 
         # Làm sạch tên quận huyện khớp định dạng dataset
-        # Chuyển đổi các quận viết tắt (vd: "Q. Bình Thạnh" -> "Bình Thạnh")
         clean_quan = quan_huyen
         if clean_quan.lower().startswith("q."):
             clean_quan = clean_quan[2:].strip()
         elif clean_quan.lower().startswith("quận"):
-            # Giữ nguyên "Quận 1", "Quận 3", "Quận 12" nhưng chuyển "Quận Bình Thạnh" -> "Bình Thạnh"
             words = clean_quan.split()
             if len(words) > 1 and not words[1].isdigit():
                 clean_quan = " ".join(words[1:])
@@ -76,27 +80,34 @@ def predict():
             'loai_bds': loai_bds
         }])
 
-        # Dự đoán giá (kết quả trả về đơn vị: triệu VND)
-        prediction = model.predict(input_data)[0]
+        # Áp dụng Feature Engineering tự động
+        input_data = add_features(input_data)
+
+        # Dự đoán giá (kết quả từ mô hình tính bằng Tỷ VND)
+        prediction_ty = float(model.predict(input_data)[0])
         
-        # Làm tròn kết quả dự đoán
-        predicted_price = round(prediction, 0)
+        # Quy đổi sang đơn vị Triệu VND để khớp với giao diện Frontend Hommy (vd: 5.2 tỷ -> 5200 triệu)
+        if prediction_ty < 500:
+            predicted_price = round(prediction_ty * 1000, 0)
+        else:
+            predicted_price = round(prediction_ty, 0)
         
         # Khoảng giá dao động gợi ý (+/- 5%)
-        price_range_min = round(prediction * 0.95, -1) # Làm tròn chục
-        price_range_max = round(prediction * 1.05, -1)
+        price_range_min = round(predicted_price * 0.95, -1)
+        price_range_max = round(predicted_price * 1.05, -1)
 
         return jsonify({
             "success": True,
             "data": {
                 "predicted_price": predicted_price,
                 "price_range_min": price_range_min,
-                "price_range_max": price_range_max
+                "price_range_max": price_range_max,
+                "currency": "triệu VNĐ"
             }
         })
 
     except Exception as e:
-        print(f"Error predicting price: {e}")
+        print(f"[ERROR] Error predicting price: {e}")
         return jsonify({
             "success": False,
             "message": f"Lỗi xử lý dự đoán: {str(e)}"
@@ -110,6 +121,5 @@ def health():
     })
 
 if __name__ == "__main__":
-    # Railway inject PORT qua biến môi trường
     port = int(os.environ.get("PORT", 8000))
     app.run(host="0.0.0.0", port=port)

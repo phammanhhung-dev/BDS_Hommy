@@ -12,6 +12,7 @@ import {
   HiOutlineHome,
   HiOutlinePhone,
   HiOutlineCheck,
+  HiOutlineCheckCircle,
   HiOutlineXMark,
   HiOutlineEye,
   HiOutlineFunnel,
@@ -174,6 +175,24 @@ function QuanLyCuocHen() {
     }
   };
 
+  const handleXacNhan = async (cuocHen) => {
+    if (window.confirm(`Bạn có chắc muốn xác nhận cuộc hẹn này?`)) {
+      try {
+        const response = await cuocHenApi.chuDuAn.xacNhan(cuocHen.CuocHenID, { ghiChu: 'Xác nhận bởi chủ dự án' });
+        if (response.data.success) {
+          alert('Đã xác nhận cuộc hẹn thành công');
+          loadCuocHenData();
+          loadMetrics();
+        } else {
+          alert(response.data.message || 'Lỗi xác nhận cuộc hẹn');
+        }
+      } catch (error) {
+        console.error('Lỗi xác nhận cuộc hẹn:', error);
+        alert('Có lỗi xảy ra: ' + (error.response?.data?.message || error.message));
+      }
+    }
+  };
+
   const handlePheDuyetSuccess = () => {
     setModalPheDuyet({ open: false, cuocHen: null });
     loadCuocHenData();
@@ -236,7 +255,12 @@ function QuanLyCuocHen() {
         throw new Error(result?.message || 'Không thể thực hiện hành động');
       }
 
-      alert(`Đã ${actionText} thành công ${selectedIds.length} cuộc hẹn`);
+      const successCount = result.data?.count !== undefined ? result.data.count : selectedIds.length;
+      if (successCount === 0) {
+        alert(`Không có cuộc hẹn nào được ${actionText}. Có thể chúng không ở trạng thái hợp lệ.`);
+      } else {
+        alert(`Đã ${actionText} thành công ${successCount}/${selectedIds.length} cuộc hẹn`);
+      }
       setSelectedIds([]);
       loadCuocHenData();
       loadMetrics();
@@ -278,15 +302,20 @@ function QuanLyCuocHen() {
   };
 
   // Format functions
-  const formatDate = (dateString) => {
+  const formatTimeOnly = (dateString) => {
     if (!dateString) return 'N/A';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('vi-VN', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
+    return new Date(dateString).toLocaleTimeString('vi-VN', {
       hour: '2-digit',
       minute: '2-digit'
+    });
+  };
+
+  const formatDateOnly = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
     });
   };
 
@@ -506,38 +535,54 @@ function QuanLyCuocHen() {
         </div>
 
         {/* Bulk Actions Bar */}
-        {selectedIds.length > 0 && (
-          <div className="bulk-actions-bar">
-            <div className="bulk-info">
-              <input
-                type="checkbox"
-                checked={selectedIds.length === cuocHenList.length}
-                onChange={handleSelectAll}
-              />
-              <span>Đã chọn {selectedIds.length} cuộc hẹn</span>
+        {selectedIds.length > 0 && (() => {
+          const selectedItems = (Array.isArray(cuocHenList) ? cuocHenList : []).filter(ch => selectedIds.includes(ch.CuocHenID));
+          const hasChoPheDuyet = selectedItems.some(ch => ch.PheDuyetChuDuAn === 'ChoPheDuyet');
+          const hasChoXacNhan = selectedItems.some(ch => ch.PheDuyetChuDuAn !== 'ChoPheDuyet' && ch.TrangThai === 'ChoXacNhan');
+
+          return (
+            <div className="bulk-actions-bar">
+              <div className="bulk-info">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.length === cuocHenList.length && cuocHenList.length > 0}
+                  onChange={handleSelectAll}
+                />
+                <span>Đã chọn {selectedIds.length} cuộc hẹn</span>
+              </div>
+              <div className="bulk-buttons">
+                {hasChoPheDuyet && (
+                  <button
+                    className="cda-btn cda-btn-success cda-btn-sm"
+                    onClick={() => handleBulkAction('phe-duyet')}
+                  >
+                    <HiOutlineCheck /> Phê duyệt
+                  </button>
+                )}
+                {hasChoXacNhan && (
+                  <button
+                    className="cda-btn cda-btn-primary cda-btn-sm"
+                    onClick={() => handleBulkAction('xac-nhan')}
+                  >
+                    <HiOutlineCheckCircle /> Xác nhận
+                  </button>
+                )}
+                <button
+                  className="cda-btn cda-btn-secondary cda-btn-sm"
+                  onClick={() => handleBulkAction('gui-huong-dan')}
+                >
+                  Gửi hướng dẫn
+                </button>
+                <button
+                  className="cda-btn cda-btn-secondary cda-btn-sm"
+                  onClick={() => setSelectedIds([])}
+                >
+                  Bỏ chọn
+                </button>
+              </div>
             </div>
-            <div className="bulk-buttons">
-              <button
-                className="cda-btn cda-btn-success cda-btn-sm"
-                onClick={() => handleBulkAction('phe-duyet')}
-              >
-                <HiOutlineCheck /> Phê duyệt
-              </button>
-              <button
-                className="cda-btn cda-btn-secondary cda-btn-sm"
-                onClick={() => handleBulkAction('gui-huong-dan')}
-              >
-                Gửi hướng dẫn
-              </button>
-              <button
-                className="cda-btn cda-btn-secondary cda-btn-sm"
-                onClick={() => setSelectedIds([])}
-              >
-                Bỏ chọn
-              </button>
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Cuộc hẹn List */}
         <div className="cda-card">
@@ -559,14 +604,14 @@ function QuanLyCuocHen() {
                   <div className="cuoc-hen-table-container">
                     <table className="cuoc-hen-table">
                       <colgroup>
-                        <col style={{ width: '40px' }} />
-                        <col style={{ width: '60px' }} />
-                        <col style={{ width: '200px' }} />
-                        <col style={{ width: '200px' }} />
-                        <col style={{ width: '180px' }} />
-                        <col style={{ width: '180px' }} />
-                        <col style={{ width: '140px' }} />
-                        <col style={{ width: '200px' }} />
+                        <col style={{ width: '4%' }} />
+                        <col style={{ width: '5%' }} />
+                        <col style={{ width: '12%' }} />
+                        <col style={{ width: '16%' }} />
+                        <col style={{ width: '25%' }} />
+                        <col style={{ width: '15%' }} />
+                        <col style={{ width: '11%' }} />
+                        <col style={{ width: '12%' }} />
                       </colgroup>
                       <thead>
                         <tr>
@@ -609,12 +654,15 @@ function QuanLyCuocHen() {
                                 </div>
                               </td>
                               <td>
-                                <div className="time-cell">
-                                  <div className="time-main">
+                                <div className="time-cell" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                  <div className="time-main" style={{ fontWeight: '600' }}>
                                     <HiOutlineClock className="cell-icon" />
-                                    {formatDate(cuocHen.ThoiGianHen)}
+                                    {formatTimeOnly(cuocHen.ThoiGianHen)}
                                   </div>
-                                  <div className={`time-remaining ${urgency}`}>
+                                  <div className="time-date" style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                                    {formatDateOnly(cuocHen.ThoiGianHen)}
+                                  </div>
+                                  <div className={`time-remaining ${urgency}`} style={{ fontSize: '12px' }}>
                                     {formatTimeRemaining(cuocHen.ThoiGianHen)}
                                   </div>
                                 </div>
@@ -677,6 +725,15 @@ function QuanLyCuocHen() {
                                       </button>
                                     </>
                                   )}
+                                  {cuocHen.PheDuyetChuDuAn !== 'ChoPheDuyet' && cuocHen.TrangThai === 'ChoXacNhan' && (
+                                    <button
+                                      className="action-btn primary"
+                                      onClick={() => handleXacNhan(cuocHen)}
+                                      title="Xác nhận"
+                                    >
+                                      <HiOutlineCheckCircle />
+                                    </button>
+                                  )}
                                   <button
                                     className="action-btn info"
                                     onClick={() => handleXemChiTiet(cuocHen)}
@@ -731,7 +788,7 @@ function QuanLyCuocHen() {
                             </div>
                             <div className="cuoc-hen-mobile__section-content">
                               <div className="cuoc-hen-mobile__primary-text">
-                                {formatDate(cuocHen.ThoiGianHen)}
+                                {formatTimeOnly(cuocHen.ThoiGianHen)} - {formatDateOnly(cuocHen.ThoiGianHen)}
                               </div>
                               <div className={`cuoc-hen-mobile__secondary-text ${urgency}`}>
                                 {formatTimeRemaining(cuocHen.ThoiGianHen)}
@@ -795,20 +852,29 @@ function QuanLyCuocHen() {
                                 >
                                   <HiOutlineCheck />
                                 </button>
+                                  <button
+                                    className="action-btn danger"
+                                    onClick={() => handleTuChoi(cuocHen)}
+                                    title="Từ chối"
+                                  >
+                                    <HiOutlineXMark />
+                                  </button>
+                                </>
+                              )}
+                              {cuocHen.PheDuyetChuDuAn !== 'ChoPheDuyet' && cuocHen.TrangThai === 'ChoXacNhan' && (
                                 <button
-                                  className="action-btn danger"
-                                  onClick={() => handleTuChoi(cuocHen)}
-                                  title="Từ chối"
+                                  className="action-btn primary"
+                                  onClick={() => handleXacNhan(cuocHen)}
+                                  title="Xác nhận"
                                 >
-                                  <HiOutlineXMark />
+                                  <HiOutlineCheckCircle />
                                 </button>
-                              </>
-                            )}
-                            <button
-                              className="action-btn info"
-                              onClick={() => handleXemChiTiet(cuocHen)}
-                              title="Xem chi tiết"
-                            >
+                              )}
+                              <button
+                                className="action-btn info"
+                                onClick={() => handleXemChiTiet(cuocHen)}
+                                title="Xem chi tiết"
+                              >
                               <HiOutlineEye />
                             </button>
                             <button

@@ -782,7 +782,7 @@ const ChiTietTinDang = () => {
                  <button
                   className="ctd-btn-secondary ctd-btn-deposit"
                   onClick={() => {
-                    const acc = tinDang?.BankAccountNumber ?? '80349195777';
+                    const acc = tinDang?.BankAccountNumber ?? '00000162914';
                     const bank = tinDang?.BankName ?? 'TPBank';
                     const amount = tinDang?.Gia ?? tinDang?.TienCoc ?? '100000';
                     const des = `dk${tinDang?.TinDangID ?? tinDang?.id ?? ''}`;

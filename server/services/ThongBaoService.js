@@ -195,6 +195,56 @@ class ThongBaoService {
   }
 
   /**
+   * Thông báo: Cuộc hẹn mới được tạo cho Chủ dự án
+   * @param {number} cuocHenId - ID cuộc hẹn
+   * @param {number} chuDuAnId - ID chủ dự án
+   */
+  static async thongBaoCuocHenMoiChoChuDuAn(cuocHenId, chuDuAnId) {
+    try {
+      // Lấy thông tin cuộc hẹn
+      const [rows] = await db.execute(`
+        SELECT 
+          ch.CuocHenID, ch.ThoiGianHen, ch.TrangThai,
+          kh.TenDayDu as TenKhachHang,
+          p.TenPhong,
+          td.TieuDe as TieuDeTinDang,
+          da.DiaChi
+        FROM cuochen ch
+        LEFT JOIN nguoidung kh ON ch.KhachHangID = kh.NguoiDungID
+        LEFT JOIN phong p ON ch.PhongID = p.PhongID
+        LEFT JOIN tindang td ON ch.TinDangID = td.TinDangID
+        LEFT JOIN duan da ON td.DuAnID = da.DuAnID
+        WHERE ch.CuocHenID = ?
+      `, [cuocHenId]);
+
+      if (rows.length === 0) {
+        console.warn(`[ThongBaoService] Cuộc hẹn #${cuocHenId} không tồn tại để báo cho CDA`);
+        return;
+      }
+
+      const cuocHen = rows[0];
+      const thoiGianHen = new Date(cuocHen.ThoiGianHen).toLocaleString('vi-VN');
+
+      return await this.guiThongBao(
+        chuDuAnId,
+        'cuoc_hen_moi',
+        'Cuộc hẹn mới cho dự án của bạn',
+        `Có lịch hẹn mới từ ${cuocHen.TenKhachHang || 'khách hàng'} vào ${thoiGianHen} tại ${cuocHen.DiaChi || cuocHen.TenPhong || 'địa chỉ chưa cập nhật'}`,
+        {
+          CuocHenID: cuocHenId,
+          ThoiGianHen: cuocHen.ThoiGianHen,
+          TenKhachHang: cuocHen.TenKhachHang,
+          TenPhong: cuocHen.TenPhong,
+          TieuDeTinDang: cuocHen.TieuDeTinDang
+        },
+        `/chu-du-an/cuoc-hen` // Điều hướng đến danh sách cuộc hẹn bên Chủ dự án
+      );
+    } catch (error) {
+      console.error('[ThongBaoService] Lỗi thông báo cuộc hẹn mới cho Chủ dự án:', error);
+    }
+  }
+
+  /**
    * Thông báo: Cuộc hẹn chờ phê duyệt
    * @param {number} cuocHenId - ID cuộc hẹn
    * @param {number} nhanVienId - ID nhân viên bán hàng

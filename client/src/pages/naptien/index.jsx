@@ -13,6 +13,7 @@ function randomDigits(n = 5) {
 
 const NapTienPage = ({ onBack }) => {
   const [amount, setAmount] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("VIETQR");
   const [orderId, setOrderId] = useState(null); // ID đơn hàng đã tạo
   const [des, setDes] = useState(""); // Nội dung chuyển khoản (có random)
   const [paid, setPaid] = useState(false);
@@ -24,7 +25,7 @@ const NapTienPage = ({ onBack }) => {
   const { toasts, showToast, removeToast } = useToast();
 
   // Thông tin tài khoản mẫu
-  const acc = "80349195777";
+  const acc = "00000162914";
   const bank = "TPBank";
 
   // API poll để kiểm tra thanh toán
@@ -77,9 +78,36 @@ const NapTienPage = ({ onBack }) => {
 
       if (response?.data?.success && response.data.id) {
         setOrderId(response.data.id);
-        setStatus("⏳ Đã tạo đơn hàng. Vui lòng quét QR để thanh toán...");
-        // Bắt đầu poll để kiểm tra thanh toán
-        startPolling(noiDungChuyenKhoan, response.data.id, parseFloat(amount), userId);
+        
+        if (paymentMethod === "VIETQR") {
+          setStatus("⏳ Đã tạo đơn hàng. Vui lòng quét QR để thanh toán...");
+          // Bắt đầu poll để kiểm tra thanh toán
+          startPolling(noiDungChuyenKhoan, response.data.id, parseFloat(amount), userId);
+        } else if (paymentMethod === "VNPAY") {
+          setStatus("⏳ Đang chuyển hướng sang VNPAY...");
+          const resVnPay = await axios.post("http://localhost:5000/api/payment/vnpay/create", {
+            amount: parseFloat(amount),
+            orderId: response.data.id,
+            orderInfo: noiDungChuyenKhoan
+          });
+          if (resVnPay.data && resVnPay.data.payUrl) {
+            window.location.href = resVnPay.data.payUrl;
+          } else {
+            throw new Error("Không lấy được URL thanh toán VNPAY");
+          }
+        } else if (paymentMethod === "MOMO") {
+          setStatus("⏳ Đang chuyển hướng sang MoMo...");
+          const resMomo = await axios.post("http://localhost:5000/api/payment/momo/create", {
+            amount: parseFloat(amount),
+            orderId: response.data.id,
+            orderInfo: noiDungChuyenKhoan
+          });
+          if (resMomo.data && resMomo.data.payUrl) {
+            window.location.href = resMomo.data.payUrl;
+          } else {
+            throw new Error("Không lấy được URL thanh toán MoMo");
+          }
+        }
       } else {
         throw new Error("Không thể tạo đơn hàng");
       }
@@ -206,12 +234,44 @@ const NapTienPage = ({ onBack }) => {
       <div className="napTien__card">
         <h2 className="napTien__title">Tạo yêu cầu nạp tiền</h2>
         <div className="napTien__desc">
-          1. Nhập số tiền. 2. Quét mã QR bằng app ngân hàng.
+          1. Chọn phương thức. 2. Nhập số tiền. 3. Thanh toán.
         </div>
         <div className="napTien__amount">
           {parseInt(amount || 0).toLocaleString()} VNĐ
         </div>
-        {orderId && qrUrl && (
+
+        {/* Chọn phương thức thanh toán */}
+        {!orderId && (
+          <div style={{ marginBottom: "20px" }}>
+            <h4 style={{ fontSize: "1rem", fontWeight: 700, color: "#1e293b", marginBottom: "10px", textAlign: "left" }}>
+              Phương thức thanh toán
+            </h4>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "10px" }}>
+              {[
+                { id: "VIETQR", title: "📱 Mã QR VietQR", desc: "Quét QR chuyển khoản" },
+                { id: "MOMO", title: "👛 Ví MoMo (Test)", desc: "Thanh toán qua cổng MoMo" },
+                { id: "VNPAY", title: "💳 Thẻ ATM / VNPAY (Test)", desc: "Cổng thanh toán VNPAY" }
+              ].map(method => (
+                <div
+                  key={method.id}
+                  onClick={() => setPaymentMethod(method.id)}
+                  style={{
+                    padding: "12px",
+                    borderRadius: "8px",
+                    border: `2px solid ${paymentMethod === method.id ? "#059669" : "#e2e8f0"}`,
+                    backgroundColor: paymentMethod === method.id ? "#f0fdf4" : "white",
+                    cursor: "pointer",
+                    textAlign: "left"
+                  }}
+                >
+                  <div style={{ fontWeight: 600, fontSize: "0.95rem", color: "#0f172a" }}>{method.title}</div>
+                  <div style={{ fontSize: "0.8rem", color: "#64748b", marginTop: "4px" }}>{method.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {orderId && paymentMethod === "VIETQR" && qrUrl && (
           <div className="napTien__qr">
             <img src={qrUrl} alt="QR nạp tiền" className="napTien__qr-img" />
             <button className="napTien__copy-link" onClick={handleCopy}>
@@ -297,19 +357,21 @@ const NapTienPage = ({ onBack }) => {
             </button>
           </div>
         )}
-        <div className="napTien__footer">
-          <span>
-            Ngân hàng: <strong>{bank}</strong>
-          </span>{" "}
-          |{" "}
-          <span>
-            Số tài khoản: <strong>{acc}</strong>
-          </span>{" "}
-          |{" "}
-          <span>
-            Nội dung: <strong>{des}</strong>
-          </span>
-        </div>
+        {orderId && paymentMethod === "VIETQR" && (
+          <div className="napTien__footer">
+            <span>
+              Ngân hàng: <strong>{bank}</strong>
+            </span>{" "}
+            |{" "}
+            <span>
+              Số tài khoản: <strong>{acc}</strong>
+            </span>{" "}
+            |{" "}
+            <span>
+              Nội dung: <strong>{des}</strong>
+            </span>
+          </div>
+        )}
       </div>
       
       {/* Toast Notifications */}

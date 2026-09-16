@@ -321,7 +321,7 @@ const BaoCaoThuNhap = () => {
                   <YAxis />
                   <Tooltip formatter={(value) => formatCurrency(value)} />
                   <Legend />
-                  <Bar dataKey="commission" name="Hoa hồng" fill="#0EA5E9" />
+                  <Bar dataKey="commission" name="Hoa hồng" fill="#0EA5E9" maxBarSize={50} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

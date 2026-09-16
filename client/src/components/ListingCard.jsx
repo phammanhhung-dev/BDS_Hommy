@@ -31,7 +31,7 @@ function ListingCard({ tinDang, onAddFavorite, t, lazy = false, disabled = false
           <Link to={detailUrl}>{title}</Link>
         </h3>
         <div className="featured-card__meta-row">
-          <div className="featured-card__price">{formatPrice(tinDang.Gia)}</div>
+          <div className="featured-card__price">{formatPrice(tinDang.GiaTien || tinDang.Gia)}</div>
           <div className="featured-card__area">{areaText}</div>
         </div>
         <address className="featured-card__location">

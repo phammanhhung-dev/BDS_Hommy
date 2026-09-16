@@ -7,6 +7,7 @@ import { kiemTraKhoangCachChoPhep } from '../../utils/geoUtils';
 import { LOAI_BDS_SELECT_GROUPS } from '../../constants/loaiBds';
 import axios from 'axios';
 import { buildApiUrl } from '../../config/api';
+import { redMarkerIcon, MapCtrlScrollHelper, GOOGLE_MAPS_TILE_LAYER } from '../Map/MapUtils';
 
 // Fix Leaflet default icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -42,6 +43,7 @@ function DraggableMarker({ position, onPositionChange, tenDuAn }) {
       eventHandlers={eventHandlers}
       position={position}
       ref={markerRef}
+      icon={redMarkerIcon}
     >
       <Popup minWidth={200}>
         <div style={{ textAlign: 'center' }}>
@@ -731,19 +733,17 @@ function ModalTaoNhanhDuAn({ isOpen, onClose, onSuccess }) {
                     height: '200px',
                     borderRadius: '0.375rem',
                     overflow: 'hidden',
-                    border: '2px solid #0ea5e9'
+                    border: '2px solid #0ea5e9',
+                    position: 'relative'
                   }}>
                     <MapContainer
                       center={[geocodeResult.lat, geocodeResult.lng]}
                       zoom={16}
                       style={{ height: '100%', width: '100%' }}
-                      scrollWheelZoom={false}
+                      scrollWheelZoom={true}
                     >
-                      <TileLayer
-                        attribution='&copy; <a href="https://www.esri.com">Esri</a> World Street Map'
-                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
-                        maxZoom={19}
-                      />
+                      <MapCtrlScrollHelper />
+                      <TileLayer {...GOOGLE_MAPS_TILE_LAYER} />
                       <DraggableMarker
                         position={{ lat: geocodeResult.lat, lng: geocodeResult.lng }}
                         onPositionChange={xuLyThayDoiViTri}

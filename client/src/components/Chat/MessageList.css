@@ -248,3 +248,81 @@
 }
 
 
+
+.message-deposit {
+  max-width: 300px;
+}
+.deposit-card {
+  background-color: #f0fdf4;
+  border: 1px solid #10b981;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0;
+}
+.deposit-card-header {
+  background-color: #10b981;
+  color: white;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.deposit-card-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.deposit-icon {
+  font-size: 1.25rem;
+}
+.deposit-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.deposit-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+.deposit-note {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 0 0 16px 0;
+}
+.deposit-qr-container {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
+}
+.qr-hint {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 12px 0 0 0;
+}
+.btn-pay-deposit {
+  margin-top: 16px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+.btn-pay-deposit:hover {
+  background-color: #059669;
+}
+.deposit-status-sent {
+  color: #10b981;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+

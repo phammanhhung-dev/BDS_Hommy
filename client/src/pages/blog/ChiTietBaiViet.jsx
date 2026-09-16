@@ -4,7 +4,7 @@ import Header from "../../components/header";
 import Footer from "../../components/footer";
 import baiVietPublicApi from "../../api/baiVietPublicApi";
 import { setPageSEO, SITE_URL } from "../../utils/seo";
-import { FaCalendarAlt, FaFolderOpen, FaArrowLeft } from "react-icons/fa";
+import { FaCalendarAlt, FaFolderOpen, FaArrowLeft, FaClock, FaEye, FaShareAlt, FaCheck } from "react-icons/fa";
 import "./blog.css";
 
 function ChiTietBaiViet() {
@@ -13,6 +13,7 @@ function ChiTietBaiViet() {
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchPostDetail();
@@ -27,10 +28,13 @@ function ChiTietBaiViet() {
         const article = res.data.data;
         setPost(article);
 
+        // Calculate plain text description for SEO
+        const plainDesc = article.TomTat || (article.NoiDung || article.MoTa || "").replace(/<[^>]+>/g, " ").slice(0, 160);
+
         // Set SEO for this page
         setPageSEO({
           title: `${article.TieuDe} - Hommy`,
-          description: article.TomTat || article.MoTa?.slice(0, 150) || "Đọc bài viết trên Hommy",
+          description: plainDesc || "Đọc bài viết trên Hommy",
           canonical: `${SITE_URL}/bai-viet/${id}`,
         });
 
@@ -60,6 +64,21 @@ function ChiTietBaiViet() {
     }
   };
 
+  const calculateReadingTime = (content) => {
+    if (!content) return 3;
+    const text = content.replace(/<[^>]+>/g, " ");
+    const words = text.trim().split(/\s+/).length;
+    return Math.max(2, Math.ceil(words / 180));
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const contentHtml = post?.NoiDung || post?.MoTa || "";
+
   return (
     <div className="blog">
       <Header />
@@ -79,11 +98,13 @@ function ChiTietBaiViet() {
             <article className="blog__detail-main">
               <header className="blog__detail-header">
                 <span className="blog__detail-category">
-                  {post.DanhMuc || (post.Loai === "Wiki" ? "Wiki" : post.Loai === "PhanTich" ? "Phân tích" : "Tin tức")}
+                  {post.DanhMuc || (post.Loai === "Wiki" ? "Wiki BĐS" : post.Loai === "PhanTich" ? "Phân tích đánh giá" : "Tin tức BĐS")}
                 </span>
                 <h1 className="blog__detail-title">{post.TieuDe}</h1>
                 <div className="blog__detail-meta">
                   <span className="meta-item"><FaCalendarAlt /> {new Date(post.TaoLuc).toLocaleDateString("vi-VN")}</span>
+                  <span className="meta-item"><FaClock /> {calculateReadingTime(contentHtml)} phút đọc</span>
+                  <span className="meta-item"><FaEye /> {post.LuotXem || 1} lượt xem</span>
                   <span className="meta-item"><FaFolderOpen /> Tác giả: Ban Biên Tập Hommy</span>
                 </div>
               </header>
@@ -98,10 +119,26 @@ function ChiTietBaiViet() {
                 </div>
               )}
 
+              {/* Rich Content Render */}
               <div 
                 className="blog__detail-content"
-                dangerouslySetInnerHTML={{ __html: post.MoTa }}
+                dangerouslySetInnerHTML={{ __html: contentHtml }}
               />
+
+              {/* Action Bar / Share */}
+              <div className="blog__detail-actions">
+                <button className="blog__share-btn" onClick={handleCopyLink}>
+                  {copied ? <><FaCheck style={{ color: "#10b981" }} /> Đã sao chép liên kết!</> : <><FaShareAlt /> Chia sẻ bài viết</>}
+                </button>
+              </div>
+
+              {/* Disclaimer */}
+              <div className="blog__detail-disclaimer">
+                <strong>📌 Tuyên bố miễn trừ trách nhiệm & Khuyến nghị từ Hommy:</strong>
+                <p>
+                  Bài viết được biên soạn và phân tích chuyên sâu bởi Ban Biên Tập Hommy BĐS nhằm cung cấp góc nhìn đa chiều, khách quan cho độc giả. Thị trường bất động sản luôn có sự biến động tùy thuộc vào từng khu vực và chính sách tại thời điểm giao dịch. Quý khách hàng và nhà đầu tư nên khảo sát thực tế và tham khảo ý kiến chuyên môn trước khi đưa ra quyết định tài chính.
+                </p>
+              </div>
             </article>
 
             {/* Right Column: Sidebar */}

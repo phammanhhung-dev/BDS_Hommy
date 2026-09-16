@@ -61,6 +61,22 @@ function Header() {
   const notifRef = useRef(null);
   const navigate = useNavigate();
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -332,9 +348,6 @@ function Header() {
     return getStaticUrl(firstCandidate);
   };
 
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
 
   // Hàm lấy VaiTroID từ user object
   const getRoleId = (user) => {
@@ -645,18 +658,7 @@ function Header() {
               </Link>
             </div>
 
-            <button
-              className="header__menu-toggle"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-              type="button"
-            >
-              <span className="header__menu-toggle-line"></span>
-              <span className="header__menu-toggle-line"></span>
-              <span className="header__menu-toggle-line"></span>
-            </button>
-
-            <nav className={`header__nav ${mobileMenuOpen ? 'header__nav--open' : ''}`}>
+            <nav className="header__nav header__nav--desktop">
               <ul className="header__nav-list">
                 <li className="header__nav-item">
                   <Link to="/nha-dat-ban" className="header__nav-link" onClick={closeMobileMenu}>
@@ -906,10 +908,11 @@ function Header() {
                                   console.error("Lỗi đánh dấu đã đọc:", err);
                                 }
                               }
-                              if (notif.url) {
-                                setShowNotifications(false);
-                                navigate(notif.url);
-                              }
+                              // Không điều hướng sang trang khác theo yêu cầu của người dùng
+                              // if (notif.url) {
+                              //   setShowNotifications(false);
+                              //   navigate(notif.url);
+                              // }
                             }}
                           >
                             {notif.unread && <span className="unread-dot"></span>}
@@ -973,7 +976,7 @@ function Header() {
               )}
             </div>
 
-            <div className="header__user" ref={userRef}>
+            <div className="header__user header__user--desktop" ref={userRef}>
               {currentUser ? (
                 <>
                   <button
@@ -1039,14 +1042,187 @@ function Header() {
               ) : null}
             </div>
 
-            <div className={`header__post-btn-wrapper ${mobileMenuOpen ? 'header__post-btn-wrapper--open' : ''}`}>
+            <div className="header__post-btn-wrapper header__post-btn-wrapper--desktop">
               <button onClick={handlePostAdClick} className="header__post-btn">
                 {t('header.postAd') || 'Đăng tin'}
               </button>
             </div>
+
+            {/* Mobile Hamburger Menu Toggle Button */}
+            <button
+              className="header__menu-toggle"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Toggle menu"
+              type="button"
+            >
+              <span className="header__menu-toggle-line"></span>
+              <span className="header__menu-toggle-line"></span>
+              <span className="header__menu-toggle-line"></span>
+            </button>
           </div>
         </div>
       </header>
+
+      {/* Mobile Slide-out Drawer & Backdrop Overlay */}
+      <div 
+        className={`header__drawer-overlay ${mobileMenuOpen ? 'open' : ''}`}
+        onClick={closeMobileMenu}
+        aria-hidden={!mobileMenuOpen}
+      />
+
+      <aside 
+        className={`header__drawer ${mobileMenuOpen ? 'open' : ''}`}
+        aria-label="Menu di động"
+      >
+        <div className="header__drawer-top">
+          <div className="header__drawer-logo">
+            <img src={logo} alt="Hommy" height="36" />
+          </div>
+          <button 
+            className="header__drawer-close"
+            onClick={closeMobileMenu}
+            aria-label="Đóng menu"
+            type="button"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Drawer User Profile Section */}
+        <div className="header__drawer-user-box">
+          {currentUser ? (
+            <div className="drawer-user-profile">
+              <div className="drawer-user-header">
+                <div className="drawer-user-avatar">
+                  {(currentUser.TenDayDu || currentUser.name || "U").charAt(0).toUpperCase()}
+                </div>
+                <div className="drawer-user-meta">
+                  <strong className="drawer-user-name">
+                    {currentUser.TenDayDu || currentUser.name || `User #${currentUser.NguoiDungID}`}
+                  </strong>
+                  <span className="drawer-user-role">
+                    {currentUser.TenVaiTro || "Khách hàng"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="drawer-user-actions">
+                <Link 
+                  to={currentUser.VaiTroID === 2 || currentUser.VaiTroHoatDongID === 2 ? "/chu-du-an/dashboard" : currentUser.VaiTroID === 3 || currentUser.VaiTroHoatDongID === 3 ? "/operator/dashboard" : "/quanlytaikhoan"}
+                  className="drawer-action-link"
+                  onClick={closeMobileMenu}
+                >
+                  <MdOutlineDashboard /> Trang quản lý
+                </Link>
+                <button 
+                  onClick={() => { closeMobileMenu(); handleLogout(); }}
+                  className="drawer-logout-btn"
+                  type="button"
+                >
+                  <MdExitToApp /> {t('header.logout') || 'Đăng xuất'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="drawer-auth-buttons">
+              <Link 
+                to="/login" 
+                className="drawer-auth-btn drawer-auth-btn--primary"
+                onClick={closeMobileMenu}
+              >
+                {t('header.login') || 'Đăng nhập'}
+              </Link>
+              <Link 
+                to="/dangky" 
+                className="drawer-auth-btn drawer-auth-btn--outline"
+                onClick={closeMobileMenu}
+              >
+                {t('header.register') || 'Đăng ký'}
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* CTA Button */}
+        <div className="header__drawer-cta-section">
+          <button 
+            onClick={(e) => { closeMobileMenu(); handlePostAdClick(e); }}
+            className="header__drawer-post-btn"
+            type="button"
+          >
+            + {t('header.postAd') || 'Đăng tin'}
+          </button>
+        </div>
+
+        {/* Drawer Navigation Links */}
+        <nav className="header__drawer-nav">
+          <ul className="header__drawer-list">
+            <li>
+              <Link to="/nha-dat-ban" className="header__drawer-link" onClick={closeMobileMenu}>
+                <HiOutlineHome className="drawer-nav-icon" /> {t('nav.sell') || 'Nhà đất bán'}
+              </Link>
+            </li>
+            <li>
+              <Link to="/nha-dat-cho-thue" className="header__drawer-link" onClick={closeMobileMenu}>
+                <HiOutlineDocumentText className="drawer-nav-icon" /> {t('nav.rent') || 'Nhà đất cho thuê'}
+              </Link>
+            </li>
+            <li>
+              <Link to="/du-an" className="header__drawer-link" onClick={closeMobileMenu}>
+                <MdOutlineArticle className="drawer-nav-icon" /> {t('nav.projects') || 'Dự án'}
+              </Link>
+            </li>
+            <li>
+              <Link to="/wiki-bds" className="header__drawer-link" onClick={closeMobileMenu}>
+                <HiOutlineLightBulb className="drawer-nav-icon" /> {t('nav.wiki') || 'Wiki BĐS'}
+              </Link>
+            </li>
+            <li>
+              <Link to="/phan-tich-danh-gia" className="header__drawer-link" onClick={closeMobileMenu}>
+                <HiOutlineChartBar className="drawer-nav-icon" /> {t('nav.analysis') || 'Phân tích đánh giá'}
+              </Link>
+            </li>
+            <li>
+              <Link to="/tin-tuc-bds" className="header__drawer-link" onClick={closeMobileMenu}>
+                <MdOutlineArticle className="drawer-nav-icon" /> {t('nav.news') || 'Tin tức BĐS'}
+              </Link>
+            </li>
+            <li>
+              <Link to="/dinh-gia-ai" className="header__drawer-link header__drawer-link--ai" onClick={closeMobileMenu}>
+                <HiOutlineArrowTrendingUp className="drawer-nav-icon" /> Định giá AI 🤖
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Drawer Footer */}
+        <div className="header__drawer-footer">
+          <div className="header__drawer-toggles">
+            <button 
+              onClick={toggleLanguage}
+              className="drawer-toggle-btn"
+              type="button"
+            >
+              <HiOutlineLanguage /> {language === 'vi' ? 'Tiếng Việt (VI)' : 'English (EN)'}
+            </button>
+            <button 
+              onClick={toggleDarkMode}
+              className="drawer-toggle-btn"
+              type="button"
+            >
+              {darkMode ? <HiOutlineSun /> : <HiOutlineLightBulb />} {darkMode ? 'Chế độ sáng' : 'Chế độ tối'}
+            </button>
+          </div>
+          <div className="header__drawer-contacts">
+            <a href="tel:0356960304" className="drawer-contact-link">
+              <HiOutlinePhone /> 0356960304
+            </a>
+            <a href="mailto:batdongsanhommy@gmail.com" className="drawer-contact-link">
+              <HiOutlineMail /> batdongsanhommy@gmail.com
+            </a>
+          </div>
+        </div>
+      </aside>
 
       {/* Modal xác nhận nâng cấp lên Chủ dự án */}
       {showUpgradeModal && (

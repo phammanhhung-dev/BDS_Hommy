@@ -11,6 +11,7 @@ import { getAuthHeaderValue } from '../../utils/authToken';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { redMarkerIcon, MapCtrlScrollHelper, GOOGLE_MAPS_TILE_LAYER } from '../../components/Map/MapUtils';
 
 // React Icons
 import {
@@ -714,7 +715,33 @@ function TaoTinDang() {
 
       if (response.success) {
         setSubmitSuccess(true);
-        setCurrentStep(10); // Chuyển sang Step 10 khi thành công
+        
+        // --- XỬ LÝ THANH TOÁN MOMO / VNPAY ---
+        if (phuongThucThanhToan === 'MOMO' || phuongThucThanhToan === 'VNPAY') {
+          const payEndpoint = phuongThucThanhToan === 'MOMO' ? '/api/payment/momo/create' : '/api/payment/vnpay/create';
+          const amount = formData.GoiDangTin === 'premium' ? 150000 : 50000;
+          
+          try {
+            const payRes = await axios.post(buildApiUrl(payEndpoint), {
+              amount: amount,
+              orderId: `TINDANG_${response.data.tinDangId}`,
+              orderInfo: `Thanh toan goi tin dang ${formData.GoiDangTin}`
+            }, {
+              headers: { 'Authorization': getAuthHeaderValue() }
+            });
+            
+            if (payRes.data.success && payRes.data.payUrl) {
+              window.location.href = payRes.data.payUrl;
+              return; // Dừng lại ở đây để chuyển hướng
+            }
+          } catch (payErr) {
+            console.error('Lỗi chuyển hướng thanh toán:', payErr);
+            alert('Có lỗi khi tạo thanh toán, nhưng tin đăng đã được ghi nhận. Vui lòng liên hệ hỗ trợ.');
+          }
+        }
+        // ------------------------------------
+
+        setCurrentStep(10); // Chuyển sang Step 10 khi thành công (VietQR hoặc miễn phí)
       } else {
         setSubmitError(response.message || 'Không thể tạo tin đăng');
       }
@@ -1479,62 +1506,6 @@ function TaoTinDang() {
                     <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '2px' }}>Kéo bản đồ để đổi vị trí ghim</div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-                    <div style={{ display: 'inline-flex', background: '#f1f5f9', padding: '2px', borderRadius: '0.5rem', border: '1px solid #cbd5e1' }}>
-                      <button
-                        type="button"
-                        onClick={() => setMapTileType('streets')}
-                        style={{
-                          padding: '0.3rem 0.65rem',
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          borderRadius: '0.375rem',
-                          border: 'none',
-                          background: mapTileType === 'streets' ? '#ffffff' : 'transparent',
-                          color: mapTileType === 'streets' ? '#2563eb' : '#64748b',
-                          boxShadow: mapTileType === 'streets' ? '0 1px 3px rgba(15,23,42,0.1)' : 'none',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s'
-                        }}
-                      >
-                        🗺️ Đường phố (Esri)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setMapTileType('satellite')}
-                        style={{
-                          padding: '0.3rem 0.65rem',
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          borderRadius: '0.375rem',
-                          border: 'none',
-                          background: mapTileType === 'satellite' ? '#ffffff' : 'transparent',
-                          color: mapTileType === 'satellite' ? '#2563eb' : '#64748b',
-                          boxShadow: mapTileType === 'satellite' ? '0 1px 3px rgba(15,23,42,0.1)' : 'none',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s'
-                        }}
-                      >
-                        🛰️ Vệ tinh
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setMapTileType('osm')}
-                        style={{
-                          padding: '0.3rem 0.65rem',
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          borderRadius: '0.375rem',
-                          border: 'none',
-                          background: mapTileType === 'osm' ? '#ffffff' : 'transparent',
-                          color: mapTileType === 'osm' ? '#2563eb' : '#64748b',
-                          boxShadow: mapTileType === 'osm' ? '0 1px 3px rgba(15,23,42,0.1)' : 'none',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s'
-                        }}
-                      >
-                        🌐 OSM
-                      </button>
-                    </div>
                     <button
                       type="button"
                       onClick={() => setMapPosition({ lat: 10.8651, lng: 106.6438 })}
@@ -1545,14 +1516,15 @@ function TaoTinDang() {
                   </div>
                 </div>
                 <div style={{
-                  height: '19rem',
+                  height: '28rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   overflow: 'hidden',
                   borderRadius: '0.75rem',
                   border: '1px solid #cbd5e1',
-                  backgroundColor: '#f1f5f9'
+                  backgroundColor: '#f1f5f9',
+                  position: 'relative'
                 }}>
                   <MapContainer
                     center={[mapPosition?.lat || 10.8651, mapPosition?.lng || 106.6438]}
@@ -1560,32 +1532,14 @@ function TaoTinDang() {
                     scrollWheelZoom={true}
                     style={{ height: '100%', width: '100%' }}
                   >
+                    <MapCtrlScrollHelper />
                     <MapAutoCenter position={mapPosition || { lat: 10.8651, lng: 106.6438 }} />
-                    {mapTileType === 'streets' && (
-                      <TileLayer
-                        attribution='&copy; <a href="https://www.esri.com">Esri</a> World Street Map'
-                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
-                        maxZoom={19}
-                      />
-                    )}
-                    {mapTileType === 'satellite' && (
-                      <TileLayer
-                        attribution='&copy; <a href="https://www.esri.com">Esri</a> World Imagery'
-                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                        maxZoom={19}
-                      />
-                    )}
-                    {mapTileType === 'osm' && (
-                      <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-                        subdomains="abc"
-                        maxZoom={19}
-                      />
-                    )}
+                    <TileLayer {...GOOGLE_MAPS_TILE_LAYER} />
+                    
                     <Marker
                       position={[mapPosition?.lat || 10.8651, mapPosition?.lng || 106.6438]}
                       draggable={true}
+                      icon={redMarkerIcon}
                       eventHandlers={{
                         dragend() {
                           const marker = markerRef.current;
@@ -1700,6 +1654,65 @@ function TaoTinDang() {
                     className="cda-input"
                     placeholder="VD: 2.500.000"
                   />
+                  {(() => {
+                    const rawVal = formData.GiaTien?.replace(/\./g, '');
+                    const num = parseInt(rawVal, 10);
+                    if (isNaN(num) || num === 0 || num >= 1000000) return null;
+                    
+                    const multipliers = [1000000, 10000000, 100000000, 1000000000, 10000000000];
+                    const suggestions = multipliers.map(m => {
+                      const value = num * m;
+                      let label = '';
+                      if (value >= 1000000000) {
+                        label = (value / 1000000000) + ' tỷ';
+                      } else {
+                        label = (value / 1000000) + ' triệu';
+                      }
+                      return { label, val: formatGiaTien(value.toString()) };
+                    });
+
+                    return (
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+                        {suggestions.map(item => (
+                          <button
+                            key={item.val}
+                            type="button"
+                            onClick={() => {
+                              setFormData(prev => ({ ...prev, GiaTien: item.val }));
+                              if (errors['GiaTien']) setErrors(prev => ({ ...prev, GiaTien: '' }));
+                            }}
+                            style={{
+                              padding: '4px 12px',
+                              borderRadius: '16px',
+                              border: '1px solid #cbd5e1',
+                              background: 'white',
+                              fontSize: '13px',
+                              color: '#0f172a',
+                              cursor: 'pointer',
+                              boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+                            }}
+                            onMouseOver={(e) => e.currentTarget.style.background = '#f1f5f9'}
+                            onMouseOut={(e) => e.currentTarget.style.background = 'white'}
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                  {formData.GiaTien && (
+                    <div style={{ marginTop: '8px', fontSize: '13px', color: '#334155', fontWeight: 500 }}>
+                      Tổng trị giá: {
+                        (() => {
+                          const num = parseInt(formData.GiaTien.replace(/\./g, ''), 10);
+                          if (isNaN(num)) return formData.GiaTien;
+                          if (num >= 1000000000) return (num / 1000000000) + ' tỷ';
+                          if (num >= 1000000) return (num / 1000000) + ' triệu';
+                          return num.toLocaleString('vi-VN');
+                        })()
+                      }
+                    </div>
+                  )}
                   <div style={{ marginTop: '8px' }}>
                     <button
                       type="button"
@@ -2362,7 +2375,7 @@ function TaoTinDang() {
                     }}>
                       <div style={{ textAlign: 'center' }}>
                         <img
-                          src={`https://qr.sepay.vn/img?acc=80349195777&bank=TPBank&amount=${formData.GoiDangTin === 'standard' ? 50000 : 150000}&des=TINDANG_${(formData.GoiDangTin || 'STANDARD').toUpperCase()}`}
+                          src={`https://qr.sepay.vn/img?acc=00000162914&bank=TPBank&amount=${formData.GoiDangTin === 'standard' ? 50000 : 150000}&des=TINDANG_${(formData.GoiDangTin || 'STANDARD').toUpperCase()}`}
                           alt="Mã QR Thanh Toán VietQR"
                           style={{ width: '210px', height: '210px', borderRadius: '0.5rem', border: '1px solid #e2e8f0' }}
                         />
@@ -2378,7 +2391,7 @@ function TaoTinDang() {
                         </div>
                         <div style={{ padding: '0.5rem', backgroundColor: '#f8fafc', borderRadius: '0.375rem' }}>
                           <span style={{ color: '#64748b' }}>Số tài khoản: </span>
-                          <strong style={{ color: '#059669', fontSize: '1.05rem' }}>80349195777</strong>
+                          <strong style={{ color: '#059669', fontSize: '1.05rem' }}>00000162914</strong>
                         </div>
                         <div style={{ padding: '0.5rem', backgroundColor: '#f8fafc', borderRadius: '0.375rem' }}>
                           <span style={{ color: '#64748b' }}>Tên tài khoản: </span>
@@ -2426,7 +2439,9 @@ function TaoTinDang() {
                         onChange={(e) => setXacNhanDaChuyenKhoan(e.target.checked)}
                         style={{ width: '18px', height: '18px', accentColor: '#059669' }}
                       />
-                      Tôi xác nhận đã chuyển khoản / hoàn tất thanh toán cho gói tin này
+                      {phuongThucThanhToan === 'VIETQR' 
+                        ? 'Tôi xác nhận đã chuyển khoản / hoàn tất thanh toán cho gói tin này' 
+                        : 'Tôi xác nhận tiếp tục thanh toán gói tin đăng này'}
                     </label>
                   </div>
                 </div>
@@ -2457,7 +2472,13 @@ function TaoTinDang() {
                     backgroundColor: '#059669'
                   }}
                 >
-                  {loading ? '⏳ Đang ghi nhận tin đăng...' : (formData.GoiDangTin === 'basic' ? 'Xác nhận và gửi đăng tin →' : 'Xác nhận đã thanh toán & Đăng tin →')}
+                  {loading 
+                    ? '⏳ Đang ghi nhận tin đăng...' 
+                    : (formData.GoiDangTin === 'basic' 
+                        ? 'Xác nhận và gửi đăng tin →' 
+                        : (phuongThucThanhToan === 'VIETQR' 
+                            ? 'Xác nhận đã thanh toán & Đăng tin →' 
+                            : 'Tiếp tục đến trang thanh toán →'))}
                 </button>
               </div>
 

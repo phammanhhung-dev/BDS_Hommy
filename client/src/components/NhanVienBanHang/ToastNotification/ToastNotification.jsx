@@ -4,7 +4,6 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   HiOutlineXMark,
@@ -97,7 +96,6 @@ const getAutoHideDuration = (type) => {
 };
 
 const ToastNotification = () => {
-  const navigate = useNavigate();
   const { socket, isConnected } = useSocket();
   const { playNotificationSound } = useNotificationSound({ enabled: true, volume: 0.5 });
   const [toasts, setToasts] = useState([]);
@@ -119,9 +117,6 @@ const ToastNotification = () => {
    * Xử lý điều hướng khi click vào toast
    */
   const handleNotificationClick = useCallback((notification) => {
-    const { Payload } = notification;
-    const type = Payload?.type;
-
     // Đánh dấu đã đọc
     if (notification.TrangThai === 'ChuaDoc') {
       danhDauDaDoc(notification.ThongBaoID).catch(err => 
@@ -129,59 +124,8 @@ const ToastNotification = () => {
       );
     }
 
-    // Điều hướng theo loại thông báo
-    switch (type) {
-      case 'cuoc_hen_moi':
-      case 'cuoc_hen_cho_phe_duyet':
-      case 'cuoc_hen_da_phe_duyet':
-      case 'cuoc_hen_tu_choi':
-      case 'cuoc_hen_tu_qr':
-      case 'reminder':
-      case 'can_bao_cao':
-        if (Payload?.CuocHenID) {
-          navigate(`/nhan-vien-ban-hang/cuoc-hen/${Payload.CuocHenID}`);
-        } else {
-          navigate('/nhan-vien-ban-hang/cuoc-hen');
-        }
-        break;
-      
-      case 'video_call':
-        if (Payload?.RoomUrl) {
-          window.open(Payload.RoomUrl, '_blank');
-        } else if (Payload?.CuocHoiThoaiID) {
-          navigate(`/nhan-vien-ban-hang/tro-chuyen/${Payload.CuocHoiThoaiID}`);
-        }
-        break;
-      
-      case 'tro_chuyen_moi':
-        if (Payload?.CuocHoiThoaiID) {
-          navigate(`/nhan-vien-ban-hang/tro-chuyen/${Payload.CuocHoiThoaiID}`);
-        } else {
-          navigate('/nhan-vien-ban-hang/tro-chuyen');
-        }
-        break;
-      
-      case 'coc_moi':
-        if (Payload?.GiaoDichID) {
-          navigate(`/nhan-vien-ban-hang/giao-dich/${Payload.GiaoDichID}`);
-        } else {
-          navigate('/nhan-vien-ban-hang/giao-dich');
-        }
-        break;
-      
-      case 'phan_hoi_goi_y':
-        if (Payload?.TinDangID) {
-          navigate(`/nhan-vien-ban-hang/tin-dang/${Payload.TinDangID}`);
-        } else {
-          navigate('/nhan-vien-ban-hang/tin-dang');
-        }
-        break;
-      
-      default:
-        // Mặc định mở notification center
-        break;
-    }
-  }, [navigate]);
+    // Theo yêu cầu, không điều hướng sang trang khác khi click thông báo
+  }, []);
 
   /**
    * Thêm toast mới
@@ -247,8 +191,22 @@ const ToastNotification = () => {
     // Lắng nghe event new_notification
     socket.on('new_notification', handleNewNotification);
 
+    // Lắng nghe event new_chat_message
+    const handleNewChatMessage = (e) => {
+      const message = e.detail;
+      addToast({
+        Payload: { type: 'tro_chuyen_moi' },
+        TieuDe: 'Tin nhắn mới',
+        NoiDung: message.NoiDung,
+        ThongBaoID: `msg-${message.TinNhanID || Date.now()}`,
+        TrangThai: 'DaDoc'
+      });
+    };
+    window.addEventListener('new_chat_message', handleNewChatMessage);
+
     return () => {
       socket.off('new_notification', handleNewNotification);
+      window.removeEventListener('new_chat_message', handleNewChatMessage);
     };
   }, [socket, isConnected, addToast]);
 

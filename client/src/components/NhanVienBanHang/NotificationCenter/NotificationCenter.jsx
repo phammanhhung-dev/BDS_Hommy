@@ -4,7 +4,6 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   HiOutlineBell,
@@ -20,17 +19,12 @@ import {
 } from 'react-icons/hi2';
 import useSocket from '../../../hooks/useSocket';
 import useNotificationSound from '../../../hooks/useNotificationSound';
-import {
-  layDanhSachThongBao,
-  demThongBaoChuaDoc,
-  danhDauDaDoc,
-  danhDauDocTatCa
-} from '../../../api/nhanVienBanHangApi';
+import * as nvbhApi from '../../../api/nhanVienBanHangApi';
+import cdaApi from '../../../api/chuDuAnApi';
 import { getApiBaseUrl } from '../../../config/api';
 import './NotificationCenter.css';
 
 const NotificationCenter = ({ isOpen, onClose, onUnreadCountChange }) => {
-  const navigate = useNavigate();
   const { socket, isConnected } = useSocket();
   const { playNotificationSound } = useNotificationSound({ enabled: true, volume: 0.5 });
   const [notifications, setNotifications] = useState([]);
@@ -50,6 +44,15 @@ const NotificationCenter = ({ isOpen, onClose, onUnreadCountChange }) => {
 
   const loadingRef = useRef(false);
 
+  // Helper function to get correct API based on role
+  const getApi = useCallback(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.VaiTroHoatDongID === 3) {
+      return cdaApi;
+    }
+    return nvbhApi;
+  }, []);
+
   /**
    * Load danh sách thông báo
    */
@@ -68,7 +71,8 @@ const NotificationCenter = ({ isOpen, onClose, onUnreadCountChange }) => {
         ...(filters.loai && { loai: filters.loai })
       };
 
-      const response = await layDanhSachThongBao(params);
+      const api = getApi();
+      const response = await api.layDanhSachThongBao(params);
       
       if (response.success) {
         if (reset) {
@@ -98,7 +102,8 @@ const NotificationCenter = ({ isOpen, onClose, onUnreadCountChange }) => {
    */
   const loadUnreadCount = useCallback(async () => {
     try {
-      const response = await demThongBaoChuaDoc();
+      const api = getApi();
+      const response = await api.demThongBaoChuaDoc();
       if (response.success) {
         const count = response.count || 0;
         setUnreadCount(count);
@@ -116,7 +121,8 @@ const NotificationCenter = ({ isOpen, onClose, onUnreadCountChange }) => {
    */
   const markAsRead = useCallback(async (thongBaoId) => {
     try {
-      await danhDauDaDoc(thongBaoId);
+      const api = getApi();
+      await api.danhDauDaDoc(thongBaoId);
       
       // Cập nhật local state
       setNotifications(prev =>
@@ -139,7 +145,8 @@ const NotificationCenter = ({ isOpen, onClose, onUnreadCountChange }) => {
    */
   const markAllAsRead = useCallback(async () => {
     try {
-      await danhDauDocTatCa();
+      const api = getApi();
+      await api.danhDauDocTatCa();
       
       // Cập nhật local state
       setNotifications(prev =>
@@ -262,135 +269,15 @@ const NotificationCenter = ({ isOpen, onClose, onUnreadCountChange }) => {
     }
   }, [pagination, loading, loadNotifications]);
 
-  /**
-   * Điều hướng đến khu vực thao tác của thông báo
-   * @param {Object} notif - Thông báo
-   */
   const handleNotificationClick = useCallback(async (notif) => {
-    const payload = notif.Payload || {};
-    const type = payload.type || 'unknown';
-
     // Đánh dấu đã đọc nếu chưa đọc
     if (notif.TrangThai === 'ChuaDoc') {
       await markAsRead(notif.ThongBaoID);
     }
 
-    // Đóng notification center
-    onClose();
-
-    // Điều hướng dựa trên loại thông báo
-    try {
-      switch (type) {
-        case 'tro_chuyen_moi': {
-          // Điều hướng đến cuộc trò chuyện
-          const cuocHoiThoaiId = payload.CuocHoiThoaiID;
-          if (cuocHoiThoaiId) {
-            navigate(`/nhan-vien-ban-hang/tin-nhan/${cuocHoiThoaiId}`);
-          }
-          break;
-        }
-
-        case 'video_call': {
-          // Mở link video call trong tab mới
-          const roomUrl = payload.RoomUrl || payload.roomUrl;
-          if (roomUrl) {
-            // Mở video call trong window mới
-            const width = 1280;
-            const height = 720;
-            const left = (window.screen.width - width) / 2;
-            const top = (window.screen.height - height) / 2;
-            
-            window.open(
-              roomUrl,
-              'VideoCallWindow',
-              `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
-            );
-          } else {
-            // Fallback: điều hướng đến cuộc trò chuyện nếu không có roomUrl
-            const cuocHoiThoaiId = payload.CuocHoiThoaiID;
-            if (cuocHoiThoaiId) {
-              navigate(`/nhan-vien-ban-hang/tin-nhan/${cuocHoiThoaiId}`);
-            }
-          }
-          break;
-        }
-
-        case 'cuoc_hen_moi':
-        case 'cuoc_hen_cho_phe_duyet':
-        case 'cuoc_hen_da_phe_duyet':
-        case 'cuoc_hen_tu_choi':
-        case 'cuoc_hen_tu_qr':
-        case 'khach_huy_cuoc_hen':
-        case 'can_bao_cao':
-        case 'reminder': {
-          // Điều hướng đến chi tiết cuộc hẹn
-          const cuocHenId = payload.CuocHenID;
-          if (cuocHenId) {
-            navigate(`/nhan-vien-ban-hang/cuoc-hen/${cuocHenId}`);
-          }
-          break;
-        }
-
-        case 'phan_hoi_goi_y': {
-          // Tạo hoặc điều hướng đến cuộc trò chuyện với khách hàng
-          const khachHangID = payload.KhachHangID;
-          const tinDangID = payload.TinDangID;
-          
-          if (khachHangID) {
-            try {
-              const token = localStorage.getItem('token');
-              const response = await fetch(`${getApiBaseUrl()}/api/chat/conversations`, {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                  ThanhVienIDs: [khachHangID],
-                  TieuDe: `Phản hồi gợi ý - ${payload.TieuDeTinDang || 'Tin đăng'}`,
-                  ...(tinDangID && { NguCanhID: tinDangID, NguCanhLoai: 'TinDang' })
-                })
-              });
-
-              const result = await response.json();
-              if (result.success && result.data?.CuocHoiThoaiID) {
-                navigate(`/nhan-vien-ban-hang/tin-nhan/${result.data.CuocHoiThoaiID}`);
-              } else {
-                console.warn('[NotificationCenter] Không thể tạo cuộc trò chuyện:', result);
-                // Fallback: điều hướng đến trang cuộc hẹn nếu có
-                if (payload.CuocHenID) {
-                  navigate(`/nhan-vien-ban-hang/cuoc-hen/${payload.CuocHenID}`);
-                }
-              }
-            } catch (err) {
-              console.error('[NotificationCenter] Lỗi tạo cuộc trò chuyện:', err);
-              // Fallback: điều hướng đến trang cuộc hẹn nếu có
-              if (payload.CuocHenID) {
-                navigate(`/nhan-vien-ban-hang/cuoc-hen/${payload.CuocHenID}`);
-              }
-            }
-          }
-          break;
-        }
-
-        case 'coc_moi': {
-          // Điều hướng đến chi tiết cuộc hẹn (nơi xác nhận cọc)
-          const cuocHenId = payload.CuocHenID;
-          if (cuocHenId) {
-            navigate(`/nhan-vien-ban-hang/cuoc-hen/${cuocHenId}`);
-          }
-          break;
-        }
-
-        default:
-          // Không điều hướng cho các loại thông báo khác
-          console.log('[NotificationCenter] Không có điều hướng cho loại:', type);
-      }
-    } catch (err) {
-      console.error('[NotificationCenter] Lỗi điều hướng:', err);
-    }
-  }, [navigate, markAsRead, onClose]);
+    // Theo yêu cầu của người dùng, không điều hướng sang trang khác
+    // và giữ nguyên NotificationCenter để người dùng có thể đọc tiếp
+  }, [markAsRead]);
 
   if (!isOpen) return null;
 

@@ -104,6 +104,8 @@
   font-weight: 700;
   margin-bottom: 0.25rem;
   line-height: 1.05;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .dashboard-operator__metric-label {

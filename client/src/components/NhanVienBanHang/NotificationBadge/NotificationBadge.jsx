@@ -7,7 +7,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiOutlineBell } from 'react-icons/hi2';
 import useSocket from '../../../hooks/useSocket';
-import { demThongBaoChuaDoc } from '../../../api/nhanVienBanHangApi';
+import * as nvbhApi from '../../../api/nhanVienBanHangApi';
+import cdaApi from '../../../api/chuDuAnApi';
 import './NotificationBadge.css';
 
 const NotificationBadge = ({ onClick, onUnreadCountChange, className = '' }) => {
@@ -21,7 +22,9 @@ const NotificationBadge = ({ onClick, onUnreadCountChange, className = '' }) => 
   const loadUnreadCount = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await demThongBaoChuaDoc();
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const api = user.VaiTroHoatDongID === 3 ? cdaApi : nvbhApi;
+      const response = await api.demThongBaoChuaDoc();
       if (response.success) {
         const count = response.count || 0;
         setUnreadCount(count);

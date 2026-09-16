@@ -141,18 +141,6 @@ function DashboardOperator() {
       color: 'info'
     },
     {
-      title: 'Doanh thu tháng',
-      value: stats.DoanhThuThangNay || '0',
-      format: 'currency',
-      icon: <HiOutlineCurrencyDollar />,
-      link: '/nvdh/thu-nhap',
-      color: 'success'
-    }
-  ];
-
-  // Old cards to keep (Nhân viên and Biên bản)
-  const oldCards = [
-    {
       title: 'Nhân viên active',
       value: oldMetrics?.nhanVien?.Active || 0,
       icon: <HiOutlineUsers />,
@@ -165,6 +153,14 @@ function DashboardOperator() {
       icon: <HiOutlineClipboardDocumentList />,
       link: '/nvdh/bien-ban',
       color: 'info'
+    },
+    {
+      title: 'Doanh thu tháng',
+      value: stats.DoanhThuThangNay || '0',
+      format: 'currency',
+      icon: <HiOutlineCurrencyDollar />,
+      link: '/nvdh/thu-nhap',
+      color: 'success'
     }
   ];
 
@@ -281,12 +277,12 @@ function DashboardOperator() {
                   <BarChart data={revenueChart}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="Thang" />
-                    <YAxis />
+                    <YAxis width={100} tickFormatter={(value) => new Intl.NumberFormat('vi-VN').format(value)} />
                     <Tooltip
                       formatter={(value) => formatCurrency(value)}
                       labelFormatter={(label) => `Tháng ${label}`}
                     />
-                    <Bar dataKey="DoanhThu" fill="#3b82f6" />
+                    <Bar dataKey="DoanhThu" fill="#3b82f6" maxBarSize={50} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -481,32 +477,7 @@ function DashboardOperator() {
           </div>
         </section>
 
-        {/* Section 7: Old Cards (Nhân viên and Biên bản) */}
-        <section className="dashboard-operator__section" aria-labelledby="legacy-title" style={{marginTop: '2rem'}}>
-          <div className="dashboard-operator__section-header">
-            <h2 id="legacy-title" className="dashboard-operator__section-title">Chỉ số khác</h2>
-          </div>
-          <div className="dashboard-operator__metrics">
-            {oldCards.map((card, index) => (
-              <Link
-                key={index}
-                to={card.link}
-                aria-label={`Mở ${card.title}`}
-                className="operator-card operator-card--interactive dashboard-operator__metric-card operator-stagger-item"
-              >
-                <div className="dashboard-operator__metric-icon">
-                  <IconOperator size={24} title={card.title}>
-                    {card.icon}
-                  </IconOperator>
-                </div>
-                <div className="dashboard-operator__metric-content">
-                  <div className="dashboard-operator__metric-value">{card.value}</div>
-                  <div className="dashboard-operator__metric-label">{card.title}</div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+
 
         {/* Quick Actions */}
         <div className="dashboard-operator__quick-actions operator-card" aria-labelledby="dashboard-operator-actions-title" style={{marginTop: '2rem'}}>

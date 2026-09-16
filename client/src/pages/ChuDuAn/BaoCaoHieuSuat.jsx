@@ -478,7 +478,7 @@ function BaoCaoHieuSuat() {
                       tickFormatter={(value) => value.length > 20 ? value.substring(0, 20) + '...' : value}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="LuotXem" fill="#3b82f6" radius={[0, 8, 8, 0]} name="Lượt xem">
+                    <Bar dataKey="LuotXem" fill="#3b82f6" radius={[0, 8, 8, 0]} maxBarSize={30} name="Lượt xem">
                       {topTinDangData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                       ))}

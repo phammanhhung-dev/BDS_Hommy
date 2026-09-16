@@ -41,9 +41,7 @@ const TinNhanContent = () => {
 
 export default function TinNhan() {
   return (
-    <ChatProvider>
-      <TinNhanContent />
-    </ChatProvider>
+    <TinNhanContent />
   );
 }
 

@@ -110,9 +110,7 @@ const TinNhanContent = () => {
 export default function TinNhan() {
   return (
     <ChuDuAnLayout>
-      <ChatProvider>
-        <TinNhanContent />
-      </ChatProvider>
+      <TinNhanContent />
     </ChuDuAnLayout>
   );
 }

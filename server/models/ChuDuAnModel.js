@@ -690,16 +690,17 @@ class ChuDuAnModel {
         throw new Error('Chỉ có thể phê duyệt cuộc hẹn ở trạng thái Chờ phê duyệt');
       }
 
-      // Cập nhật phê duyệt và lưu phương thức vào
+      // Cập nhật phê duyệt, trạng thái và lưu phương thức vào
       await db.execute(`
         UPDATE cuochen 
         SET PheDuyetChuDuAn = 'DaPheDuyet',
+            TrangThai = 'DaXacNhan',
             ThoiGianPheDuyet = NOW(),
             PhuongThucVao = ?,
             GhiChuKetQua = CONCAT(
               IFNULL(GhiChuKetQua, ""), 
               ?, 
-              "\n[Phê duyệt bởi chủ dự án lúc ", NOW(), "]"
+              "\n[Phê duyệt và xác nhận bởi chủ dự án lúc ", NOW(), "]"
             )
         WHERE CuocHenID = ?
       `, [phuongThucVao, ghiChu, cuocHenId]);

@@ -4,6 +4,7 @@ import L from 'leaflet';
 import { HiOutlineMapPin } from 'react-icons/hi2';
 import 'leaflet/dist/leaflet.css';
 import './MapViTriPhong.css';
+import { redMarkerIcon, MapCtrlScrollHelper, GOOGLE_MAPS_TILE_LAYER } from '../Map/MapUtils';
 
 // Fix Leaflet default marker icon paths
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -15,46 +16,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
   shadowUrl: markerShadow,
-});
-
-// Custom Red Marker Icon (Red Pin BĐS Nổi Bật)
-const redMarkerIcon = new L.Icon({
-  iconUrl: 'data:image/svg+xml;base64,' + btoa(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="36" height="52">
-      <defs>
-        <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
-        </linearGradient>
-        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-          <feOffset dx="0" dy="3" result="offsetblur"/>
-          <feComponentTransfer>
-            <feFuncA type="linear" slope="0.4"/>
-          </feComponentTransfer>
-          <feMerge>
-            <feMergeNode/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      <path 
-        fill="url(#redGrad)" 
-        stroke="#ffffff" 
-        stroke-width="2" 
-        filter="url(#shadow)"
-        d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z"
-      />
-      <circle cx="12" cy="9" r="4" fill="#ffffff"/>
-      <circle cx="12" cy="9" r="2" fill="#dc2626"/>
-    </svg>
-  `),
-  iconSize: [36, 52],
-  iconAnchor: [18, 52],
-  popupAnchor: [0, -54],
-  shadowUrl: markerShadow,
-  shadowSize: [41, 41],
-  shadowAnchor: [13, 41]
 });
 
 /**
@@ -266,22 +227,18 @@ const MapViTriPhong = ({
       </div>
 
       {/* Map Container */}
-      <div className="map-vi-tri-map" style={{ height: `${height}px` }}>
+      <div className="map-vi-tri-map" style={{ height: `${height}px`, position: 'relative' }}>
         <MapContainer
           center={position}
           zoom={zoom}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
           dragging={true}
           zoomControl={true}
           doubleClickZoom={true}
           style={{ width: '100%', height: '100%' }}
         >
-          <TileLayer
-            attribution='&copy; Google Maps'
-            url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
-            maxZoom={20}
-            minZoom={4}
-          />
+          <MapCtrlScrollHelper />
+          <TileLayer {...GOOGLE_MAPS_TILE_LAYER} />
 
           {/* Marker với Custom Red Pin Icon */}
           <Marker position={position} icon={redMarkerIcon}>

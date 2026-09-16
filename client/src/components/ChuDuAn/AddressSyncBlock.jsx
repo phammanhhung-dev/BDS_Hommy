@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import axios from 'axios';
 import { buildApiUrl } from '../../config/api';
 
@@ -76,7 +77,7 @@ const AddressSyncBlock = ({
   const [addressMode, setAddressMode] = useState('old');
   const [pendingModeSwitch, setPendingModeSwitch] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [selectedSuggestionIdx, setSelectedSuggestionIdx] = useState(null);
+  const [selectedSuggestionIdx, setSelectedSuggestionIdx] = useState(0);
   const [needManualInput, setNeedManualInput] = useState(false);
   const [manualAddressInput, setManualAddressInput] = useState('');
   const [showManualReportInput, setShowManualReportInput] = useState(false);
@@ -122,6 +123,60 @@ const AddressSyncBlock = ({
     legacyDistrictId: addressMode === 'old' && legacyDistrictId ? Number(legacyDistrictId) : null,
     legacyWardId: addressMode === 'old' && legacyWardId ? Number(legacyWardId) : null
   }), [addressMode, provinceId, legacyDistrictId, legacyWardId]);
+
+  const isNewMode = addressMode === 'new';
+
+  const sourceAddressText = useMemo(() => {
+    const dt = detailAddress ? detailAddress.trim() : '';
+    const st = streetName ? streetName.trim() : '';
+    let streetPart = dt;
+    if (st && (!dt || !dt.toLowerCase().includes(st.toLowerCase()))) {
+      streetPart = dt ? `${dt}, ${st}` : st;
+    }
+
+    if (addressMode === 'old') {
+      const parts = [streetPart, legacyWardName, legacyDistrictName, provinceName].filter(Boolean);
+      return parts.length > 0 ? parts.join(', ') : 'Chưa nhập đủ thông tin địa chỉ cũ';
+    } else {
+      const parts = [streetPart, newWardName, provinceName].filter(Boolean);
+      return parts.length > 0 ? parts.join(', ') : 'Chưa nhập đủ thông tin địa chỉ mới';
+    }
+  }, [addressMode, detailAddress, streetName, legacyWardName, legacyDistrictName, provinceName, newWardName]);
+
+  const displayTargetSuggestions = useMemo(() => {
+    if (Array.isArray(suggestions) && suggestions.length > 0) {
+      return suggestions.map((s, idx) => ({
+        ...s,
+        label: makeSuggestionLabel(s),
+        idx
+      }));
+    }
+
+    const dt = detailAddress ? detailAddress.trim() : '';
+    const st = streetName ? streetName.trim() : '';
+    let streetPart = dt;
+    if (st && (!dt || !dt.toLowerCase().includes(st.toLowerCase()))) {
+      streetPart = dt ? `${dt}, ${st}` : st;
+    }
+
+    if (addressMode === 'old') {
+      const ward = legacyWardName || newWardName;
+      const prov = provinceName;
+      const parts = [streetPart, ward, prov].filter(Boolean);
+      if (parts.length > 0) {
+        return [{ label: parts.join(', '), isFallback: true, idx: 0 }];
+      }
+      return [];
+    } else {
+      const ward = newWardName;
+      const prov = provinceName;
+      const parts = [streetPart, ward, prov].filter(Boolean);
+      if (parts.length > 0) {
+        return [{ label: parts.join(', '), isFallback: true, idx: 0 }];
+      }
+      return [];
+    }
+  }, [suggestions, addressMode, detailAddress, streetName, legacyWardName, newWardName, provinceName]);
 
   useEffect(() => {
     const loadProvinces = async () => {
@@ -251,31 +306,54 @@ const AddressSyncBlock = ({
       let selectedSuggestion = null;
       if (selectedSuggestionIdx !== null && suggestions[selectedSuggestionIdx]) {
         selectedSuggestion = suggestions[selectedSuggestionIdx];
+      } else if (suggestions.length > 0) {
+        selectedSuggestion = suggestions[0];
       }
 
-      const nextPayload = {
-        currentAddress: {
-          provinceId: selectedSuggestion?.provinceId ?? currentAddress.provinceId,
-          wardId: selectedSuggestion?.wardId ?? currentAddress.wardId,
-          streetName: currentAddress.streetName,
-          detailAddress: currentAddress.detailAddress,
-          provinceName: provinceName,
-          districtName: addressMode === 'old' ? legacyDistrictName : '',
-          wardName: addressMode === 'new' ? newWardName : legacyWardName
-        },
-        legacyAddressRef: {
-          legacyProvinceId: addressMode === 'new'
-            ? null
-            : (selectedSuggestion?.legacyProvinceId ?? legacyAddressRef.legacyProvinceId),
-          legacyDistrictId: addressMode === 'new'
-            ? null
-            : (selectedSuggestion?.legacyDistrictId ?? legacyAddressRef.legacyDistrictId),
-          legacyWardId: addressMode === 'new'
-            ? null
-            : (selectedSuggestion?.legacyWardId ?? legacyAddressRef.legacyWardId)
-        },
-        displayPreference
-      };
+      let nextPayload;
+
+      if (addressMode === 'old') {
+        nextPayload = {
+          currentAddress: {
+            provinceId: selectedSuggestion?.provinceId ?? (provinceId ? Number(provinceId) : null),
+            wardId: selectedSuggestion?.newWardId ?? selectedSuggestion?.wardId ?? (legacyWardId ? Number(legacyWardId) : null),
+            streetName: streetName || '',
+            detailAddress: detailAddress || '',
+            provinceName: selectedSuggestion?.provinceName || provinceName || '',
+            districtName: legacyDistrictName || '',
+            wardName: selectedSuggestion?.wardName || legacyWardName || ''
+          },
+          legacyAddressRef: {
+            legacyProvinceId: provinceId ? Number(provinceId) : null,
+            legacyDistrictId: legacyDistrictId ? Number(legacyDistrictId) : null,
+            legacyWardId: legacyWardId ? Number(legacyWardId) : null,
+            legacyDistrictName: legacyDistrictName || '',
+            legacyWardName: legacyWardName || ''
+          },
+          displayPreference: 'legacy'
+        };
+      } else {
+        // addressMode === 'new'
+        nextPayload = {
+          currentAddress: {
+            provinceId: provinceId ? Number(provinceId) : null,
+            wardId: newWardId ? Number(newWardId) : null,
+            streetName: streetName || '',
+            detailAddress: detailAddress || '',
+            provinceName: provinceName || '',
+            districtName: '',
+            wardName: newWardName || ''
+          },
+          legacyAddressRef: {
+            legacyProvinceId: selectedSuggestion?.provinceId ?? (provinceId ? Number(provinceId) : null),
+            legacyDistrictId: selectedSuggestion?.legacyDistrictId ?? null,
+            legacyWardId: selectedSuggestion?.legacyWardId ?? null,
+            legacyDistrictName: selectedSuggestion?.legacyDistrictName ?? '',
+            legacyWardName: selectedSuggestion?.legacyWardName ?? ''
+          },
+          displayPreference: 'current'
+        };
+      }
 
       if (typeof onConfirm === 'function') {
         onConfirm(nextPayload);
@@ -283,7 +361,25 @@ const AddressSyncBlock = ({
     };
 
     buildPayload();
-  }, [selectedSuggestionIdx, suggestions, currentAddress, legacyAddressRef, displayPreference, onConfirm, provinceName, legacyDistrictName, legacyWardName, newWardName, addressMode]);
+  }, [
+    selectedSuggestionIdx,
+    suggestions,
+    currentAddress,
+    legacyAddressRef,
+    displayPreference,
+    onConfirm,
+    provinceId,
+    provinceName,
+    legacyDistrictId,
+    legacyDistrictName,
+    legacyWardId,
+    legacyWardName,
+    newWardId,
+    newWardName,
+    addressMode,
+    streetName,
+    detailAddress
+  ]);
 
   useEffect(() => {
     const activeMode = addressMode === 'old' ? 'old-to-new' : 'new-to-old';
@@ -383,6 +479,15 @@ const AddressSyncBlock = ({
     setPendingModeSwitch(false);
     setShowConfirmModal(false);
   };
+
+  useEffect(() => {
+    if (!showConfirmModal) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') cancelModeSwitch();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showConfirmModal]);
 
   const renderManualReport = () => {
     if (!(needManualInput || showManualReportInput)) return null;
@@ -1103,63 +1208,101 @@ const AddressSyncBlock = ({
           </div>
         </div>
 
-        <div style={{ display: 'grid', gap: '0.85rem' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.875rem' }}>
-            <span style={{ color: '#0f172a', fontWeight: 700, whiteSpace: 'nowrap' }}>📍 Địa chỉ cũ:</span>
-            <span style={{ color: '#334155', fontWeight: 500 }}>
-              {(() => {
-                const dt = detailAddress ? detailAddress.trim() : '';
-                const st = streetName ? streetName.trim() : '';
-                let streetPart = dt;
-                if (st && (!dt || !dt.toLowerCase().includes(st.toLowerCase()))) {
-                  streetPart = dt ? `${dt}, ${st}` : st;
-                }
-                return [streetPart, legacyWardName, legacyDistrictName, provinceName].filter(Boolean).join(', ') || 'Chưa nhập đủ thông tin địa chỉ cũ';
-              })()}
-            </span>
+        {/* Khối hiển thị địa chỉ 2 tầng theo đúng chuẩn Batdongsan.com.vn (Ảnh 4 & Ảnh 5) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+          {/* TẦNG 1: NGUỒN NGƯỜI DÙNG NHẬP */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.35rem' }}>
+              <span style={{ fontSize: '1.1rem', color: isNewMode ? '#dc2626' : '#0f172a', lineHeight: 1 }}>
+                📍
+              </span>
+              <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>
+                {isNewMode ? 'Địa chỉ mới' : 'Địa chỉ cũ'}
+              </span>
+            </div>
+            <div style={{ paddingLeft: '1.55rem', fontSize: '0.875rem', color: '#0f172a', fontWeight: 500, lineHeight: 1.45 }}>
+              {sourceAddressText}
+            </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.875rem' }}>
-            <span style={{ color: '#dc2626', fontWeight: 700, whiteSpace: 'nowrap' }}>📍 Địa chỉ mới:</span>
-            <div style={{ flex: 1 }}>
-              <label style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '0.625rem',
-                padding: '0.75rem 0.85rem',
-                borderRadius: '0.625rem',
-                border: `1px solid ${displayPreference === 'current' ? '#10b981' : '#cbd5e1'}`,
-                backgroundColor: displayPreference === 'current' ? '#f0fdf4' : '#ffffff',
-                cursor: 'pointer',
-                marginBottom: '0.5rem'
-              }}>
-                <input
-                  type="radio"
-                  name="displayPreference"
-                  value="current"
-                  checked={displayPreference === 'current'}
-                  onChange={() => setDisplayPreference('current')}
-                  style={{ marginTop: '0.2rem', accentColor: '#059669' }}
-                />
-                <div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#0f172a' }}>Địa chỉ do hệ thống gợi ý</div>
-                  <div style={{ fontSize: '0.825rem', color: '#475569', marginTop: '0.15rem' }}>
-                    {suggestions.length > 0
-                      ? makeSuggestionLabel(suggestions[selectedSuggestionIdx || 0])
-                      : (() => {
-                          const dt = detailAddress ? detailAddress.trim() : '';
-                          const st = streetName ? streetName.trim() : '';
-                          let streetPart = dt;
-                          if (st && (!dt || !dt.toLowerCase().includes(st.toLowerCase()))) {
-                            streetPart = dt ? `${dt}, ${st}` : st;
-                          }
-                          return [streetPart, newWardName || legacyWardName, provinceName].filter(Boolean).join(', ') || 'Đang cập nhật địa chỉ gợi ý...';
-                        })()}
-                  </div>
-                </div>
-              </label>
+          {/* MŨI TÊN CHỈ XUỐNG NỐI 2 TẦNG */}
+          <div style={{ paddingLeft: '0.2rem', color: '#94a3b8', fontSize: '1.05rem', lineHeight: '1.1', margin: '0.2rem 0' }}>
+            ↓
+          </div>
 
-              <div style={{ marginBottom: '0.75rem', paddingLeft: '0.25rem' }}>
+          {/* TẦNG 2: ĐÍCH HỆ THỐNG GỢI Ý */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.45rem' }}>
+              <span style={{ fontSize: '1.1rem', color: isNewMode ? '#0f172a' : '#dc2626', lineHeight: 1 }}>
+                📍
+              </span>
+              <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>
+                {isNewMode ? 'Địa chỉ cũ' : 'Địa chỉ mới'}
+              </span>
+            </div>
+
+            {/* Hộp gợi ý bo góc */}
+            <div style={{ paddingLeft: '1.55rem' }}>
+              <div
+                style={{
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '0.625rem',
+                  padding: '0.75rem 1rem',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.02)'
+                }}
+              >
+                <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '0.6rem' }}>
+                  Địa chỉ do hệ thống gợi ý
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {displayTargetSuggestions.length > 0 ? (
+                    displayTargetSuggestions.map((item, idx) => {
+                      const isSelected = (selectedSuggestionIdx ?? 0) === idx;
+                      return (
+                        <label
+                          key={idx}
+                          onClick={() => setSelectedSuggestionIdx(idx)}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '0.45rem 0',
+                            cursor: 'pointer',
+                            borderBottom: idx < displayTargetSuggestions.length - 1 ? '1px solid #f1f5f9' : 'none'
+                          }}
+                        >
+                          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0f172a', lineHeight: 1.4 }}>
+                            {item.label}
+                          </span>
+                          <input
+                            type="radio"
+                            name="addressSyncTargetSuggestion"
+                            checked={isSelected}
+                            onChange={() => setSelectedSuggestionIdx(idx)}
+                            style={{
+                              width: '1.2rem',
+                              height: '1.2rem',
+                              accentColor: '#0f172a',
+                              cursor: 'pointer',
+                              marginLeft: '1rem',
+                              flexShrink: 0
+                            }}
+                          />
+                        </label>
+                      );
+                    })
+                  ) : (
+                    <div style={{ fontSize: '0.85rem', color: '#94a3b8', fontStyle: 'italic', padding: '0.4rem 0' }}>
+                      Đang cập nhật địa chỉ do hệ thống gợi ý...
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Nút báo cáo cờ */}
+              <div style={{ marginTop: '0.75rem' }}>
                 <button
                   type="button"
                   onClick={() => setShowManualReportInput((prev) => !prev)}
@@ -1167,17 +1310,17 @@ const AddressSyncBlock = ({
                     background: 'transparent',
                     border: 'none',
                     padding: 0,
-                    color: '#64748b',
-                    fontSize: '0.8rem',
+                    color: '#0f172a',
+                    fontSize: '0.825rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.4rem',
-                    textDecoration: 'none'
+                    textAlign: 'left'
                   }}
                 >
-                  <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>🔲</span>
-                  <span style={{ color: '#2563eb', textDecoration: 'underline' }}>
+                  <span style={{ fontSize: '0.95rem' }}>⚑</span>
+                  <span style={{ textDecoration: 'underline' }}>
                     Không tìm thấy địa chỉ phù hợp? Cho chúng tôi biết địa chỉ của bạn
                   </span>
                 </button>
@@ -1189,7 +1332,7 @@ const AddressSyncBlock = ({
                       onChange={(event) => setManualAddressInput(event.target.value)}
                       rows={3}
                       placeholder="Nhập chi tiết địa chỉ của bạn để chúng tôi cập nhật..."
-                      style={{ width: '100%', resize: 'vertical', border: '1px solid #cbd5e1', borderRadius: '0.5rem', padding: '0.625rem 0.75rem', fontSize: '0.875rem', outline: 'none' }}
+                      style={{ width: '100%', resize: 'vertical', border: '1px solid #cbd5e1', borderRadius: '0.5rem', padding: '0.625rem 0.75rem', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
                     />
                     <div style={{ marginTop: '0.5rem', display: 'flex', justifyContent: 'flex-end' }}>
                       <button
@@ -1203,52 +1346,186 @@ const AddressSyncBlock = ({
                   </div>
                 )}
               </div>
-
-              <label style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '0.625rem',
-                padding: '0.75rem 0.85rem',
-                borderRadius: '0.625rem',
-                border: `1px solid ${displayPreference === 'legacy' ? '#10b981' : '#cbd5e1'}`,
-                backgroundColor: displayPreference === 'legacy' ? '#f0fdf4' : '#ffffff',
-                cursor: 'pointer'
-              }}>
-                <input
-                  type="radio"
-                  name="displayPreference"
-                  value="legacy"
-                  checked={displayPreference === 'legacy'}
-                  onChange={() => setDisplayPreference('legacy')}
-                  style={{ marginTop: '0.2rem', accentColor: '#059669' }}
-                />
-                <div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#0f172a' }}>Địa chỉ cũ (Không tìm thấy địa chỉ phù hợp?)</div>
-                  <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.15rem' }}>
-                    Bấm vào đây nếu bạn muốn sử dụng tên địa giới hành chính trước khi sáp nhập
-                  </div>
-                </div>
-              </label>
             </div>
           </div>
         </div>
       </div>
 
-      {showConfirmModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ width: 'min(28rem, calc(100vw - 2rem))', backgroundColor: '#ffffff', borderRadius: '1rem', boxShadow: '0 30px 60px rgba(15, 23, 42, 0.2)', padding: '1.25rem' }}>
-            <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem', color: '#111827' }}>Đổi cách nhập địa chỉ</h3>
-            <p style={{ margin: 0, color: '#475569', lineHeight: 1.6 }}>Thông tin địa chỉ hiện tại sẽ bị xóa</p>
-            <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button type="button" onClick={cancelModeSwitch} style={{ border: '1px solid #cbd5e1', padding: '0.6rem 0.9rem', borderRadius: '0.5rem', backgroundColor: '#fff', cursor: 'pointer' }}>
-                Hủy
+      {showConfirmModal && typeof document !== 'undefined' && createPortal(
+        <div
+          className="cda-modal-overlay"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.6)',
+            backdropFilter: 'blur(5px)',
+            WebkitBackdropFilter: 'blur(5px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 999999,
+            padding: '1.25rem'
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) cancelModeSwitch();
+          }}
+        >
+          <div
+            className="cda-modal-container"
+            style={{
+              width: '100%',
+              maxWidth: '30rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '1.25rem',
+              boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05)',
+              padding: '1.75rem',
+              position: 'relative',
+              border: '1px solid rgba(226, 232, 240, 0.9)'
+            }}
+          >
+            {/* Nút đóng góc phải */}
+            <button
+              type="button"
+              onClick={cancelModeSwitch}
+              style={{
+                position: 'absolute',
+                top: '1.25rem',
+                right: '1.25rem',
+                border: 'none',
+                backgroundColor: '#f1f5f9',
+                width: '2rem',
+                height: '2rem',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#64748b',
+                fontSize: '0.95rem',
+                fontWeight: 'bold',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#e2e8f0';
+                e.currentTarget.style.color = '#0f172a';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f1f5f9';
+                e.currentTarget.style.color = '#64748b';
+              }}
+              aria-label="Đóng popup"
+            >
+              ✕
+            </button>
+
+            {/* Header với Icon chuyên nghiệp */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+              <div
+                style={{
+                  width: '3.25rem',
+                  height: '3.25rem',
+                  borderRadius: '1rem',
+                  background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
+                  border: '1px solid #a7f3d0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.5rem',
+                  color: '#059669',
+                  boxShadow: '0 4px 12px rgba(5, 150, 105, 0.12)',
+                  flexShrink: 0
+                }}
+              >
+                🔄
+              </div>
+              <div style={{ paddingRight: '1.5rem' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700, color: '#0f172a', letterSpacing: '-0.01em' }}>
+                  Đổi cách nhập địa chỉ
+                </h3>
+                <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '0.25rem' }}>
+                  {addressMode === 'old'
+                    ? 'Chuyển sang Tìm theo địa chỉ mới'
+                    : 'Chuyển về Tìm theo địa chỉ chuẩn (3 cấp)'}
+                </div>
+              </div>
+            </div>
+
+            {/* Hộp cảnh báo chuyên nghiệp */}
+            <div
+              style={{
+                backgroundColor: '#fffbeb',
+                border: '1px solid #fef3c7',
+                borderRadius: '0.875rem',
+                padding: '1rem',
+                marginBottom: '1.5rem',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '0.75rem'
+              }}
+            >
+              <div style={{ fontSize: '1.2rem', lineHeight: 1, marginTop: '1px' }}>⚠️</div>
+              <div style={{ fontSize: '0.875rem', color: '#92400e', lineHeight: 1.55 }}>
+                <strong>Thông tin địa chỉ hiện tại sẽ bị xóa:</strong> Các trường Tỉnh/Thành, Quận/Huyện, Phường/Xã bạn đã chọn sẽ được đặt lại để đồng bộ chính xác theo chuẩn phân cấp hành chính mới.
+              </div>
+            </div>
+
+            {/* Nút hành động */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+              <button
+                type="button"
+                onClick={cancelModeSwitch}
+                style={{
+                  border: '1.5px solid #cbd5e1',
+                  padding: '0.65rem 1.25rem',
+                  borderRadius: '0.625rem',
+                  backgroundColor: '#ffffff',
+                  color: '#475569',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f8fafc';
+                  e.currentTarget.style.borderColor = '#94a3b8';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#ffffff';
+                  e.currentTarget.style.borderColor = '#cbd5e1';
+                }}
+              >
+                Hủy bỏ
               </button>
-              <button type="button" onClick={confirmModeSwitch} style={{ border: 'none', padding: '0.6rem 0.9rem', borderRadius: '0.5rem', backgroundColor: '#2563eb', color: '#fff', cursor: 'pointer' }}>
+              <button
+                type="button"
+                onClick={confirmModeSwitch}
+                style={{
+                  border: 'none',
+                  padding: '0.65rem 1.4rem',
+                  borderRadius: '0.625rem',
+                  background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 14px rgba(5, 150, 105, 0.3)',
+                  transition: 'all 0.15s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter = 'brightness(1.08)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter = 'none';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
                 Tiếp tục
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

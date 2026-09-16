@@ -314,9 +314,6 @@ const OCRService = {
         
         // Preserve spacing
         preserve_interword_spaces: '1',
-        
-        // Quality settings
-        tessedit_ocr_engine_mode: Tesseract.OEM.LSTM_ONLY,
       });
       
       const { data: { text, confidence } } = await worker.recognize(processedImage);
@@ -392,7 +389,7 @@ const OCRService = {
     }
 
     // 3. Ngày sinh & Ngày cấp - Extract với context
-    const datePattern = /(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/g;
+    const datePattern = /(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{4})/g;
     const dates = [];
     let dateMatch;
     

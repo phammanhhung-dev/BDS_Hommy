@@ -22,6 +22,19 @@ dist
 dist-ssr
 *.local
 
+# Python cache & wheels
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+*.whl
+ml-service/xgboost_pkg/
+
+# Temporary debug dumps
+*_debug.json
+chat_debug*.json
+tindang*.json
+
 # Uploads (User data - Privacy)
 server/uploads/kyc/cccd_front/*
 server/uploads/kyc/cccd_back/*
@@ -30,6 +43,11 @@ server/uploads/kyc/selfie/*
 !server/uploads/kyc/cccd_back/.gitkeep
 !server/uploads/kyc/selfie/.gitkeep
 !server/uploads/kyc/README.md
+server/public/uploads/*
+!server/public/uploads/.gitkeep
+
+# Presentation outputs
+tools/presentation/*.pptx
 
 # AI Models (Large files - Download separately)
 client/public/models/*.bin

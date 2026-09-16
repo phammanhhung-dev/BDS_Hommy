@@ -251,6 +251,12 @@ const QuanLyTinDang = () => {
       return false;
     }
     return true;
+  }).sort((a, b) => {
+    // Sắp xếp tin mới nhất lên đầu (theo TinDangID hoặc TaoLuc)
+    if (a.TaoLuc && b.TaoLuc) {
+      return new Date(b.TaoLuc) - new Date(a.TaoLuc);
+    }
+    return b.TinDangID - a.TinDangID;
   });
 
   if (loading) {

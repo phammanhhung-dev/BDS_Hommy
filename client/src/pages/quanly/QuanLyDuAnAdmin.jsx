@@ -375,13 +375,17 @@ function QuanLyDuAnAdmin() {
                 return (
                 <tr key={row.DuAnID}>
                   <td>#{row.DuAnID}</td>
-                  <td className="quan-ly-du-an-admin__cell-main">
-                    <span className="quan-ly-du-an-admin__cell-title">{row.TenDuAn}</span>
-                    <span className="quan-ly-du-an-admin__cell-sub">{row.PhuongThucVao || 'Chưa cấu hình phương thức vào'}</span>
+                  <td>
+                    <div className="quan-ly-du-an-admin__cell-main">
+                      <span className="quan-ly-du-an-admin__cell-title">{row.TenDuAn}</span>
+                      <span className="quan-ly-du-an-admin__cell-sub">{row.PhuongThucVao || 'Chưa cấu hình phương thức vào'}</span>
+                    </div>
                   </td>
-                  <td className="quan-ly-du-an-admin__owner-cell">
-                    <span className="quan-ly-du-an-admin__owner-name">{row.TenChuDuAn || '—'}</span>
-                    <span className="quan-ly-du-an-admin__owner-contact">{row.EmailChuDuAn || row.SoDienThoaiChuDuAn || '—'}</span>
+                  <td>
+                    <div className="quan-ly-du-an-admin__owner-cell">
+                      <span className="quan-ly-du-an-admin__owner-name">{row.TenChuDuAn || '—'}</span>
+                      <span className="quan-ly-du-an-admin__owner-contact">{row.EmailChuDuAn || row.SoDienThoaiChuDuAn || '—'}</span>
+                    </div>
                   </td>
                   <td>{row.DiaChi}</td>
                   <td>

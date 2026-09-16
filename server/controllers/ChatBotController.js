@@ -48,10 +48,15 @@ function getSmartFallbackReply(rawText) {
 
     // 8. Mua bán nhà đất
     if (/nhà đất bán|nha dat ban|mua nhà|mua nha|bán nhà|ban nha|mua đất|mua dat|căn hộ|can ho|biệt thự|biet thu|đất nền|dat nen|nhà phố|nha pho/i.test(text)) {
-        return "Hommy có hơn 50.000 tin đăng bất động sản bán tại các khu vực nóng như TP.HCM, Hà Nội, Đà Nẵng và toàn quốc.\n\n🔍 Bạn có thể bấm vào mục **'Nhà đất bán'** trên thanh điều hướng để lọc chi tiết theo:\n• Loại hình: Căn hộ chung cư, nhà riêng, đất nền, biệt thự, văn phòng...\n• Khu vực: Tỉnh/Thành phố, Quận/Huyện, Phường/Xã\n• Khoảng giá và diện tích mong muốn.\n\nNếu bạn cần tìm nhà ở khu vực cụ thể, hãy nhắn cho tôi biết nhé!";
+        return "Bạn đang tìm kiếm bất động sản để mua? 🏡\n\n🔍 Bạn có thể bấm vào mục **'Nhà đất bán'** trên thanh điều hướng để lọc chi tiết theo:\n• Loại hình: Căn hộ chung cư, nhà riêng, đất nền, biệt thự...\n• Khu vực: Tỉnh/Thành phố, Quận/Huyện\n• Khoảng giá và diện tích mong muốn.\n\nHoặc bạn có thể cho tôi biết khu vực và tài chính của bạn để tôi hỗ trợ nhé!";
     }
 
-    // 9. Phản hồi mặc định thông minh
+    // 9. Tài chính, ngân sách, tìm theo giá
+    if (/tỷ|ty|triệu|trieu|ngân sách|ngan sach|tài chính|tai chinh|tiền|giá bao nhiêu|mua được nhà|ở đâu|o dau/i.test(text)) {
+        return "Với mức tài chính này, Hommy có rất nhiều lựa chọn phù hợp cho bạn! 🏡\n\n💡 Bạn hãy truy cập mục **'Nhà đất bán'** hoặc **'Nhà đất cho thuê'** và sử dụng bộ lọc tìm kiếm nâng cao:\n1. Chọn khu vực muốn sống.\n2. Lọc theo **Mức giá** phù hợp với ngân sách của bạn.\n3. Xem bản đồ để chọn vị trí ưng ý nhất!\n\nNếu bạn muốn tôi tư vấn khu vực cụ thể, hãy cho tôi biết bạn đang quan tâm thành phố nào nhé!";
+    }
+
+    // 10. Phản hồi mặc định thông minh
     return "Cảm ơn bạn đã trò chuyện cùng Trợ lý ảo Hommy! 🏡\n\nTôi luôn sẵn lòng hỗ trợ bạn về:\n• Tra cứu & tìm kiếm tin đăng BĐS bán hoặc cho thuê\n• Sử dụng công cụ **Định giá AI 🤖**\n• Tư vấn quy trình đặt cọc, hợp đồng và pháp lý BĐS\n\nBạn có thể thử đặt câu hỏi chi tiết hơn hoặc liên hệ Hotline **0356960304** để được nhân viên tư vấn trực tiếp nhé!";
 }
 
@@ -79,21 +84,20 @@ class ChatBotController {
 
             if (hasValidGroqKey) {
                 try {
-                    // System prompt định hình tính cách AI
                     const systemMessage = {
                         role: "system",
                         content: `Bạn là trợ lý ảo thông minh của hệ thống "Hommy BĐS" - Nền tảng quản lý và giao dịch bất động sản hàng đầu Việt Nam.
                         
 Nhiệm vụ của bạn:
-1. Hỗ trợ người dùng tìm kiếm thông tin về các loại bất động sản (căn hộ, nhà riêng, đất nền, biệt thự, văn phòng...).
-2. Giải đáp thắc mắc về quy trình mua bán, cho thuê, đặt cọc, hợp đồng và thanh toán bất động sản.
-3. Tư vấn về giá cả, vị trí và pháp lý bất động sản phù hợp với nhu cầu người dùng.
-4. Cung cấp thông tin về các dự án bất động sản đang mở bán hoặc cho thuê.
-5. Hướng dẫn sử dụng tính năng "Định giá AI" trên website Hommy.
-6. Luôn trả lời ngắn gọn, thân thiện, dùng tiếng Việt có dấu.
+1. Hỗ trợ tìm kiếm thông tin về bất động sản (căn hộ, nhà riêng, đất nền, biệt thự, phòng trọ...).
+2. Giải đáp thắc mắc về quy trình mua bán, cho thuê, đặt cọc, hợp đồng, pháp lý (sổ đỏ, sổ hồng).
+3. Tư vấn tài chính và vị trí: Nếu người dùng hỏi "Có X tỷ thì mua nhà ở đâu?" hoặc "Thuê phòng Y triệu ở đâu?", hãy phân tích giá trị thị trường hiện tại, gợi ý các quận/huyện phổ biến tương ứng tại các thành phố lớn (TP.HCM, Hà Nội), và luôn hướng dẫn họ dùng thanh công cụ tìm kiếm trên website Hommy để lọc theo mức giá.
+4. Chia sẻ kinh nghiệm chọn nhà, thuê trọ, các lưu ý tránh lừa đảo khi giao dịch.
+5. Hướng dẫn tính năng "Định giá AI" trên Hommy.
+6. Luôn trả lời ngắn gọn, thân thiện, chuyên nghiệp, dùng tiếng Việt có dấu. Thêm emoji để sinh động.
 7. Hotline hỗ trợ: 0356960304 - Email: batdongsanhommy@gmail.com.
 
-Đừng bịa đặt thông tin nếu không chắc chắn.`
+Tuyệt đối không bịa đặt thông tin nếu không chắc chắn. Dữ liệu tư vấn phải sát với thị trường BĐS Việt Nam thực tế.`
                     };
 
                     const conversation = [systemMessage, ...messages];

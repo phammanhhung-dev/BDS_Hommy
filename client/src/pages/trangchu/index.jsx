@@ -11,7 +11,9 @@ import yeuThichApi from "../../api/yeuThichApi";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "../../context/LanguageContext";
 import ChatBot from "../../components/ChatBot/ChatBot";
-import { FaArrowRight, FaHome, FaBuilding, FaCity, FaMapMarkerAlt } from "react-icons/fa";
+import { HiOutlineSearch, HiOutlineLocationMarker, HiOutlineFilter, HiArrowRight } from "react-icons/hi";
+import { FaBuilding, FaMapMarkerAlt, FaArrowRight, FaHome, FaCity } from "react-icons/fa";
+import { redMarkerIcon, MapCtrlScrollHelper, GOOGLE_MAPS_TILE_LAYER } from "../../components/Map/MapUtils";
 import { injectJsonLd, removeJsonLd, setPageSEO, SITE_URL } from "../../utils/seo";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
@@ -262,6 +264,7 @@ function TrangChu() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [addingFavId, setAddingFavId] = useState(null);
+  const [recommendedListings, setRecommendedListings] = useState([]);
   const [mapCenter, setMapCenter] = useState([10.782622, 106.660172]);
   const [mapZoom, setMapZoom] = useState(12);
   const [mapStyle, setMapStyle] = useState("googleRoad");
@@ -482,6 +485,37 @@ function TrangChu() {
     return null;
   };
 
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      const userId = getCurrentUserId();
+      if (!userId) return;
+      try {
+        const res = await yeuThichApi.listWithTinDetails(userId);
+        const favorites = res?.data || [];
+        if (favorites.length === 0) return;
+        
+        const lastFav = favorites.find(f => f.LoaiBDS || f.KhuVucID) || favorites[0];
+        const params = { limit: 4 };
+        if (lastFav.LoaiBDS) params.loaiBDS = lastFav.LoaiBDS;
+        if (lastFav.KhuVucID) params.khuVucId = lastFav.KhuVucID;
+        
+        const recRes = await tinDangPublicApi.getAll(params);
+        let recRaw = [];
+        if (recRes?.data?.success && Array.isArray(recRes.data.data)) {
+          recRaw = recRes.data.data;
+        } else if (Array.isArray(recRes?.data)) {
+          recRaw = recRes.data;
+        }
+        if (recRaw.length > 0) {
+          setRecommendedListings(recRaw);
+        }
+      } catch (err) {
+        console.error("Lỗi lấy gợi ý bất động sản:", err);
+      }
+    };
+    fetchRecommendations();
+  }, []);
+
   const handleAddFavorite = async (tin) => {
     const tinId = tin?.TinDangID ?? tin?.id ?? tin?._id;
     const userId = getCurrentUserId();
@@ -672,7 +706,7 @@ function TrangChu() {
               </Link>
             </div>
             <div className="featured-listings">
-              {(tindangs.length > 4 ? tindangs.slice(4, 8) : [...tindangs].reverse()).map((tinDang) => {
+              {(recommendedListings.length > 0 ? recommendedListings : (tindangs.length > 4 ? tindangs.slice(4, 8) : [...tindangs].reverse())).map((tinDang) => {
                 const tinId = tinDang.TinDangID ?? tinDang.id ?? tinDang._id;
                 return (
                   <ListingCard
@@ -789,13 +823,13 @@ function TrangChu() {
                   <h2 id="location-title" className="section__title">
                     {t("homepage.listingsByLocation") || "Bất động sản theo địa điểm"}
                   </h2>
-                  <Link to="/nha-dat-ban" className="section__link">
+                  <Link to="/tim-kiem" className="section__link">
                     {t("common.viewAll") || "Xem tất cả"} <FaArrowRight size={12} aria-hidden="true" />
                   </Link>
                 </div>
                 <div className="location-card-layout">
                   <Link 
-                    to={`/nha-dat-ban?tinhThanh=${encodeURIComponent("Hồ Chí Minh")}`} 
+                    to={`/tim-kiem?tinhThanh=${encodeURIComponent("Hồ Chí Minh")}`} 
                     className="location-card location-card--hero"
                     style={{
                       backgroundImage: `linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.82) 100%), url('https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=1200&q=80')`
@@ -842,7 +876,7 @@ function TrangChu() {
                       },
                     ].map((loc) => (
                       <Link 
-                        to={`/nha-dat-ban?tinhThanh=${encodeURIComponent(loc.query)}`} 
+                        to={`/tim-kiem?tinhThanh=${encodeURIComponent(loc.query)}`} 
                         key={loc.slug} 
                         className="location-card location-card--small"
                         style={{
@@ -888,36 +922,20 @@ function TrangChu() {
                     </div>
 
                     {/* Nút chọn kiểu bản đồ */}
-                    <div className="khuvuc-map__btn-group">
-                      {Object.keys(MAP_TILES).map((styleKey) => (
-                        <button
-                          key={styleKey}
-                          type="button"
-                          className={`khuvuc-map__btn ${mapStyle === styleKey ? 'khuvuc-map__btn--active' : ''}`}
-                          onClick={() => setMapStyle(styleKey)}
-                        >
-                          {MAP_TILES[styleKey].name}
-                        </button>
-                      ))}
-                    </div>
                   </div>
                 </div>
 
-                <div className="khuvuc-map__container">
+                <div className="khuvuc-map__container" style={{ position: 'relative' }}>
                   <MapContainer
                     center={mapCenter}
                     zoom={mapZoom}
                     scrollWheelZoom={true}
                     style={{ width: "100%", height: "100%" }}
                   >
+                    <MapCtrlScrollHelper />
                     <MapController center={mapCenter} zoom={mapZoom} />
                     
-                    <TileLayer
-                      key={mapStyle}
-                      attribution={MAP_TILES[mapStyle].attribution}
-                      url={MAP_TILES[mapStyle].url}
-                      maxZoom={MAP_TILES[mapStyle].maxZoom}
-                    />
+                    <TileLayer {...GOOGLE_MAPS_TILE_LAYER} />
 
                     {/* Hiển thị Marker Dự Án BĐS */}
                     {projects

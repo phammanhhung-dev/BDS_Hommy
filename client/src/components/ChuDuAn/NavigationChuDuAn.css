@@ -160,6 +160,23 @@
   margin-top: 0.125rem;
 }
 
+.cda-user-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.cda-profile-notification-btn {
+  color: #14532D;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cda-profile-notification-btn:hover {
+  background: rgba(20, 83, 45, 0.12);
+  color: #14532D;
+}
+
 /* ==================== NAVIGATION ==================== */
 .cda-sidebar-nav {
   flex: 1;

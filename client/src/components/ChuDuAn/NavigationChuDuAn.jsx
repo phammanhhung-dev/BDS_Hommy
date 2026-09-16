@@ -23,12 +23,17 @@ import {
  * Design: Modern sidebar với sections, badges, user profile
  * @returns {JSX.Element}
  */
+
+import NotificationBadge from '../NhanVienBanHang/NotificationBadge/NotificationBadge';
+import { useChatContext } from '../../context/ChatContext';
+
 function NavigationChuDuAn() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [user, setUser] = useState({});
+  const { unreadCount } = useChatContext();
 
   useEffect(() => {
     // Load user từ localStorage
@@ -89,7 +94,19 @@ function NavigationChuDuAn() {
       title: 'Trò chuyện',
       icon: <HiOutlineChatBubbleLeftRight />,
       description: 'Trò chuyện với khách hàng',
-      badge: null // Sẽ hiển thị số tin nhắn chưa đọc
+      badge: unreadCount > 0 ? (
+        <span style={{
+          backgroundColor: '#ef4444',
+          color: 'white',
+          borderRadius: '10px',
+          padding: '2px 6px',
+          fontSize: '11px',
+          fontWeight: 'bold',
+          marginLeft: 'auto'
+        }}>
+          {unreadCount > 99 ? '99+' : unreadCount}
+        </span>
+      ) : null
     }
   ];
 
@@ -209,6 +226,12 @@ function NavigationChuDuAn() {
                 return user.TenVaiTro || user.vaiTro || 'Chủ dự án';
               })()}
             </div>
+          </div>
+          <div className="cda-user-actions" style={{ marginLeft: 'auto' }}>
+            <NotificationBadge 
+              className="cda-profile-notification-btn"
+              onClick={() => window.dispatchEvent(new Event('cda:toggleNotification'))} 
+            />
           </div>
         </div>
       )}

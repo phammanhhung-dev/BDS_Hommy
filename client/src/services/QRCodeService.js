@@ -14,10 +14,10 @@ const ENABLE_QR_DEBUG_VISION = true; // Bật để xem hình vùng đang scan (
  */
 const DEFAULT_QR_REGIONS = [
   { name: 'full', x: 0, y: 0, width: 1, height: 1 },
-  { name: 'trs', x: 0.7488202812287943, y: 0.066528110505082154, width: 0.17, height: 0.25 },
-  { name: 'tc', x: 0.7350600625148778, y: 0.035, width: 0.2, height: 0.3 },
-  { name: 'trm', x: 0.7139388609855822, y: 0.0303052771011813199, width: 0.24, height: 0.33 },
-  { name: 'trl', x: 0.6843596950212068, y: 0.02, width: 0.28, height: 0.38 }
+  { name: 'trs', x: 0.748820, y: 0.066528, width: 0.17, height: 0.25 },
+  { name: 'tc', x: 0.735060, y: 0.035, width: 0.2, height: 0.3 },
+  { name: 'trm', x: 0.713938, y: 0.030305, width: 0.24, height: 0.33 },
+  { name: 'trl', x: 0.684359, y: 0.02, width: 0.28, height: 0.38 }
 ];
 
 const ensureHiddenQrContainer = () => {
@@ -251,15 +251,11 @@ const QRCodeService = {
       });
 
       const scan = async (url) => {
-        try {
-          const blob = await fetch(url).then(r => r.blob());
-          const mime = blob.type || 'image/png';
-          const ext = mime.includes('png') ? 'png' : 'jpg';
-          const file = new File([blob], `scan.${ext}`, { type: mime });
-          return await html5QrCode.scanFile(file, false);
-        } catch (e) {
-          throw e;
-        }
+        const blob = await fetch(url).then(r => r.blob());
+        const mime = blob.type || 'image/png';
+        const ext = mime.includes('png') ? 'png' : 'jpg';
+        const file = new File([blob], `scan.${ext}`, { type: mime });
+        return await html5QrCode.scanFile(file, false);
       };
 
       const scanWithJsQR = async (dataUrl, label) => {

@@ -86,7 +86,9 @@ exports.listWithTinDetails = async (req, res) => {
       TieuDe: r.TieuDe || null,
       Img: r.HinhAnhFull || r.HinhAnhPhong || r.Img || null,
       Gia: r.Gia != null ? r.Gia : null,
-      diachi: r.DiaChi || r.diachi || null
+      diachi: r.DiaChi || r.diachi || null,
+      LoaiBDS: r.LoaiBDS || null,
+      KhuVucID: r.KhuVucID || null
     })));
   } catch (err) {
     return res.status(500).json({ error: err.message });

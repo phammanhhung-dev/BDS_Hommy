@@ -15,32 +15,32 @@ const OCRServiceV2 = {
   CCCD_ROI: {
     // Số CCCD - Dòng 1 bên phải, màu đen đậm
     soCCCD: {
-      x: 0.3667473716475907,
-      y: 0.401965741968357,
+      x: 0.366747,
+      y: 0.401965,
       width: 0.41,
       height: 0.1
     },
 
     // Họ và tên - Dòng 2, chữ IN HOA đen
     tenDayDu: {
-      x: 0.26435237337743795,
-      y: 0.5510934829015039,
+      x: 0.264352,
+      y: 0.551093,
       width: 0.5,
       height: 0.09
     },
 
     // Ngày sinh - Dòng 3 bên phải "Date of birth:"
     ngaySinh: {
-      x: 0.5533160242023292,
-      y: 0.633998557479856,
+      x: 0.553316,
+      y: 0.633998,
       width: 0.23,
       height: 0.07
     },
 
     // Giới tính - Dòng 4 bên trái "Sex:"
     gioiTinh: {
-      x: 0.4462691895486178,
-      y: 0.6599050917238253,
+      x: 0.446269,
+      y: 0.659905,
       width: 0.1,
       height: 0.1
     },
@@ -63,8 +63,8 @@ const OCRServiceV2 = {
 
     // Nơi thường trú - Dòng 6-7 "Place of residence:"
     diaChi: {
-      x: 0.29508935954642616,
-      y: 0.8568073298447756,
+      x: 0.295089,
+      y: 0.856807,
       width: 0.67,
       height: 0.13
     },

@@ -1,0 +1,428 @@
+/* ==========================================================================
+   WORD RICH TEXT EDITOR - TRÌNH SOẠN THẢO VĂN BẢN KIỂU MICROSOFT WORD
+   ========================================================================== */
+
+.word-editor-container {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Chế độ toàn màn hình */
+.word-editor-container.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  border-radius: 0;
+  border: none;
+}
+
+/* ==========================================================================
+   THANH CÔNG CỤ SOẠN THẢO (WORD RIBBON TOOLBAR)
+   ========================================================================== */
+.word-editor-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.6rem 0.85rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.t-divider {
+  width: 1px;
+  height: 22px;
+  background-color: #cbd5e1;
+  margin: 0 0.35rem;
+}
+
+/* Nút bấm trên Toolbar */
+.t-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.45rem;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.t-btn:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #2563eb;
+}
+
+.t-btn:active,
+.t-btn.active {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+/* Dropdowns Select */
+.t-select {
+  height: 32px;
+  padding: 0 0.55rem;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s;
+}
+
+.t-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.format-block-select {
+  min-width: 125px;
+}
+
+.font-family-select {
+  min-width: 120px;
+}
+
+.font-size-select {
+  min-width: 90px;
+}
+
+/* Color Pickers */
+.t-color-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.t-color-label:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.color-indicator {
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.color-indicator.text-indicator {
+  text-decoration: underline;
+  text-decoration-color: #ef4444;
+  text-decoration-thickness: 3px;
+  color: #0f172a;
+}
+
+.t-color-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+}
+
+/* Nút đặc thù */
+.t-btn-media {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
+.t-btn-media:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.t-btn-table {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.t-btn-table:hover {
+  background: #dbeafe;
+}
+
+.t-btn-tip {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
+}
+
+.t-btn-warn {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #b45309;
+}
+
+.t-btn-mode {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #475569;
+}
+
+.t-btn-mode.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+/* ==========================================================================
+   KHÔNG GIAN TRANG GIẤY WORD (WORD PAPER WORKSPACE)
+   ========================================================================== */
+.word-paper-workspace {
+  background: #f1f5f9;
+  padding: 1.5rem;
+  min-height: 520px;
+  max-height: 65vh;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.fullscreen .word-paper-workspace {
+  max-height: calc(100vh - 90px);
+  padding: 2.5rem;
+}
+
+/* Trang giấy Word A4 */
+.word-paper-sheet {
+  background: #ffffff;
+  width: 100%;
+  max-width: 950px;
+  min-height: 580px;
+  padding: 2.5rem 3.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+/* Vùng nội dung có thể gõ / dán (contentEditable) */
+.word-paper-content {
+  min-height: 520px;
+  outline: none;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+/* Placeholder khi nội dung trống */
+.word-paper-content:empty::before {
+  content: attr(data-placeholder);
+  color: #94a3b8;
+  font-style: italic;
+  pointer-events: none;
+  display: block;
+}
+
+/* Căn chỉnh hình ảnh được dán vào hoặc chèn vào */
+.word-paper-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 16px auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+}
+
+.article-image-block {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Bảng biểu được dán hoặc chèn */
+.word-paper-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  border: 1px solid #cbd5e1;
+}
+
+.word-paper-content th,
+.word-paper-content td {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  text-align: left;
+}
+
+.word-paper-content th {
+  background-color: #f1f5f9;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.word-paper-content tr:nth-child(even) td {
+  background-color: #f8fafc;
+}
+
+/* Khối trích dẫn Blockquote */
+.word-paper-content blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: #f8fafc;
+  border-left: 4px solid #2563eb;
+  font-style: italic;
+  color: #475569;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Textarea mã nguồn HTML (Raw HTML Mode) */
+.word-html-raw-textarea {
+  width: 100%;
+  max-width: 950px;
+  min-height: 580px;
+  padding: 1.5rem;
+  background: #0f172a;
+  color: #38bdf8;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  box-sizing: border-box;
+  resize: vertical;
+  outline: none;
+}
+
+.word-html-raw-textarea:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+/* ==========================================================================
+   THANH TRẠNG THÁI DƯỚI CÙNG (WORD STATUS BAR)
+   ========================================================================== */
+.word-editor-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 1.25rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.8rem;
+  color: #64748b;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.status-dot {
+  color: #cbd5e1;
+}
+
+.status-left strong {
+  color: #1e293b;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+}
+
+.paste-hint {
+  color: #059669;
+  font-size: 0.78rem;
+}
+
+.paste-hint strong {
+  color: #047857;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .word-paper-sheet {
+    padding: 1.25rem;
+  }
+  .word-editor-toolbar {
+    gap: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .format-block-select,
+  .font-family-select,
+  .font-size-select {
+    min-width: 80px;
+  }
+}
+
+/* Foldables and small screens (280px - 480px) */
+@media (max-width: 480px) {
+  .word-paper-workspace {
+    padding: 0.5rem;
+  }
+  .word-paper-sheet {
+    padding: 1rem 0.75rem;
+    min-height: 380px;
+    border-radius: 4px;
+  }
+  .word-paper-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .t-btn,
+  .t-color-label {
+    min-width: 40px;
+    min-height: 40px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .t-btn:hover,
+  .t-color-label:hover {
+    background: inherit;
+    border-color: inherit;
+  }
+}

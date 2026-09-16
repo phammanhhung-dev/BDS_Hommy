@@ -14,6 +14,7 @@ import QuanLyDuAnAdmin from "./QuanLyDuAnAdmin";
 import QuanLyChinhSach from "./QuanLyChinhSach";
 import QuanLyRutTien from "./QuanLyRutTien";
 import CaiDatAdmin from "./CaiDatAdmin";
+import QuanLyBaiViet from "../quanlybaiviet/index";
 
 import {
   HiOutlineUsers,
@@ -173,6 +174,8 @@ function QuanLy() {
             <p>Báo cáo thống kê đang phát triển...</p>
           </div>
         );
+      case "baiviet":
+        return <QuanLyBaiViet />;
       default:
         return renderDashboard();
     }
@@ -196,11 +199,12 @@ function QuanLy() {
         return <>Cập nhật thông tin tin đăng <strong>{targetId}</strong> bởi <strong>{user}</strong></>;
       case "chu_du_an_xem_bao_cao_chi_tiet":
         return <><strong>{user}</strong> đã xem báo cáo chi tiết</>;
-      default:
+      default: {
         const actionFriendly = String(act.HanhDong)
           .replace(/_/g, " ")
           .toLowerCase();
         return <><strong>{user}</strong> thực hiện: {actionFriendly} {act.DoiTuong ? `trên ${act.DoiTuong}` : ""} {targetId}</>;
+      }
     }
   };
 

@@ -219,16 +219,16 @@ function ChinhSuaTinDang() {
 
   useEffect(() => {
     layDanhSachDuAn();
-    KhuVucService.layDanhSach(null)
-      .then(data => setTinhs(data || []))
+    axios.get(buildApiUrl('/api/address/provinces/legacy'))
+      .then(res => setTinhs(res.data.data ? res.data.data.map(p => ({ KhuVucID: p.KhuVucID, TenKhuVuc: p.TenKhuVuc })) : []))
       .catch(err => console.error('Lỗi load tỉnh:', err));
   }, []);
 
   // Load quận
   useEffect(() => {
     if (selectedTinh) {
-      KhuVucService.layDanhSach(selectedTinh)
-        .then(data => setQuans(data || []))
+      axios.get(buildApiUrl(`/api/address/districts/${encodeURIComponent(selectedTinh)}`))
+        .then(res => setQuans(res.data.data ? res.data.data.map(d => ({ KhuVucID: d.KhuVucID, TenKhuVuc: d.TenKhuVuc })) : []))
         .catch(err => console.error('Lỗi load quận:', err));
     } else {
       setQuans([]);
@@ -240,8 +240,8 @@ function ChinhSuaTinDang() {
   useEffect(() => {
     setPhuongs([]);
     if (selectedQuan) {
-      KhuVucService.layDanhSach(selectedQuan)
-        .then(data => setPhuongs(data || []))
+      axios.get(buildApiUrl(`/api/address/wards/${encodeURIComponent(selectedQuan)}`))
+        .then(res => setPhuongs(res.data.data ? res.data.data.map(w => ({ KhuVucID: w.KhuVucID, TenKhuVuc: w.TenKhuVuc })) : []))
         .catch(err => console.error('Lỗi load phường:', err));
     }
   }, [selectedQuan]);
@@ -369,8 +369,10 @@ function ChinhSuaTinDang() {
           // Phường được chọn
           setSelectedPhuong(tinDangData.KhuVucID.toString());
           
-          // Reverse lookup để tìm Quận và Tỉnh
-          reverseLookupKhuVuc(tinDangData.KhuVucID);
+          if (tinDangData.TinhThanhID && tinDangData.QuanHuyenID) {
+             setSelectedTinh(tinDangData.TinhThanhID.toString());
+             setSelectedQuan(tinDangData.QuanHuyenID.toString());
+          }
         }
       }
     } catch (error) {

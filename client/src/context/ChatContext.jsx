@@ -125,6 +125,23 @@ export const ChatProvider = ({ children }) => {
           if (conv.CuocHoiThoaiID === message.CuocHoiThoaiID) {
             // Nếu không phải conversation đang active, tăng unread
             const isActive = conv.CuocHoiThoaiID === activeConversationId;
+            
+            if (!isActive) {
+              const currentUserId = parseInt(localStorage.getItem('userId') || '0');
+              let cUserId = currentUserId;
+              try {
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                  const currentUser = JSON.parse(userStr);
+                  if (!cUserId) cUserId = currentUser.NguoiDungID || 0;
+                }
+              } catch (e) {}
+              
+              if (parseInt(message.NguoiGuiID) !== cUserId) {
+                 window.dispatchEvent(new CustomEvent('new_chat_message', { detail: message }));
+              }
+            }
+
             return {
               ...conv,
               TinNhanCuoi: message.NoiDung,

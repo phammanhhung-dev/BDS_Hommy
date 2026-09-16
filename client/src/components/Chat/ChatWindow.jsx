@@ -11,6 +11,7 @@ import { useChatContext } from '../../context/ChatContext';
 import useSocket from '../../hooks/useSocket';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
+import viApi from '../../api/viApi';
 import './ChatWindow.css';
 
 export const ChatWindow = () => {
@@ -49,6 +50,36 @@ export const ChatWindow = () => {
       markConversationAsRead(parseInt(id));
     }
   }, [id, markAsRead, markConversationAsRead]);
+
+  // Lắng nghe sự kiện PAY_DEPOSIT từ MessageList
+  useEffect(() => {
+    const handlePayDeposit = async (e) => {
+      const { amount, messageId, cuocHoiThoaiId } = e.detail;
+      try {
+        if (!window.confirm(`Bạn có chắc chắn muốn thanh toán ${new Intl.NumberFormat('vi-VN').format(amount)}đ bằng Ví nội bộ không?`)) {
+          return;
+        }
+        
+        const res = await viApi.thanhToanCoc({
+          amount,
+          messageId,
+          cuocHoiThoaiId
+        });
+        
+        if (res.data.success) {
+          alert('Thanh toán cọc thành công! Hợp đồng nháp đã được tạo.');
+          // TODO: Có thể update message hiển thị "Đã thanh toán" thông qua websocket
+        }
+      } catch (err) {
+        alert(err.response?.data?.message || 'Có lỗi xảy ra khi thanh toán');
+      }
+    };
+
+    window.addEventListener('PAY_DEPOSIT', handlePayDeposit);
+    return () => {
+      window.removeEventListener('PAY_DEPOSIT', handlePayDeposit);
+    };
+  }, []);
 
   const handleVideoCall = () => {
     // Tìm thông tin cuộc hội thoại để lấy tên người chat cùng

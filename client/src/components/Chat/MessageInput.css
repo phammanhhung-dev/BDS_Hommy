@@ -88,3 +88,21 @@
 }
 
 
+
+.message-input-action-btn.deposit-btn {
+  background: none;
+  border: none;
+  color: #10b981;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+.message-input-action-btn.deposit-btn:hover {
+  background-color: #ecfdf5;
+}
+

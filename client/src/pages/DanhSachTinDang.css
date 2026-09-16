@@ -1,0 +1,151 @@
+/* Phân trang hiện đại cho Danh Sách Tin Đăng (Nhà đất bán & Cho thuê) */
+
+.dstd-pagination-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+@media (min-width: 768px) {
+  .dstd-pagination-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.dstd-pagination-info {
+  font-size: 0.925rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dstd-pagination-info strong {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.dstd-pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dstd-page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dstd-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.dstd-page-btn:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+}
+
+.dstd-page-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.dstd-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  box-shadow: none;
+  transform: none;
+}
+
+.dstd-page-btn.active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+  cursor: default;
+}
+
+.dstd-page-btn.active:hover {
+  transform: none;
+}
+
+.dstd-page-nav-btn {
+  gap: 6px;
+  padding: 0 14px;
+}
+
+.dstd-page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 40px;
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 700;
+  user-select: none;
+}
+
+/* Dark mode support */
+.dark-mode .dstd-pagination-container {
+  border-top-color: #334155;
+}
+
+.dark-mode .dstd-pagination-info {
+  color: #94a3b8;
+}
+
+.dark-mode .dstd-pagination-info strong {
+  color: #f1f5f9;
+}
+
+.dark-mode .dstd-page-btn {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark-mode .dstd-page-btn:hover:not(:disabled) {
+  background-color: #334155;
+  border-color: #475569;
+  color: #ffffff;
+}
+
+.dark-mode .dstd-page-btn:disabled {
+  background-color: #0f172a;
+  border-color: #1e293b;
+  color: #64748b;
+}
+
+.dark-mode .dstd-page-btn.active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border-color: #059669;
+}

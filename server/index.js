@@ -62,10 +62,12 @@ const cuocHenRoutes = require('./routes/cuocHenRoutes');
 const publicDuAnRoutes = require('./routes/publicDuAnRoutes');
 const publicTinDangRoutes = require('./routes/publicTinDangRoutes');
 const publicBaiVietRoutes = require('./routes/publicBaiVietRoutes');
+const adminBaiVietRoutes = require('./routes/adminBaiVietRoutes');
 const sepaySync = require('./services/sepaySyncService');
 const lichSuViRoutes = require('./routes/lichSuViRoutes');
 const pushRoutes = require('./routes/pushRoutes'); // Push Notifications
 const thongBaoRoutes = require('./routes/thongBaoRoutes');
+const paymentRoutes = require('./routes/paymentRoutes'); // Payment integration
 // Create Express app and HTTP server
 const app = express();
 const server = http.createServer(app);
@@ -203,6 +205,7 @@ app.use('/api/chat', chatRoutes); // API Chat/Messaging (UC-PROJ-05)
 app.use('/api/kyc', kycRoutes); // API KYC (Xác thực CCCD)
 app.use('/api/hop-dong', hopDongCustomerRoutes); // API hợp đồng phía Khách hàng
 app.use('/api/admin', hopDongAdminRoutes); // API hợp đồng cho Admin/Operator
+app.use('/api/admin/bai-viet', adminBaiVietRoutes); // API quản lý bài viết cho Admin
 app.use('/api/mau-hop-dong', mauHopDongRoutes); // API preview mẫu hợp đồng
 
 // API Operator (UC-OPER-01 đến UC-OPER-06)
@@ -245,6 +248,7 @@ app.use('/api/lich-su-vi', lichSuViRoutes);
 app.use('/api/vi', viRoutes);
 app.use('/api/push', pushRoutes); // Push Notifications API
 app.use('/api/thong-bao', thongBaoRoutes);
+app.use('/api/payment', paymentRoutes); // API Payment MoMo & VNPAY
 app.get('/', (req, res) => {
   res.send('API server đang chạy - Module Chủ dự án + Upstream APIs');
 });

@@ -52,6 +52,8 @@ exports.getByUserWithTin = (NguoiDungID) => {
        y.TinDangID,
        t.TieuDe,
        t.URL AS Img,
+       t.LoaiBDS,
+       t.KhuVucID,
        (
          SELECT MIN(COALESCE(pt.GiaTinDang, p.GiaChuan))
          FROM phong_tindang pt

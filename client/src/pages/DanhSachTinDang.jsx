@@ -7,7 +7,9 @@ import tinDangPublicApi from "../api/tinDangPublicApi";
 import yeuThichApi from "../api/yeuThichApi";
 import { useTranslation } from "../context/LanguageContext";
 import { injectJsonLd, removeJsonLd, setPageSEO, SITE_URL } from "../utils/seo";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
+import "./trangchu/trangchu.css";
+import "./DanhSachTinDang.css";
 
 function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
   const { loaiGiaoDich: paramLoaiGiaoDich } = useParams();
@@ -23,10 +25,18 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
   const [addingFavId, setAddingFavId] = useState(null);
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   useEffect(() => {
     const qParams = new URLSearchParams(location.search);
     setKeyword(qParams.get("keyword") || "");
+    const pageParam = parseInt(qParams.get("page"), 10);
+    if (!isNaN(pageParam) && pageParam > 0) {
+      setCurrentPage(pageParam);
+    } else {
+      setCurrentPage(1);
+    }
   }, [location.search]);
 
   const handleSearch = (e) => {
@@ -37,7 +47,29 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
     } else {
       qParams.delete("keyword");
     }
+    qParams.delete("page");
     navigate(`${location.pathname}?${qParams.toString()}`);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages || newPage === safeCurrentPage) return;
+    setCurrentPage(newPage);
+    const qParams = new URLSearchParams(location.search);
+    if (newPage === 1) {
+      qParams.delete("page");
+    } else {
+      qParams.set("page", newPage);
+    }
+    navigate(`${location.pathname}?${qParams.toString()}`);
+    
+    setTimeout(() => {
+      const el = document.getElementById("listings-title") || document.getElementById("main-content");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 50);
   };
 
   useEffect(() => {
@@ -57,10 +89,15 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
         description: "Tìm kiếm căn hộ, nhà đất cho thuê, nhà nguyên căn cho thuê nhanh chóng và minh bạch trên Hommy.",
         keywords: "nhà đất cho thuê, cho thuê căn hộ, nhà nguyên căn cho thuê, bất động sản cho thuê, Hommy",
       },
+      TatCa: {
+        title: "Tìm kiếm bất động sản - Hommy",
+        description: "Tìm kiếm tất cả tin đăng nhà đất, căn hộ, biệt thự trên Hommy.",
+        keywords: "tìm kiếm nhà đất, bất động sản, Hommy",
+      }
     };
 
-    const seo = seoConfig[loaiGiaoDich] || seoConfig.Ban;
-    const canonical = `${SITE_URL}/${loaiGiaoDich === 'Ban' ? 'nha-dat-ban' : 'nha-dat-cho-thue'}`;
+    const seo = seoConfig[loaiGiaoDich] || seoConfig.TatCa;
+    const canonical = `${SITE_URL}/${loaiGiaoDich === 'Ban' ? 'nha-dat-ban' : loaiGiaoDich === 'Thue' ? 'nha-dat-cho-thue' : 'tim-kiem'}`;
 
     setPageSEO({
       title: seo.title,
@@ -108,6 +145,9 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
       
       const keyword = queryParams.get("keyword");
       if (keyword) params.keyword = keyword;
+
+      const tinhThanh = queryParams.get("tinhThanh");
+      if (tinhThanh) params.tinhThanh = tinhThanh;
 
       const khuVucId = queryParams.get("KhuVucID");
       if (khuVucId) params.khuVucId = Number(khuVucId);
@@ -188,7 +228,40 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
     ? (t("homepage.recommendedForYou") || "Bất động sản dành cho bạn")
     : isLatest
     ? (t("homepage.latestListings") || "Tin đăng mới nhất")
-    : (loaiGiaoDich === 'Ban' ? (t("nav.sell") || "Nhà đất bán") : (t("nav.rent") || "Nhà đất cho thuê"));
+    : (loaiGiaoDich === 'Ban' ? (t("nav.sell") || "Nhà đất bán") : loaiGiaoDich === 'Thue' ? (t("nav.rent") || "Nhà đất cho thuê") : (t("common.allListings") || "Tất cả tin đăng"));
+
+  const totalItems = tindangs.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+  const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+  const currentListings = tindangs.slice(startIndex, endIndex);
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    const pages = [];
+    pages.push(1);
+
+    if (safeCurrentPage > 3) {
+      pages.push("...");
+    }
+
+    const start = Math.max(2, safeCurrentPage - 1);
+    const end = Math.min(totalPages - 1, safeCurrentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (safeCurrentPage < totalPages - 2) {
+      pages.push("...");
+    }
+
+    pages.push(totalPages);
+    return pages;
+  };
 
   return (
     <div className="trangchu">
@@ -248,8 +321,8 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
                 </div>
               )}
               
-              {!loading && tindangs.length > 0 && (
-                tindangs.map((tinDang) => {
+              {!loading && currentListings.length > 0 && (
+                currentListings.map((tinDang) => {
                   const tinId = tinDang.TinDangID ?? tinDang.id ?? tinDang._id;
                   return (
                     <ListingCard
@@ -264,6 +337,90 @@ function DanhSachTinDang({ loaiGiaoDich: propLoaiGiaoDich }) {
                 })
               )}
             </div>
+
+            {/* Phân trang (Pagination) */}
+            {!loading && totalPages > 1 && (
+              <div className="dstd-pagination-container">
+                <div className="dstd-pagination-info">
+                  {t("common.showing") || "Hiển thị"}{" "}
+                  <strong>{totalItems === 0 ? 0 : startIndex + 1} - {endIndex}</strong>{" "}
+                  {t("common.of") || "trên tổng số"}{" "}
+                  <strong>{totalItems}</strong> {t("common.listings") || "tin đăng"}
+                </div>
+
+                <nav className="dstd-pagination-nav" aria-label="Phân trang danh sách tin đăng">
+                  {totalPages > 4 && (
+                    <button
+                      type="button"
+                      className="dstd-page-btn"
+                      disabled={safeCurrentPage === 1}
+                      onClick={() => handlePageChange(1)}
+                      title="Trang đầu tiên"
+                    >
+                      <FaAngleDoubleLeft size={12} />
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    className="dstd-page-btn dstd-page-nav-btn"
+                    disabled={safeCurrentPage === 1}
+                    onClick={() => handlePageChange(safeCurrentPage - 1)}
+                    title="Trang trước"
+                  >
+                    <FaChevronLeft size={11} />
+                    <span>{t("common.previous") || "Trước"}</span>
+                  </button>
+
+                  <div className="dstd-page-numbers">
+                    {getPageNumbers().map((p, idx) => {
+                      if (p === "...") {
+                        return (
+                          <span key={`ellipsis-${idx}`} className="dstd-page-ellipsis">
+                            ...
+                          </span>
+                        );
+                      }
+                      const isActive = p === safeCurrentPage;
+                      return (
+                        <button
+                          key={`page-${p}`}
+                          type="button"
+                          className={`dstd-page-btn ${isActive ? "active" : ""}`}
+                          onClick={() => handlePageChange(p)}
+                          aria-current={isActive ? "page" : undefined}
+                        >
+                          {p}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="dstd-page-btn dstd-page-nav-btn"
+                    disabled={safeCurrentPage === totalPages}
+                    onClick={() => handlePageChange(safeCurrentPage + 1)}
+                    title="Trang sau"
+                  >
+                    <span>{t("common.next") || "Sau"}</span>
+                    <FaChevronRight size={11} />
+                  </button>
+
+                  {totalPages > 4 && (
+                    <button
+                      type="button"
+                      className="dstd-page-btn"
+                      disabled={safeCurrentPage === totalPages}
+                      onClick={() => handlePageChange(totalPages)}
+                      title="Trang cuối cùng"
+                    >
+                      <FaAngleDoubleRight size={12} />
+                    </button>
+                  )}
+                </nav>
+              </div>
+            )}
           </div>
         </section>
       </main>

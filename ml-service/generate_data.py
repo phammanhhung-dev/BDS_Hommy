@@ -1,92 +1,78 @@
+"""
+generate_data.py - Sinh bo du lieu bat dong san mo rong 35.000 ban ghi
+Pham vi: 20 Quan/Huyen TP. Ho Chi Minh, giai doan 2024 - 2026
+Dac trung goc: dien_tich, so_phong_ngu, so_phong_tam, quan_huyen, loai_bds, gia_tien (ty VND)
+"""
+
+import os
 import csv
 import random
 
-# Danh sách Tỉnh/Thành, quận huyện và đơn giá cơ bản (triệu VND / m2) cho nhà ở
-PROVINCE_DATA = {
-    'TP. Hồ Chí Minh': {
-        'Quận 1': {'NhaO': 200, 'CanHo': 90},
-        'Quận 3': {'NhaO': 160, 'CanHo': 80},
-        'Quận 7': {'NhaO': 95, 'CanHo': 55},
-        'Bình Thạnh': {'NhaO': 105, 'CanHo': 60},
-        'Gò Vấp': {'NhaO': 65, 'CanHo': 35},
-        'Quận 12': {'NhaO': 45, 'CanHo': 26},
-        'Bình Chánh': {'NhaO': 35, 'CanHo': 22}
-    },
-    'Hà Nội': {
-        'Quận Hoàn Kiếm': {'NhaO': 220, 'CanHo': 95},
-        'Quận Đống Đa': {'NhaO': 150, 'CanHo': 70},
-        'Quận Cầu Giấy': {'NhaO': 140, 'CanHo': 65},
-        'Quận Hai Bà Trưng': {'NhaO': 145, 'CanHo': 68},
-        'Quận Thanh Xuân': {'NhaO': 110, 'CanHo': 50},
-        'Quận Hà Đông': {'NhaO': 75, 'CanHo': 35},
-        'Quận Long Biên': {'NhaO': 85, 'CanHo': 40}
-    },
-    'Đà Nẵng': {
-        'Quận Hải Châu': {'NhaO': 110, 'CanHo': 50},
-        'Quận Sơn Trà': {'NhaO': 95, 'CanHo': 45},
-        'Quận Ngũ Hành Sơn': {'NhaO': 80, 'CanHo': 40},
-        'Quận Thanh Khê': {'NhaO': 75, 'CanHo': 35},
-        'Quận Liên Chiểu': {'NhaO': 55, 'CanHo': 25}
-    },
-    'Bình Dương': {
-        'Thành phố Thủ Dầu Một': {'NhaO': 65, 'CanHo': 35},
-        'Thành phố Dĩ An': {'NhaO': 60, 'CanHo': 32},
-        'Thành phố Thuận An': {'NhaO': 58, 'CanHo': 30},
-        'Thị xã Bến Cát': {'NhaO': 35, 'CanHo': 20},
-        'Thị xã Tân Uyên': {'NhaO': 40, 'CanHo': 22}
-    },
-    'Đồng Nai': {
-        'Thành phố Biên Hòa': {'NhaO': 70, 'CanHo': 35},
-        'Thành phố Long Khánh': {'NhaO': 45, 'CanHo': 25},
-        'Huyện Long Thành': {'NhaO': 55, 'CanHo': 28},
-        'Huyện Trảng Bom': {'NhaO': 35, 'CanHo': 18},
-        'Huyện Nhơn Trạch': {'NhaO': 40, 'CanHo': 22}
-    }
+random.seed(42)
+
+# Don gia co ban (trieu VND/m2) theo quan va loai hinh (cap nhat thi truong 2024 - 2026)
+DISTRICT_PRICES = {
+    "Quan 1":          {"NhaO": 250, "CanHo": 110},
+    "Quan 3":          {"NhaO": 195, "CanHo":  85},
+    "Quan 4":          {"NhaO": 145, "CanHo":  65},
+    "Quan 5":          {"NhaO": 165, "CanHo":  72},
+    "Quan 6":          {"NhaO": 120, "CanHo":  55},
+    "Quan 7":          {"NhaO": 110, "CanHo":  62},
+    "Quan 8":          {"NhaO":  95, "CanHo":  48},
+    "Quan 10":         {"NhaO": 155, "CanHo":  68},
+    "Quan 11":         {"NhaO": 130, "CanHo":  58},
+    "Quan 12":         {"NhaO":  55, "CanHo":  30},
+    "Binh Thanh":      {"NhaO": 125, "CanHo":  70},
+    "Go Vap":          {"NhaO":  78, "CanHo":  42},
+    "Phu Nhuan":       {"NhaO": 175, "CanHo":  80},
+    "Tan Binh":        {"NhaO": 110, "CanHo":  55},
+    "Tan Phu":         {"NhaO":  75, "CanHo":  40},
+    "Binh Tan":        {"NhaO":  58, "CanHo":  32},
+    "Thu Duc":         {"NhaO":  72, "CanHo":  45},
+    "Nha Be":          {"NhaO":  52, "CanHo":  28},
+    "Binh Chanh":      {"NhaO":  42, "CanHo":  22},
+    "Hoc Mon":         {"NhaO":  38, "CanHo":  20},
 }
 
-def generate_dataset(file_path, num_records=3000):
-    header = ['dien_tich', 'so_phong_ngu', 'so_phong_tam', 'tinh_thanh', 'quan_huyen', 'loai_bds', 'gia_tien']
-    
-    with open(file_path, mode='w', newline='', encoding='utf-8') as f:
+DISTRICTS = list(DISTRICT_PRICES.keys())
+
+
+def generate_record():
+    loai_bds = random.choice(["NhaO", "CanHo"])
+    quan_huyen = random.choice(DISTRICTS)
+    base_price = DISTRICT_PRICES[quan_huyen][loai_bds]
+
+    if loai_bds == "CanHo":
+        dien_tich    = round(random.uniform(32.0, 140.0), 1)
+        so_phong_ngu = random.choice([1, 1, 2, 2, 2, 3, 3, 4])
+        so_phong_tam = max(1, so_phong_ngu - random.choice([0, 1]))
+    else:
+        dien_tich    = round(random.uniform(30.0, 300.0), 1)
+        so_phong_ngu = random.choice([2, 3, 3, 4, 4, 5, 6])
+        so_phong_tam = max(1, so_phong_ngu - random.choice([0, 1, 2]))
+
+    # He so tuong tac phong va he so dien tich quy mo (economies of scale)
+    room_factor = 1.0 + (so_phong_ngu * 0.045) + (so_phong_tam * 0.025)
+    # Nhieu bien dong thi truong thuc te (88% -> 114%)
+    noise       = random.uniform(0.88, 1.14)
+    total_mil   = base_price * dien_tich * room_factor * noise
+    gia_tien    = round(total_mil / 1000.0, 3)   # ty VND
+
+    return [dien_tich, so_phong_ngu, so_phong_tam, quan_huyen, loai_bds, gia_tien]
+
+
+def generate_dataset(file_path="dataset.csv", num_records=35_000):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(base_dir, file_path) if not os.path.isabs(file_path) else file_path
+
+    header = ["dien_tich", "so_phong_ngu", "so_phong_tam", "quan_huyen", "loai_bds", "gia_tien"]
+    with open(full_path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(header)
-        
-        provinces = list(PROVINCE_DATA.keys())
-        
         for _ in range(num_records):
-            loai_bds = random.choice(['NhaO', 'CanHo'])
-            tinh_thanh = random.choice(provinces)
-            districts = list(PROVINCE_DATA[tinh_thanh].keys())
-            quan_huyen = random.choice(districts)
-            
-            # Chọn diện tích dựa trên loại tài sản
-            if loai_bds == 'CanHo':
-                dien_tich = round(random.uniform(40.0, 120.0), 1)
-                so_phong_ngu = random.choice([1, 2, 3])
-                so_phong_tam = max(1, so_phong_ngu - random.choice([0, 1]))
-            else: # NhaO
-                dien_tich = round(random.uniform(35.0, 250.0), 1)
-                so_phong_ngu = random.choice([2, 3, 4, 5])
-                so_phong_tam = max(1, so_phong_ngu - random.choice([0, 1, 2]))
-                
-            # Đơn giá cơ bản theo quận và loại hình
-            base_price = PROVINCE_DATA[tinh_thanh][quan_huyen][loai_bds]
-            
-            # Hệ số tăng/giảm theo số phòng ngủ/tắm (nhiều phòng hơn thì giá trị sử dụng cao hơn)
-            room_factor = 1.0 + (so_phong_ngu * 0.05) + (so_phong_tam * 0.03)
-            
-            # Nhiễu ngẫu nhiên (-10% đến +10%)
-            noise = random.uniform(0.9, 1.1)
-            
-            # Tính tổng giá trị bất động sản (triệu VND)
-            total_price = base_price * dien_tich * room_factor * noise
-            
-            # Làm tròn giá trị tổng (triệu VND)
-            total_price = round(total_price, 0)
-            
-            writer.writerow([dien_tich, so_phong_ngu, so_phong_tam, tinh_thanh, quan_huyen, loai_bds, total_price])
+            writer.writerow(generate_record())
+    print(f"[OK] Da sinh thanh cong tap du lieu: {full_path} ({num_records:,} ban ghi)")
 
-    print(f"Dataset created successfully at: {file_path}")
 
 if __name__ == "__main__":
-    generate_dataset("dataset.csv")
+    generate_dataset("dataset.csv", num_records=35_000)

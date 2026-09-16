@@ -23,6 +23,7 @@
     margin: 0 auto;
     box-sizing: border-box;
     width: 100%;
+    max-width: 1600px;
     overflow-x: clip;
     background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.95), rgba(243, 246, 251, 1) 45%);
 }
@@ -368,11 +369,14 @@
 }
 
 .trangchu__banner-title {
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
     font-weight: 800;
     color: var(--text-primary);
     margin: 0 0 0.75rem 0;
-    line-height: 1.05;
+    line-height: 1.25;
+    text-wrap: balance;
+    word-break: keep-all;
+    max-width: 100%;
 }
 
 .trangchu__banner-subtitle {
@@ -1034,18 +1038,20 @@
     }
 
     .trangchu__banner {
-        height: 420px;
-        min-height: 420px;
+        height: auto;
+        min-height: unset;
+        padding: 1.5rem 0 2rem;
     }
 
     .trangchu__banner-content {
-        padding: 1.5rem;
-        margin-top: 1rem;
+        padding: 1.25rem 1rem;
+        margin-top: 0.5rem;
         margin-bottom: auto;
     }
 
     .trangchu__banner-search {
-        padding: 0 1rem 1.5rem;
+        padding: 0 1rem 2.5rem;
+        margin-bottom: 2rem;
     }
 
     .trangchu__banner-search .sk-row {
@@ -1078,13 +1084,18 @@
     }
 
     .trangchu__banner-title {
-        font-size: 2.5rem;
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
         margin-bottom: 0.85rem;
+        line-height: 1.25;
+        text-wrap: balance;
+        word-break: keep-all;
+        max-width: 100%;
     }
 
     .trangchu__banner-subtitle {
         font-size: 1.05rem;
         margin-bottom: 1.2rem;
+        text-wrap: balance;
     }
 
     .trangchu__stats {
@@ -1265,23 +1276,29 @@
    ============================================ */
 @media (max-width: 480px) {
     .trangchu__banner {
-        height: 400px;
-        min-height: 400px;
+        height: auto;
+        min-height: unset;
+        padding: 1rem 0 1.75rem;
     }
 
     .trangchu__banner-content {
-        padding: 1rem;
-        margin-top: 0.5rem;
+        padding: 0.875rem 0.5rem;
+        margin-top: 0.25rem;
         margin-bottom: auto;
     }
 
     .trangchu__banner-title {
-        font-size: 1.75rem;
+        font-size: clamp(1.35rem, 6vw, 1.85rem);
         margin-bottom: 0.5rem;
+        line-height: 1.25;
+        text-wrap: balance;
+        word-break: keep-all;
+        max-width: 100%;
     }
 
     .trangchu__banner-subtitle {
         font-size: 0.9rem;
+        text-wrap: balance;
     }
 
     .trangchu__banner-highlights {
@@ -1294,7 +1311,8 @@
     }
 
     .trangchu__banner-search {
-        padding: 0 0.75rem 1rem;
+        padding: 0 0.5rem 2rem;
+        margin-bottom: 2rem;
     }
 
     .trangchu__banner-search .sk-row {
@@ -1809,6 +1827,7 @@
     width: 100%;
     flex: 1;
     min-height: 400px;
+    height: clamp(400px, 45vh, 620px);
     position: relative;
     overflow: hidden;
 }
@@ -2253,3 +2272,16 @@
 .dark-mode .search-icon {
     color: #cbd5e1 !important;
 }
+
+/* ============================================
+   TOUCH VS HOVER OPTIMIZATIONS (Tablet / iPad & Mobile)
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    .khuvuc-map:hover,
+    .trangchu__stats-card:hover,
+    .khuvuc-map__btn:hover {
+        transform: none !important;
+        box-shadow: var(--shadow) !important;
+    }
+}
+

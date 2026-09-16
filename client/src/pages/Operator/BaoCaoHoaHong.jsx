@@ -356,7 +356,7 @@ const BaoCaoHoaHong = () => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="value" fill="#8b5cf6" />
+                  <Bar dataKey="value" fill="#8b5cf6" maxBarSize={50} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

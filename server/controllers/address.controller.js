@@ -205,6 +205,33 @@ exports.suggestMapping = async (req, res) => {
         ? [buildCrosswalkSuggestion(rows[0], 'old-to-new')]
         : [];
 
+      // Fallback thông minh: Tạo gợi ý địa chỉ mới (2 cấp) từ thông tin xã và tỉnh
+      if (suggestions.length === 0 && legacyWardId) {
+        const [wRows] = await db.query(
+          `SELECT c.CommuneName, p.ProvinceName, d.DistrictName
+           FROM legacy_communes c
+           JOIN legacy_provinces p ON c.ProvinceID = p.ProvinceID
+           LEFT JOIN new_districts d ON c.DistrictID = d.DistrictID
+           WHERE c.CommuneID = ? LIMIT 1`,
+          [legacyWardId]
+        );
+        if (wRows.length > 0) {
+          const w = wRows[0];
+          const parts = [w.CommuneName, w.ProvinceName].filter(Boolean);
+          if (streetName) parts.unshift(streetName);
+          suggestions.push({
+            label: parts.join(', '),
+            provinceId,
+            legacyDistrictId,
+            legacyWardId,
+            newWardId: legacyWardId,
+            wardName: w.CommuneName,
+            provinceName: w.ProvinceName,
+            streetName
+          });
+        }
+      }
+
       return safeJsonResponse(res, 200, {
         success: true,
         suggestions,
@@ -241,6 +268,82 @@ exports.suggestMapping = async (req, res) => {
     const suggestions = Array.isArray(rows)
       ? rows.map((row) => buildCrosswalkSuggestion(row, 'new-to-old'))
       : [];
+
+    // Fallback thông minh cho new-to-old: Tìm các xã/phường cũ (3 cấp) tương ứng trong CSDL
+    if (suggestions.length === 0 && newWardId) {
+      let wardName = '';
+      const [ncRows] = await db.query(
+        `SELECT nc.CommuneName, nc.ProvinceID
+         FROM new_communes nc
+         WHERE nc.CommuneID = ? LIMIT 1`,
+        [newWardId]
+      );
+
+      if (ncRows.length > 0) {
+        wardName = ncRows[0].CommuneName;
+      } else {
+        const [lcRows] = await db.query(
+          `SELECT lc.CommuneName, lc.ProvinceID
+           FROM legacy_communes lc
+           WHERE lc.CommuneID = ? LIMIT 1`,
+          [newWardId]
+        );
+        if (lcRows.length > 0) {
+          wardName = lcRows[0].CommuneName;
+        }
+      }
+
+      if (wardName) {
+        let matchSql = `SELECT lc.CommuneID, lc.CommuneName, d.DistrictID, d.DistrictName, lp.ProvinceName, lc.ProvinceID
+           FROM legacy_communes lc
+           JOIN new_districts d ON lc.DistrictID = d.DistrictID
+           JOIN legacy_provinces lp ON lc.ProvinceID = lp.ProvinceID
+           WHERE (lc.CommuneName LIKE ? OR ? LIKE CONCAT('%', lc.CommuneName, '%'))`;
+        const matchParams = [`%${wardName}%`, wardName];
+
+        if (provinceId) {
+          matchSql += ` AND lc.ProvinceID = ?`;
+          matchParams.push(provinceId);
+        }
+
+        matchSql += ` ORDER BY (lc.CommuneName = ?) DESC LIMIT 3`;
+        matchParams.push(wardName);
+
+        const [lcMatches] = await db.query(matchSql, matchParams);
+
+        if (lcMatches.length > 0) {
+          const primary = lcMatches[0];
+          const [siblings] = await db.query(
+            `SELECT lc.CommuneID, lc.CommuneName, d.DistrictID, d.DistrictName, lp.ProvinceName, lc.ProvinceID
+             FROM legacy_communes lc
+             JOIN new_districts d ON lc.DistrictID = d.DistrictID
+             JOIN legacy_provinces lp ON lc.ProvinceID = lp.ProvinceID
+             WHERE lc.DistrictID = ? AND lc.CommuneID != ?
+             LIMIT 1`,
+            [primary.DistrictID, primary.CommuneID]
+          );
+
+          const allCandidates = [...siblings, ...lcMatches];
+          const seen = new Set();
+          for (const cand of allCandidates) {
+            if (seen.has(cand.CommuneID)) continue;
+            seen.add(cand.CommuneID);
+            const labelParts = [cand.CommuneName, cand.DistrictName, cand.ProvinceName].filter(Boolean);
+            if (streetName) labelParts.unshift(streetName);
+            suggestions.push({
+              label: labelParts.join(', '),
+              provinceId: cand.ProvinceID,
+              legacyDistrictId: cand.DistrictID,
+              legacyWardId: cand.CommuneID,
+              legacyWardName: cand.CommuneName,
+              legacyDistrictName: cand.DistrictName,
+              provinceName: cand.ProvinceName,
+              streetName
+            });
+          }
+        }
+      }
+    }
 
     return safeJsonResponse(res, 200, {
       success: true,
@@ -473,6 +576,21 @@ exports.getWards = async (req, res) => {
          ORDER BY c.CommuneName ASC`,
         [districtId]
       );
+
+      // Fallback nếu dữ liệu legacy DistrictID bị lệch ID (+1065)
+      if ((!rows || rows.length === 0) && districtId >= 541 && districtId <= 562) {
+        [rows] = await db.query(
+          `SELECT c.CommuneID AS KhuVucID,
+                  c.CommuneCode AS MaKhuVuc,
+                  c.CommuneName AS TenKhuVuc,
+                  c.ProvinceID,
+                  c.DistrictID
+           FROM legacy_communes c
+           WHERE c.DistrictID = ?
+           ORDER BY c.CommuneName ASC`,
+          [districtId + 1065]
+        );
+      }
     } else {
       const [districtRows] = await db.query(
         `SELECT DistrictID, ProvinceID, DistrictName
@@ -530,7 +648,7 @@ exports.getWardsByCurrentProvince = async (req, res) => {
       });
     }
 
-    const [rows] = await db.query(
+    let [rows] = await db.query(
       `SELECT CommuneID AS KhuVucID,
               CommuneCode AS MaKhuVuc,
               CommuneName AS TenKhuVuc,
@@ -540,6 +658,19 @@ exports.getWardsByCurrentProvince = async (req, res) => {
        ORDER BY CommuneName ASC`,
       [provinceId]
     );
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      [rows] = await db.query(
+        `SELECT CommuneID AS KhuVucID,
+                CommuneCode AS MaKhuVuc,
+                CommuneName AS TenKhuVuc,
+                ProvinceID
+         FROM legacy_communes
+         WHERE ProvinceID = ?
+         ORDER BY CommuneName ASC`,
+        [provinceId]
+      );
+    }
 
     return safeJsonResponse(res, 200, {
       success: true,
@@ -609,11 +740,11 @@ exports.getKhuVucTree = async (req, res) => {
           } catch (_) {}
           return {
             KhuVucID: province.KhuVucID,
-            TenKhuVuc: province.TenkhuVuc,
+            TenKhuVuc: province.TenkhuVuc || province.TenKhuVuc,
             type: 'new_province',
             children: communes.map(commune => ({
               KhuVucID: commune.KhuVucID,
-              TenkhuVuc: commune.TenKhuVuc,
+              TenKhuVuc: commune.TenKhuVuc,
               type: 'new_commune',
               children: []
             }))
@@ -621,7 +752,7 @@ exports.getKhuVucTree = async (req, res) => {
         }));
         trees.push({
           KhuVucID: -2,
-          TenkhuVuc: 'Theo đơn vị mới',
+          TenKhuVuc: 'Theo đơn vị mới',
           type: 'new',
           children
         });

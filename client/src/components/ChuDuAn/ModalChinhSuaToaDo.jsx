@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { buildApiUrl } from '../../config/api';
+import { redMarkerIcon, MapCtrlScrollHelper, GOOGLE_MAPS_TILE_LAYER } from '../Map/MapUtils';
 
 // Fix Leaflet default icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -45,7 +46,7 @@ function DraggableMarker({ position, onPositionChange, tieuDe }) {
   );
 
   return (
-    <Marker draggable={true} eventHandlers={eventHandlers} position={position} ref={markerRef}>
+    <Marker draggable={true} eventHandlers={eventHandlers} position={position} ref={markerRef} icon={redMarkerIcon}>
       <Popup>
         <strong>{tieuDe || 'Tin đăng mới'}</strong><br />
         📍 {position.lat.toFixed(6)}, {position.lng.toFixed(6)}<br />
@@ -563,14 +564,12 @@ function ModalChinhSuaToaDo({ isOpen, onClose, initialPosition, onSave, tieuDe, 
               overflow: 'hidden',
               border: '1px solid rgba(139, 92, 246, 0.3)',
               marginBottom: '1rem',
+              position: 'relative'
             }}
           >
-            <MapContainer center={[currentPosition.lat, currentPosition.lng]} zoom={16} style={{ height: '100%', width: '100%' }}>
-              <TileLayer
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
-                maxZoom={19}
-                attribution='&copy; <a href="https://www.esri.com">Esri</a> World Street Map'
-              />
+            <MapContainer center={[currentPosition.lat, currentPosition.lng]} zoom={16} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+              <MapCtrlScrollHelper />
+              <TileLayer {...GOOGLE_MAPS_TILE_LAYER} />
               <DraggableMarker position={currentPosition} onPositionChange={xuLyThayDoiViTri} tieuDe={tieuDe} />
               <MapClickHandler onMapClick={xuLyThayDoiViTri} />
             </MapContainer>

@@ -1,6 +1,8 @@
 #root {
   width: 100%;
-  max-width: none; /* Không giới hạn để luôn full-width */
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

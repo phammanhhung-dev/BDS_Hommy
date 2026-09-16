@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ChuDuAnController = require('../controllers/ChuDuAnController');
+const ThongBaoController = require('../controllers/ThongBaoController');
 
 // === AUTHENTICATION MIDDLEWARE ===
 const authMiddleware = require('../middleware/auth');
@@ -29,6 +30,12 @@ router.put('/cuoc-hen/:id/xac-nhan', authMiddleware, requireRole('ChuDuAn'), Chu
 router.post('/cuoc-hen/:id/xac-nhan', authMiddleware, requireRole('ChuDuAn'), ChuDuAnController.xacNhanCuocHen);
 router.post('/cuoc-hen/:id/phe-duyet', authMiddleware, requireRole('ChuDuAn'), ChuDuAnController.pheDuyetCuocHen);
 router.post('/cuoc-hen/:id/tu-choi', authMiddleware, requireRole('ChuDuAn'), ChuDuAnController.tuChoiCuocHen);
+
+// === THÔNG BÁO ===
+router.get('/thong-bao', authMiddleware, requireRole('ChuDuAn'), ThongBaoController.layDanhSach);
+router.get('/thong-bao/dem-chua-doc', authMiddleware, requireRole('ChuDuAn'), ThongBaoController.demChuaDoc);
+router.put('/thong-bao/:id/doc', authMiddleware, requireRole('ChuDuAn'), ThongBaoController.danhDauDaDoc);
+router.put('/thong-bao/doc-tat-ca', authMiddleware, requireRole('ChuDuAn'), ThongBaoController.danhDauDocTatCa);
 
 // === BÁO CÁO & ANALYTICS ===
 router.get('/bao-cao-hieu-suat', authMiddleware, requireRole('ChuDuAn'), ChuDuAnController.layBaoCaoHieuSuat);

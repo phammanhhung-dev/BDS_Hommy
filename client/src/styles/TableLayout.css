@@ -40,23 +40,14 @@
   transition: background-color 0.15s ease;
 }
 
-.cda-table-row:hover {
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.04) 0%, transparent 100%);
-}
+@media (hover: hover) and (pointer: fine) {
+  .cda-table-row:hover {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.04) 0%, transparent 100%);
+  }
 
-.cda-table-row::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: transparent;
-  transition: background 0.15s ease;
-}
-
-.cda-table-row:hover::before {
-  background: linear-gradient(180deg, #14532D, #3b82f6);
+  .cda-table-row:hover::before {
+    background: linear-gradient(180deg, #14532D, #3b82f6);
+  }
 }
 
 /* === Cell Types === */
@@ -227,14 +218,164 @@
   flex-shrink: 0;
 }
 
-/* === Responsive === */
-@media (max-width: 1400px) {
+/* === Responsive & Mobile Card View === */
+.cda-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 769px) and (max-width: 1400px) {
   .cda-table-fixed-layout {
-    min-width: 1200px; /* Enable horizontal scroll */
+    min-width: 1100px; /* Enable horizontal scroll on desktop/tablet where table format is preferred */
   }
-  
+}
+
+/* Transform Table to Touch-friendly Card View on Mobile (<= 768px) */
+@media (max-width: 768px) {
   .cda-table-container {
-    overflow-x: auto;
+    overflow-x: visible !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .cda-table-fixed-layout {
+    display: block !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+  }
+
+  /* Hide table header on mobile */
+  .cda-table-fixed-layout thead {
+    display: none !important;
+  }
+
+  /* Display rows as stack of independent cards */
+  .cda-table-fixed-layout tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    width: 100% !important;
+  }
+
+  /* Card container */
+  .cda-table-fixed-layout .cda-table-row {
+    display: flex !important;
+    flex-direction: column !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    padding: 16px !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .cda-table-fixed-layout .cda-table-row::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 4px !important;
+    background: #2563eb !important;
+    border-radius: 4px 0 0 4px !important;
+  }
+
+  /* Each cell becomes a key-value row */
+  .cda-table-fixed-layout td {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px dashed #f1f5f9 !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    text-align: right !important;
+    min-height: 38px !important;
+  }
+
+  .cda-table-fixed-layout td:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    padding-top: 12px !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Dynamic label on the left via data-label */
+  .cda-table-fixed-layout td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.8rem;
+    text-align: left;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Card Image Header */
+  .cda-table-fixed-layout .cda-table-cell-img {
+    justify-content: flex-start !important;
+    padding-top: 0 !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+  }
+  .cda-table-fixed-layout .cda-table-cell-img::before {
+    display: none !important;
+  }
+  .cda-table-fixed-layout .cda-table-img-wrapper {
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+  }
+
+  /* Content & Title Cell */
+  .cda-table-fixed-layout .cda-table-cell-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    padding: 10px 0 !important;
+  }
+  .cda-table-fixed-layout .cda-table-cell-content::before {
+    margin-bottom: 4px;
+  }
+  .cda-table-fixed-layout .cda-table-title {
+    font-size: 0.95rem !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  /* Actions at bottom of card */
+  .cda-table-fixed-layout .cda-table-cell-actions {
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .cda-table-fixed-layout .cda-table-cell-actions::before {
+    display: none !important;
+  }
+  .cda-table-fixed-layout .cda-table-actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .cda-table-fixed-layout .cda-table-actions .cda-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

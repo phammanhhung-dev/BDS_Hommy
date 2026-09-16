@@ -3,7 +3,55 @@ import { useNavigate } from "react-router-dom";
 import khuvucApi from "../../api/khuvucApi";
 import { FaSearch, FaMapMarkerAlt, FaHome, FaDollarSign, FaRulerCombined } from "react-icons/fa";
 import { useTranslation } from "../../context/LanguageContext";
+import Select from "react-select";
 import "./searchkhuvuc.css";
+
+const customSelectStyles = {
+  control: (base) => ({
+    ...base,
+    border: 'none',
+    boxShadow: 'none',
+    backgroundColor: 'transparent',
+    minHeight: '48px',
+    cursor: 'pointer',
+    width: '100%',
+  }),
+  valueContainer: (base) => ({
+    ...base,
+    padding: '0 8px',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  dropdownIndicator: (base) => ({
+    ...base,
+    color: '#64748b',
+    padding: '0 8px',
+  }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: '8px',
+    boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+  }),
+  option: (base, state) => ({
+    ...base,
+    backgroundColor: state.isSelected ? '#10b981' : state.isFocused ? '#f1f5f9' : 'transparent',
+    color: state.isSelected ? 'white' : '#1e293b',
+    cursor: 'pointer',
+    padding: '10px 16px',
+  }),
+  singleValue: (base) => ({
+    ...base,
+    color: '#1e293b',
+    fontSize: '15px',
+  }),
+  placeholder: (base) => ({
+    ...base,
+    color: '#64748b',
+    fontSize: '15px',
+  })
+};
 
 const LOAI_BDS_OPTIONS = [
   { value: "", label: "Tất cả nhà đất" },
@@ -64,8 +112,13 @@ function SearchKhuVuc({ onSearch }) {
         : Array.isArray(res.data?.data)
         ? res.data.data
         : [];
-      setTree(raw);
-      setProvinces(raw);
+      if (raw.length === 1 && raw[0].children) {
+        setTree(raw[0].children);
+        setProvinces(raw[0].children);
+      } else {
+        setTree(raw);
+        setProvinces(raw);
+      }
     } catch (err) {
       console.error("Lỗi lấy khu vực:", err?.response?.data || err.message);
     } finally {
@@ -245,35 +298,37 @@ function SearchKhuVuc({ onSearch }) {
 
           <div className="search-input-wrapper select-wrapper">
             <FaMapMarkerAlt className="search-icon" />
-            <select
-              value={selectedProvince}
-              onChange={handleProvinceChange}
-              className="search-select-field"
-            >
-              <option value="">{t("search.province") || "Theo đơn vị"}</option>
-              {provinces.map(prov => (
-                <option key={prov.KhuVucID || prov.id} value={prov.KhuVucID || prov.id}>
-                  {prov.TenKhuVuc || prov.name}
-                </option>
-              ))}
-            </select>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <Select
+                options={provinces.map(prov => ({ value: String(prov.KhuVucID || prov.id), label: prov.TenKhuVuc || prov.name }))}
+                value={selectedProvince ? { value: String(selectedProvince), label: provinces.find(p => String(p.KhuVucID || p.id) === String(selectedProvince))?.TenKhuVuc || provinces.find(p => String(p.KhuVucID || p.id) === String(selectedProvince))?.name } : null}
+                onChange={(option) => handleProvinceChange({ target: { value: option ? option.value : "" } })}
+                placeholder={t("search.province") || "Tỉnh/Thành phố"}
+                styles={customSelectStyles}
+                isClearable
+                noOptionsMessage={() => "Không tìm thấy"}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'}
+              />
+            </div>
           </div>
 
           <div className="search-input-wrapper select-wrapper">
             <FaMapMarkerAlt className="search-icon" />
-            <select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              disabled={!selectedProvince}
-              className="search-select-field"
-            >
-              <option value="">{t("search.district") || "Tỉnh/Thành phố"}</option>
-              {districts.map(dist => (
-                <option key={dist.KhuVucID || dist.id} value={dist.KhuVucID || dist.id}>
-                  {dist.TenKhuVuc || dist.name}
-                </option>
-              ))}
-            </select>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <Select
+                options={districts.map(dist => ({ value: String(dist.KhuVucID || dist.id), label: dist.TenKhuVuc || dist.name }))}
+                value={selectedDistrict ? { value: String(selectedDistrict), label: districts.find(d => String(d.KhuVucID || d.id) === String(selectedDistrict))?.TenKhuVuc || districts.find(d => String(d.KhuVucID || d.id) === String(selectedDistrict))?.name } : null}
+                onChange={(option) => setSelectedDistrict(option ? option.value : "")}
+                placeholder={t("search.district") || "Quận/Huyện"}
+                styles={customSelectStyles}
+                isDisabled={!selectedProvince}
+                isClearable
+                noOptionsMessage={() => "Không tìm thấy"}
+                menuPortalTarget={document.body}
+                menuPosition={'fixed'}
+              />
+            </div>
           </div>
         </div>
 

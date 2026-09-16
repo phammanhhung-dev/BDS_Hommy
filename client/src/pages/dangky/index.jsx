@@ -205,26 +205,37 @@ function Register() {
 
               {/* Role Selection */}
               <div className="login-page-bds__field">
-                <label htmlFor="role">Loại tài khoản</label>
-                <div className="login-page-bds__input-wrapper">
-                  <FaUserTie className="login-page-bds__input-icon" />
-                  <select
-                    id="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    required
-                    style={{ paddingLeft: '2.75rem', appearance: 'none', cursor: 'pointer' }}
-                  >
-                    {roleOptions.map(opt => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                <label>Loại tài khoản</label>
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  {roleOptions.map(opt => (
+                    <div 
+                      key={opt.value}
+                      onClick={() => setRole(opt.value)}
+                      style={{ 
+                        flex: 1, 
+                        padding: '12px', 
+                        border: role === opt.value ? '2px solid #00b14f' : '1px solid #e5e7eb',
+                        borderRadius: '12px',
+                        cursor: 'pointer',
+                        backgroundColor: role === opt.value ? '#f0fdf4' : '#ffffff',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '6px',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '18px' }}>{opt.icon}</span>
+                        <span style={{ fontWeight: role === opt.value ? '600' : '500', fontSize: '14px', color: role === opt.value ? '#00b14f' : '#374151' }}>
+                          {opt.label}
+                        </span>
+                      </div>
+                      <p style={{ fontSize: '12px', color: '#6b7280', margin: 0, lineHeight: 1.4 }}>
+                        {opt.desc}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-                <p style={{ fontSize: '0.8rem', color: '#6b7280', margin: '0.25rem 0 0 0' }}>
-                  {roleOptions.find(o => o.value === role)?.desc}
-                </p>
               </div>
 
               {/* Error */}

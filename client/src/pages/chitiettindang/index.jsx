@@ -221,8 +221,27 @@ const ListingChatModal = ({ tinDang, onClose }) => {
 };
 
 const ListingChatBody = ({ conversationId }) => {
-  const { messages, sendMessage, isTyping, loading, isConnected } = useChat(conversationId);
-  const currentUserId = parseInt(localStorage.getItem('userId') || '0');
+  const { markConversationAsRead, setActiveConversationId } = useChatContext();
+  const { messages, sendMessage, isTyping, loading, isConnected, markAsRead } = useChat(conversationId);
+  let currentUserId = parseInt(localStorage.getItem('userId') || '0');
+  try {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      const currentUser = JSON.parse(userStr);
+      if (!currentUserId) currentUserId = currentUser.NguoiDungID || 0;
+    }
+  } catch (e) {
+    console.error('Failed to parse user from localStorage:', e);
+  }
+
+  useEffect(() => {
+    if (conversationId && isConnected) {
+      setActiveConversationId(conversationId);
+      markAsRead();
+      markConversationAsRead(conversationId);
+    }
+    return () => setActiveConversationId(null);
+  }, [conversationId, isConnected, markAsRead, markConversationAsRead, setActiveConversationId]);
 
   return (
     <>
@@ -316,6 +335,12 @@ const ChiTietTinDang = () => {
 
   // Toast notification
   const { toasts, showToast, removeToast } = useToast();
+
+  const { findOrCreateConversation, conversations } = useChatContext();
+  const currentConversation = conversations?.find(
+    (c) => c.NguCanhID === tinDang?.TinDangID && c.NguCanhLoai === 'TinDang'
+  );
+  const unreadCount = currentConversation?.SoTinChuaDoc || 0;
 
   // Chuẩn bị giá trị PheDuyetChuDuAn từ tin đăng (1 => ChoPheDuyet, 0 => DaPheDuyet)
   const getPheDuyetChuValue = () => {
@@ -1030,7 +1055,8 @@ const ChiTietTinDang = () => {
   const getDienTichHienThi = () => {
     // Case 1: Phòng đơn
     if (!tinDang.TongSoPhong || tinDang.TongSoPhong <= 1) {
-      return tinDang.DienTich ? `${tinDang.DienTich} m²` : "N/A";
+      const dienTich = tinDang.DienTich || tinDang.DienTichSuDung || tinDang.DienTichDat;
+      return dienTich ? `${dienTich} m²` : "N/A";
     }
 
     // Case 2: Nhiều phòng
@@ -1724,18 +1750,40 @@ const ChiTietTinDang = () => {
                 </div>
               </div>
 
-              <div className="ctd-info-highlights">
-                <div className="ctd-highlight">
-                  <HiOutlineSquare3Stack3D />
-                  <span>{getDienTichHienThi()}</span>
-                </div>
-                {tinDang.TongSoPhong > 0 && (
-                  <div className="ctd-highlight">
-                    <HiOutlineHome />
-                    <span>{tinDang.TongSoPhong} phòng</span>
+              {/* Thông tin người đăng */}
+              {(tinDang.NguoiDang_Ten || tinDang.NguoiDang_SDT) && (
+                <div className="ctd-info-poster">
+                  <div className="ctd-poster-header">
+                    <img
+                      src={tinDang.NguoiDang_Avatar || 'https://i.pravatar.cc/150?img=68'}
+                      alt={tinDang.NguoiDang_Ten || 'Người đăng'}
+                      className="ctd-poster-avatar"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://i.pravatar.cc/150?img=68';
+                      }}
+                    />
+                    <div className="ctd-poster-details">
+                      <h4 className="ctd-poster-name">{tinDang.NguoiDang_Ten || 'Người đăng'}</h4>
+                      <p className="ctd-poster-role">Chủ nhà / Chủ dự án</p>
+                    </div>
                   </div>
-                )}
-              </div>
+                  <div className="ctd-poster-contact">
+                    {tinDang.NguoiDang_SDT && (
+                      <a href={`tel:${tinDang.NguoiDang_SDT}`} className="ctd-contact-item ctd-contact-phone">
+                        <span className="contact-icon">📞</span>
+                        <span className="contact-text">{tinDang.NguoiDang_SDT}</span>
+                      </a>
+                    )}
+                    {tinDang.NguoiDang_Email && (
+                      <a href={`mailto:${tinDang.NguoiDang_Email}`} className="ctd-contact-item ctd-contact-email">
+                        <span className="contact-icon">✉️</span>
+                        <span className="contact-text">{tinDang.NguoiDang_Email}</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <div className="ctd-actions">
                 <button
@@ -1757,11 +1805,27 @@ const ChiTietTinDang = () => {
                   className="ctd-btn-secondary ctd-btn-chat"
                   onClick={handleOpenChatModal}
                   title="Chat với người đăng tin"
+                  style={{ position: 'relative' }}
                 >
                   <HiOutlineChatBubbleLeftRight
                     style={{ width: 18, height: 18, marginRight: 8 }}
                   />
                   <span>Chat với người đăng tin</span>
+                  {unreadCount > 0 && (
+                    <span style={{
+                      position: 'absolute',
+                      top: '-5px',
+                      right: '-5px',
+                      backgroundColor: '#ef4444',
+                      color: 'white',
+                      borderRadius: '10px',
+                      padding: '2px 6px',
+                      fontSize: '11px',
+                      fontWeight: 'bold'
+                    }}>
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
                 </button>
               </div>
 
@@ -1777,6 +1841,7 @@ const ChiTietTinDang = () => {
                   </div>
                 </div>
               )}
+
 
               {/* Lưu ý an toàn */}
               <div className="ctd-safety-tips">

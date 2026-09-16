@@ -263,15 +263,44 @@
 }
 
 /* Responsive */
-@media (max-width: 480px) {
-    .chatbot-container {
-        width: calc(100% - 32px);
-        right: 16px;
-        bottom: 86px;
-    }
-    
+@media (max-width: 768px) {
     .chatbot-trigger {
-        right: 16px;
-        bottom: 16px;
+        right: max(16px, env(safe-area-inset-right, 16px));
+        bottom: max(20px, env(safe-area-inset-bottom, 20px));
+        width: 52px;
+        height: 52px;
+    }
+
+    .chatbot-trigger svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .chatbot-container {
+        width: min(360px, calc(100vw - 32px));
+        right: max(16px, env(safe-area-inset-right, 16px));
+        bottom: max(82px, calc(76px + env(safe-area-inset-bottom, 0px)));
+        max-height: calc(100dvh - 100px);
+    }
+}
+
+@media (max-width: 480px) {
+    .chatbot-trigger {
+        right: max(12px, env(safe-area-inset-right, 12px));
+        bottom: max(16px, env(safe-area-inset-bottom, 16px));
+        width: 48px;
+        height: 48px;
+    }
+
+    .chatbot-trigger svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .chatbot-container {
+        width: calc(100vw - 24px);
+        right: 12px;
+        bottom: 74px;
+        max-height: calc(100dvh - 90px);
     }
 }

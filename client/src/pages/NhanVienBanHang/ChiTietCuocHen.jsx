@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { redMarkerIcon, MapCtrlScrollHelper, GOOGLE_MAPS_TILE_LAYER } from '../../components/Map/MapUtils';
 import {
   HiOutlineArrowLeft,
   HiOutlineUser,
@@ -847,17 +848,16 @@ const ChiTietCuocHen = () => {
               <h2>Vị trí</h2>
             </div>
             <div className="nvbh-card__body nvbh-card__body--no-padding">
-              <div className="nvbh-map">
+              <div className="nvbh-map" style={{ position: 'relative' }}>
                 <MapContainer
                   center={[appointment.ToaDo.lat, appointment.ToaDo.lng]}
                   zoom={15}
                   style={{ height: '300px', width: '100%' }}
+                  scrollWheelZoom={true}
                 >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                  />
-                  <Marker position={[appointment.ToaDo.lat, appointment.ToaDo.lng]}>
+                  <MapCtrlScrollHelper />
+                  <TileLayer {...GOOGLE_MAPS_TILE_LAYER} />
+                  <Marker position={[appointment.ToaDo.lat, appointment.ToaDo.lng]} icon={redMarkerIcon}>
                     <Popup>{appointment.DiaChiPhong}</Popup>
                   </Marker>
                 </MapContainer>

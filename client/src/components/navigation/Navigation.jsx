@@ -109,6 +109,13 @@ function Navigation({ activeTab, onTabChange }) {
       icon: <HiOutlineBanknotes />,
       description: "Duyệt yêu cầu rút tiền",
     },
+    !isCustomer && {
+      path: "/quan-ly",
+      tab: "baiviet",
+      title: "Bài viết",
+      icon: <HiOutlineDocumentText />,
+      description: "Quản lý bài viết, tin tức",
+    },
   ].filter(Boolean);
 
   const appointmentMenuItems = [

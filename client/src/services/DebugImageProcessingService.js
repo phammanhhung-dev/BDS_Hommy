@@ -91,14 +91,19 @@ const DebugImageProcessingService = {
       debug = false
     } = options;
 
-    return new Promise(async (resolve) => {
-      try {
-        // Step 1: Apply Xiaomi B/C
-        if (debug) console.log('🔧 [XiaomiPureBlack] Step 1: Applying B/C...');
-        const bcImage = await DebugImageProcessingService.adjustBrightnessContrast(imageDataUrl, {
-          exposure, brightness, contrast, debug
-        });
+    let bcImage = imageDataUrl;
+    try {
+      // Step 1: Apply Xiaomi B/C
+      if (debug) console.log('🔧 [XiaomiPureBlack] Step 1: Applying B/C...');
+      bcImage = await DebugImageProcessingService.adjustBrightnessContrast(imageDataUrl, {
+        exposure, brightness, contrast, debug
+      });
+    } catch (err) {
+      if (debug) console.error('🔧 [XiaomiPureBlack] Error in B/C:', err);
+    }
 
+    return new Promise((resolve) => {
+      try {
         // Step 2: Apply pure black filter
         const img = new Image();
         img.onload = () => {
@@ -190,17 +195,21 @@ const DebugImageProcessingService = {
       debug = false
     } = options;
 
-    return new Promise(async (resolve) => {
-      try {
-        // Step 0: Apply brightness/contrast first if enabled
-        let processedSrc = imageDataUrl;
-        if (applyBrightnessFirst && (exposure !== 0 || brightness !== 0 || contrast !== 0)) {
-          if (debug) console.log('🔧 [DebugProcess] Step 0: Applying brightness/contrast...');
-          processedSrc = await DebugImageProcessingService.adjustBrightnessContrast(imageDataUrl, {
-            exposure, brightness, contrast, debug
-          });
-        }
+    let processedSrc = imageDataUrl;
+    try {
+      // Step 0: Apply brightness/contrast first if enabled
+      if (applyBrightnessFirst && (exposure !== 0 || brightness !== 0 || contrast !== 0)) {
+        if (debug) console.log('🔧 [DebugProcess] Step 0: Applying brightness/contrast...');
+        processedSrc = await DebugImageProcessingService.adjustBrightnessContrast(imageDataUrl, {
+          exposure, brightness, contrast, debug
+        });
+      }
+    } catch (err) {
+      if (debug) console.error('🔧 [DebugProcess] Error in B/C:', err);
+    }
 
+    return new Promise((resolve) => {
+      try {
         const img = new Image();
         img.onload = () => {
           try {

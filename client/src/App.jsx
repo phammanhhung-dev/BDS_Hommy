@@ -71,6 +71,7 @@ import Blog from './pages/blog';
 import ChiTietBaiViet from './pages/blog/ChiTietBaiViet';
 import BangGia from './pages/bang-gia';
 import DinhGiaAI from './pages/DinhGiaAI';
+import NapTienResult from './pages/naptien/NapTienResult';
 
 function App() {
 
@@ -83,6 +84,7 @@ function App() {
         <Route path='/' element={<TrangChu />} />
         <Route path='/nha-dat-ban' element={<DanhSachTinDang loaiGiaoDich="Ban" />} />
         <Route path='/nha-dat-cho-thue' element={<DanhSachTinDang loaiGiaoDich="Thue" />} />
+        <Route path='/tim-kiem' element={<DanhSachTinDang />} />
         <Route path='/du-an' element={<DanhSachDuAn />} />
         <Route path='/du-an/:id' element={<ChiTietDuAn />} />
         <Route path='/wiki-bds' element={<Blog />} />
@@ -158,6 +160,7 @@ function App() {
         <Route path="/cuochencuatoi" element={<Appointments />} />
         <Route path="/vi" element={<ViPage />} />
         <Route path="/quan-ly" element={<ProtectedRoute allowedRoles={[1, 5]}><QuanLy /></ProtectedRoute>} />
+        <Route path="/thanh-toan/ket-qua" element={<NapTienResult />} />
       </Routes>
     </div>
   );

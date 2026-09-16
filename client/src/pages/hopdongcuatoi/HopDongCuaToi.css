@@ -200,7 +200,7 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .hdct-loading {
@@ -271,6 +271,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   font-size: 14px;
   color: #374151;
+  white-space: nowrap;
 }
 
 .hdct-table tbody tr {
@@ -436,10 +437,6 @@
 
 /* Responsive */
 @media (max-width: 1200px) {
-  .hdct-table-container {
-    overflow-x: auto;
-  }
-
   .hdct-table {
     min-width: 1200px;
   }

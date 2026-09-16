@@ -5,7 +5,8 @@
  */
 
 import React, { useRef, useEffect } from 'react';
-import { HiOutlinePhone } from 'react-icons/hi2';
+import { HiOutlinePhone, HiOutlineCurrencyDollar } from 'react-icons/hi2';
+import { QRCodeSVG } from 'qrcode.react';
 import './MessageList.css';
 
 export const MessageList = ({ messages, currentUserId, isTyping = false, loading = false }) => {
@@ -48,14 +49,17 @@ export const MessageList = ({ messages, currentUserId, isTyping = false, loading
       ) : (
         <div className="message-list-container">
           {messages.map((message) => {
-            const isOwn = message.NguoiGuiID === currentUserId;
+            const isOwn = String(message.NguoiGuiID) === String(currentUserId);
             
-            // Kiểm tra nếu là tin nhắn cuộc gọi nhỡ
+            // Kiểm tra nếu là tin nhắn dạng JSON (missed call, deposit request)
             let missedCallData = null;
+            let depositRequestData = null;
             try {
               const parsed = JSON.parse(message.NoiDung);
               if (parsed && parsed.type === 'video_call_missed') {
                 missedCallData = parsed;
+              } else if (parsed && parsed.type === 'DEPOSIT_REQUEST') {
+                depositRequestData = parsed;
               }
             } catch (e) {
               // Không phải JSON, bỏ qua
@@ -87,6 +91,60 @@ export const MessageList = ({ messages, currentUserId, isTyping = false, loading
                       </p>
                       <span className="message-time">{formatTime(message.ThoiGian)}</span>
                     </div>
+                  </div>
+                </div>
+              );
+            }
+
+            // Hiển thị yêu cầu cọc
+            if (depositRequestData) {
+              const amountStr = new Intl.NumberFormat('vi-VN').format(depositRequestData.amount) + 'đ';
+              return (
+                <div key={message.TinNhanID} className={`message-bubble ${isOwn ? 'message-own' : 'message-other'} message-deposit`}>
+                  {!isOwn && (
+                    <div className="message-sender">
+                      {message.NguoiGuiAnh && <img src={message.NguoiGuiAnh} alt="" className="message-avatar" />}
+                      <span className="message-sender-name">{message.NguoiGuiTen}</span>
+                    </div>
+                  )}
+                  <div className="message-content deposit-card">
+                    <div className="deposit-card-header">
+                      <HiOutlineCurrencyDollar className="deposit-icon" />
+                      <h4>Yêu cầu đặt cọc</h4>
+                    </div>
+                    <div className="deposit-card-body">
+                      <p className="deposit-amount">{amountStr}</p>
+                      {depositRequestData.note && <p className="deposit-note">{depositRequestData.note}</p>}
+                      
+                      {!isOwn && (
+                        <div className="deposit-qr-container">
+                          <QRCodeSVG 
+                            value={JSON.stringify({
+                              type: 'PAY_DEPOSIT',
+                              amount: depositRequestData.amount,
+                              conversationId: message.CuocHoiThoaiID
+                            })} 
+                            size={120} 
+                          />
+                          <p className="qr-hint">Quét mã hoặc nhấn nút để thanh toán bằng Ví nội bộ</p>
+                          <button className="btn-pay-deposit" onClick={() => {
+                            // Gọi hàm thanh toán (ví dụ dispatch qua event)
+                            const evt = new CustomEvent('PAY_DEPOSIT', {
+                              detail: { amount: depositRequestData.amount, messageId: message.TinNhanID, cuocHoiThoaiId: message.CuocHoiThoaiID }
+                            });
+                            window.dispatchEvent(evt);
+                          }}>
+                            Thanh toán bằng Ví
+                          </button>
+                        </div>
+                      )}
+                      {isOwn && (
+                        <div className="deposit-status-sent">
+                          Đã gửi yêu cầu cọc thành công
+                        </div>
+                      )}
+                    </div>
+                    <span className="message-time">{formatTime(message.ThoiGian)}</span>
                   </div>
                 </div>
               );

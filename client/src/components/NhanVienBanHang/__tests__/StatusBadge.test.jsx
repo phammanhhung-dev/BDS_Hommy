@@ -4,7 +4,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import StatusBadge from '../components/NhanVienBanHang/StatusBadge';
+import StatusBadge from '../StatusBadge';
 
 describe('StatusBadge Component', () => {
   it('renders without crashing', () => {

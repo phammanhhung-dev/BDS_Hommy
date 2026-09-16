@@ -26,6 +26,10 @@ function QuanLyTaiKhoan() {
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
+  // Phân trang
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   // Helper để map ID vai trò ra tên vai trò
   const vaiTroMap = {
     1: "Khách hàng",
@@ -165,6 +169,19 @@ function QuanLyTaiKhoan() {
     });
   }, [users, keyword, roleFilter, statusFilter]);
 
+  // Reset về trang 1 khi filter thay đổi
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [keyword, roleFilter, statusFilter]);
+
+  // Data hiển thị trên trang hiện tại
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredUsers, currentPage]);
+
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
   const stats = useMemo(() => {
     const total = users.length;
     const active = users.filter((u) => u.TrangThai === "HoatDong").length;
@@ -262,14 +279,14 @@ function QuanLyTaiKhoan() {
             </tr>
           </thead>
           <tbody>
-            {!loading && filteredUsers.length === 0 ? (
+            {!loading && paginatedUsers.length === 0 ? (
               <tr>
                 <td colSpan={5} className="quan-ly-tai-khoan__table-empty">
                   Không tìm thấy tài khoản nào
                 </td>
               </tr>
             ) : (
-              filteredUsers.map((user) => (
+              paginatedUsers.map((user) => (
                 <tr key={user.id}>
                   <td>
                     <div className="quan-ly-tai-khoan__user-info">
@@ -318,6 +335,29 @@ function QuanLyTaiKhoan() {
             )}
           </tbody>
         </table>
+        
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="quan-ly-tai-khoan__pagination">
+            <button 
+              className="quan-ly-tai-khoan__page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            >
+              &laquo; Trước
+            </button>
+            <span className="quan-ly-tai-khoan__page-info">
+              Trang {currentPage} / {totalPages}
+            </span>
+            <button 
+              className="quan-ly-tai-khoan__page-btn"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            >
+              Sau &raquo;
+            </button>
+          </div>
+        )}
       </div>
 
       {modalOpen && (

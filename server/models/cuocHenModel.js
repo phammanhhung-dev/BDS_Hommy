@@ -183,6 +183,13 @@ class CuocHenModel {
         }
       }
 
+      // Gửi thông báo cho Chủ dự án (async, không chờ)
+      if (chuDuAnID && chuDuAnID !== 1) { // Bỏ qua admin mặc định nếu có
+        const ThongBaoService = require('../services/ThongBaoService');
+        ThongBaoService.thongBaoCuocHenMoiChoChuDuAn(result.insertId, chuDuAnID)
+          .catch(err => console.error('[CuocHenModel] Lỗi gửi thông báo cuộc hẹn mới CDA:', err));
+      }
+
       return { CuocHenID: result.insertId };
     } catch (error) {
       console.error("[CuocHenModel] ❌ Lỗi tạo cuộc hẹn:", error);

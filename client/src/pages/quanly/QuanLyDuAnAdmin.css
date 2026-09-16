@@ -135,7 +135,7 @@
 .quan-ly-du-an-admin__table-wrapper {
   border: 1px solid #e5e7eb;
   border-radius: 16px;
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .quan-ly-du-an-admin__table {
@@ -151,6 +151,7 @@
   color: #6b7280;
   font-weight: 600;
   border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
 }
 
 .quan-ly-du-an-admin__table td {
@@ -168,6 +169,11 @@
 .quan-ly-du-an-admin__table th:last-child,
 .quan-ly-du-an-admin__table td:last-child {
   text-align: center;
+  white-space: nowrap;
+}
+
+.quan-ly-du-an-admin__table td:nth-last-child(2) {
+  white-space: nowrap;
 }
 
 .quan-ly-du-an-admin__cell-main {

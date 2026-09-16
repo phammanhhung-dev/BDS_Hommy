@@ -12,9 +12,7 @@ import '../../styles/ChuDuAnDesignSystem.css';
 export default function ChiTietTinNhan() {
   return (
     <ChuDuAnLayout>
-      <ChatProvider>
-        <ChatWindow />
-      </ChatProvider>
+      <ChatWindow />
     </ChuDuAnLayout>
   );
 }

@@ -237,19 +237,39 @@
 
 /* ==================== BULK ACTIONS BAR ==================== */
 .bulk-actions-bar {
-  position: sticky;
-  top: 10px;
-  z-index: 100;
-  background: #f0fdf4;
+  position: fixed;
+  top: 24px;
+  left: calc(280px + (100% - 280px) / 2); /* Căn giữa phần nội dung (trừ sidebar 280px) */
+  transform: translateX(-50%);
+  width: calc(100% - 328px); /* Trừ khoảng cách padding */
+  max-width: 1000px;
+  z-index: 999;
+  background: rgba(240, 253, 244, 0.95);
   backdrop-filter: blur(10px);
   border: 1.5px solid #10b981;
   border-radius: var(--radius-lg);
   padding: var(--spacing-md) var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.25);
+  transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 1024px) {
+  .bulk-actions-bar {
+    left: calc(240px + (100% - 240px) / 2); /* Sidebar thu gọn còn 240px */
+    width: calc(100% - 288px);
+    top: 70px; /* Tránh topbar trên mobile/tablet */
+  }
+}
+
+@media (max-width: 768px) {
+  .bulk-actions-bar {
+    left: 50%;
+    width: calc(100% - 32px);
+  }
 }
 
 /* ==================== PAGINATION BAR ==================== */
@@ -398,17 +418,10 @@
 
 .cuoc-hen-table tbody tr {
   transition: all var(--transition-fast);
-  position: relative;
 }
 
-.cuoc-hen-table tbody tr::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: transparent;
+.cuoc-hen-table tbody tr td:first-child {
+  box-shadow: inset 4px 0 0 transparent;
   transition: all var(--transition-fast);
 }
 
@@ -416,9 +429,8 @@
   background: linear-gradient(90deg, rgba(139, 92, 246, 0.06) 0%, transparent 100%);
 }
 
-.cuoc-hen-table tbody tr:hover::before {
-  background: linear-gradient(180deg, var(--color-primary), var(--color-info));
-  box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+.cuoc-hen-table tbody tr:hover td:first-child {
+  box-shadow: inset 4px 0 0 var(--color-primary);
 }
 
 /* Urgency row styling */
