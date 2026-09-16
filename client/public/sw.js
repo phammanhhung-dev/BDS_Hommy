@@ -14,7 +14,7 @@ const STATIC_ASSETS = [
   '/',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  '/icons/badge-72x72.png',
+  '/icons/icon-72x72.png',
   '/icons/icon.svg',
   '/Hommy_Logo_Web.svg'
 ];

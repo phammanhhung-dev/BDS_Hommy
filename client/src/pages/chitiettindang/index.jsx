@@ -41,6 +41,7 @@ import MessageInput from "../../components/Chat/MessageInput";
 import { FaRobot, FaChartLine, FaChevronRight } from "react-icons/fa";
 import "./chitiettindang.css";
 import { getStaticUrl } from "../../config/api";
+import { addRecentViewedId } from "../../utils/recentViews";
 
 /**
  * Helper: Chuyển datetime-local input hoặc ISO string sang MySQL datetime format
@@ -585,6 +586,9 @@ const ChiTietTinDang = () => {
   };
 
   useEffect(() => {
+    if (id) {
+      addRecentViewedId(id);
+    }
     const loadData = async () => {
       await layChiTietTinDang();
       await layTinTuongTu();

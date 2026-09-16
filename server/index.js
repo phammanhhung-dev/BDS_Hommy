@@ -68,6 +68,7 @@ const lichSuViRoutes = require('./routes/lichSuViRoutes');
 const pushRoutes = require('./routes/pushRoutes'); // Push Notifications
 const thongBaoRoutes = require('./routes/thongBaoRoutes');
 const paymentRoutes = require('./routes/paymentRoutes'); // Payment integration
+const propertiesRoutes = require('./routes/propertiesRoutes'); // BĐS Gợi ý & tương tác
 // Create Express app and HTTP server
 const app = express();
 const server = http.createServer(app);
@@ -235,6 +236,7 @@ app.use('/api/locations', locationRoutes);
 app.use('/api/khuvucs', khuVucRoutes);
 app.use('/api/khuvuc-sync', require('./routes/khuVucSyncRoutes'));
 app.use('/api/yeuthich', yeuThichRoutes);
+app.use('/api/favorites', yeuThichRoutes); // Alias cho yêu thích
 app.use('/api/sepay', sepayRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/sepay', sepayCallbackRoutes);
@@ -249,6 +251,7 @@ app.use('/api/vi', viRoutes);
 app.use('/api/push', pushRoutes); // Push Notifications API
 app.use('/api/thong-bao', thongBaoRoutes);
 app.use('/api/payment', paymentRoutes); // API Payment MoMo & VNPAY
+app.use('/api/properties', propertiesRoutes); // API BĐS gợi ý & theo dõi lượt xem
 app.get('/', (req, res) => {
   res.send('API server đang chạy - Module Chủ dự án + Upstream APIs');
 });

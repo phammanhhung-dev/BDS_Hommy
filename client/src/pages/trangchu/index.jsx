@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import ListingCard from "../../components/ListingCard";
+import RecommendedProperties from "../../components/RecommendedProperties";
 import tinDangPublicApi from "../../api/tinDangPublicApi";
 import duAnPublicApi from "../../api/duAnPublicApi";
 import baiVietPublicApi from "../../api/baiVietPublicApi";
@@ -264,7 +265,6 @@ function TrangChu() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [addingFavId, setAddingFavId] = useState(null);
-  const [recommendedListings, setRecommendedListings] = useState([]);
   const [mapCenter, setMapCenter] = useState([10.782622, 106.660172]);
   const [mapZoom, setMapZoom] = useState(12);
   const [mapStyle, setMapStyle] = useState("googleRoad");
@@ -485,37 +485,6 @@ function TrangChu() {
     return null;
   };
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      const userId = getCurrentUserId();
-      if (!userId) return;
-      try {
-        const res = await yeuThichApi.listWithTinDetails(userId);
-        const favorites = res?.data || [];
-        if (favorites.length === 0) return;
-        
-        const lastFav = favorites.find(f => f.LoaiBDS || f.KhuVucID) || favorites[0];
-        const params = { limit: 4 };
-        if (lastFav.LoaiBDS) params.loaiBDS = lastFav.LoaiBDS;
-        if (lastFav.KhuVucID) params.khuVucId = lastFav.KhuVucID;
-        
-        const recRes = await tinDangPublicApi.getAll(params);
-        let recRaw = [];
-        if (recRes?.data?.success && Array.isArray(recRes.data.data)) {
-          recRaw = recRes.data.data;
-        } else if (Array.isArray(recRes?.data)) {
-          recRaw = recRes.data;
-        }
-        if (recRaw.length > 0) {
-          setRecommendedListings(recRaw);
-        }
-      } catch (err) {
-        console.error("Lỗi lấy gợi ý bất động sản:", err);
-      }
-    };
-    fetchRecommendations();
-  }, []);
-
   const handleAddFavorite = async (tin) => {
     const tinId = tin?.TinDangID ?? tin?.id ?? tin?._id;
     const userId = getCurrentUserId();
@@ -662,7 +631,7 @@ function TrangChu() {
           </div>
         </section>
 
-        <section className="section latest-section" aria-labelledby="latest-listings-title">
+        <section className="section section--light latest-section" aria-labelledby="latest-listings-title">
           <div className="container">
             <div className="section__header">
               <h2 id="latest-listings-title" className="section__title">
@@ -695,33 +664,8 @@ function TrangChu() {
           </div>
         </section>
 
-        <section className="section" aria-labelledby="recommended-listings-title">
-          <div className="container">
-            <div className="section__header">
-              <h2 id="recommended-listings-title" className="section__title">
-                {t("homepage.recommendedForYou") || "Bất động sản dành cho bạn"}
-              </h2>
-              <Link to="/nha-dat-cho-thue?recommend=1" className="section__link">
-                {t("common.viewAll") || "Xem tất cả"} <FaArrowRight size={12} aria-hidden="true" />
-              </Link>
-            </div>
-            <div className="featured-listings">
-              {(recommendedListings.length > 0 ? recommendedListings : (tindangs.length > 4 ? tindangs.slice(4, 8) : [...tindangs].reverse())).map((tinDang) => {
-                const tinId = tinDang.TinDangID ?? tinDang.id ?? tinDang._id;
-                return (
-                  <ListingCard
-                    key={`rec-${tinId}`}
-                    tinDang={tinDang}
-                    onAddFavorite={handleAddFavorite}
-                    t={t}
-                    lazy
-                    disabled={addingFavId === tinId}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </section>
+        {/* Bất động sản dành cho bạn (Personalized Recommendations) */}
+        <RecommendedProperties title={t("homepage.recommendedForYou") || "Bất động sản dành cho bạn"} limit={4} />
 
         <section className="section section--light" aria-labelledby="featured-projects-title">
           <div className="container">
@@ -735,7 +679,7 @@ function TrangChu() {
             </div>
             <div className="featured-listings">
               {projects.length > 0 ? (
-                projects.map((project, index) => {
+                projects.slice(0, 4).map((project, index) => {
                   let parsedMeta = {};
                   try {
                     if (project.ThongTinMoRong) {
@@ -769,43 +713,90 @@ function TrangChu() {
                     ? `${project.TongPhong} căn / phòng`
                     : "Đang cập nhật";
 
-
                   return (
-                    <article key={project.DuAnID} className="featured-card">
-                      <Link to={`/du-an/${project.DuAnID}`} className="featured-card__image" aria-label={`Xem dự án: ${project.TenDuAn}`}>
-                        <img src={projectImg} alt={project.TenDuAn} loading="lazy" decoding="async" />
-                      </Link>
-                      <div className="featured-card__content">
-                        <h3 className="featured-card__title">
-                          <Link to={`/du-an/${project.DuAnID}`}>{project.TenDuAn}</Link>
+                    <article
+                      key={project.DuAnID}
+                      className="rec-card bg-white border border-gray-200 hover:border-gray-300 dark:bg-[#161f36] dark:border-slate-700 dark:hover:border-blue-500/40"
+                    >
+                      <div className="rec-card__image-wrap bg-gray-100 dark:bg-[#0b1329]">
+                        <Link
+                          to={`/du-an/${project.DuAnID}`}
+                          className="rec-card__image-link"
+                          aria-label={`Xem dự án: ${project.TenDuAn}`}
+                        >
+                          <img
+                            src={projectImg}
+                            alt={project.TenDuAn}
+                            className="rec-card__image"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </Link>
+                      </div>
+                      <div className="rec-card__content">
+                        <h3 className="rec-card__title">
+                          <Link
+                            to={`/du-an/${project.DuAnID}`}
+                            title={project.TenDuAn}
+                            className="text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+                          >
+                            {project.TenDuAn}
+                          </Link>
                         </h3>
-                        <div className="featured-card__meta-row">
-                          <div className="featured-card__price">{projectPrice}</div>
-                          <div className="featured-card__area">{projectArea}</div>
+                        <div className="rec-card__meta-row">
+                          <div className="rec-card__price text-rose-600 dark:text-rose-500 font-extrabold">{projectPrice}</div>
+                          <div className="rec-card__area text-gray-600 bg-gray-100 border border-transparent dark:text-slate-400 dark:bg-white/10 dark:border-white/5">
+                            {projectArea}
+                          </div>
                         </div>
-                        <address className="featured-card__location">
-                          <FaMapMarkerAlt size={12} aria-hidden="true" /> {project.DiaChi || "Chưa có địa chỉ"}
+                        <address className="rec-card__location text-gray-600 dark:text-slate-400" title={project.DiaChi || "Chưa có địa chỉ"}>
+                          <FaMapMarkerAlt className="rec-card__pin-icon text-gray-400 dark:text-slate-500" aria-hidden="true" />
+                          <span>{project.DiaChi || "Chưa có địa chỉ"}</span>
                         </address>
                       </div>
                     </article>
                   );
                 })
               ) : (
-                FEATURED_PROJECTS.map((project) => (
-                  <article key={project.slug} className="featured-card">
-                    <Link to="/du-an" className="featured-card__image" aria-label={`Xem dự án: ${project.title}`}>
-                      <img src={project.img} alt={project.title} loading="lazy" decoding="async" />
-                    </Link>
-                    <div className="featured-card__content">
-                      <h3 className="featured-card__title">
-                        <Link to="/du-an">{project.title}</Link>
+                FEATURED_PROJECTS.slice(0, 4).map((project, index) => (
+                  <article
+                    key={project.slug || project.id || index}
+                    className="rec-card bg-white border border-gray-200 hover:border-gray-300 dark:bg-[#161f36] dark:border-slate-700 dark:hover:border-blue-500/40"
+                  >
+                    <div className="rec-card__image-wrap bg-gray-100 dark:bg-[#0b1329]">
+                      <Link
+                        to="/du-an"
+                        className="rec-card__image-link"
+                        aria-label={`Xem dự án: ${project.title}`}
+                      >
+                        <img
+                          src={project.img}
+                          alt={project.title}
+                          className="rec-card__image"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </Link>
+                    </div>
+                    <div className="rec-card__content">
+                      <h3 className="rec-card__title">
+                        <Link
+                          to="/du-an"
+                          title={project.title}
+                          className="text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+                        >
+                          {project.title}
+                        </Link>
                       </h3>
-                      <div className="featured-card__meta-row">
-                        <div className="featured-card__price">{project.price}</div>
-                        <div className="featured-card__area">{project.area}</div>
+                      <div className="rec-card__meta-row">
+                        <div className="rec-card__price text-rose-600 dark:text-rose-500 font-extrabold">{project.price}</div>
+                        <div className="rec-card__area text-gray-600 bg-gray-100 border border-transparent dark:text-slate-400 dark:bg-white/10 dark:border-white/5">
+                          {project.area}
+                        </div>
                       </div>
-                      <address className="featured-card__location">
-                        <FaMapMarkerAlt size={12} aria-hidden="true" /> {project.location}
+                      <address className="rec-card__location text-gray-600 dark:text-slate-400" title={project.location}>
+                        <FaMapMarkerAlt className="rec-card__pin-icon text-gray-400 dark:text-slate-500" aria-hidden="true" />
+                        <span>{project.location}</span>
                       </address>
                     </div>
                   </article>
@@ -1078,7 +1069,7 @@ function TrangChu() {
           </div>
         </section>
 
-        <section className="section" id="wiki-bds" aria-labelledby="wiki-title">
+        <section className="section section--light" id="wiki-bds" aria-labelledby="wiki-title">
           <div className="container">
             <div className="section__header">
               <h2 id="wiki-title" className="section__title">

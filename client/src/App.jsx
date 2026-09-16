@@ -159,6 +159,7 @@ function App() {
         <Route path="/thanhtoancoc" element={<ThanhToanCoc />} />
         <Route path="/cuochencuatoi" element={<Appointments />} />
         <Route path="/vi" element={<ViPage />} />
+        <Route path="/hop-dong-cua-toi" element={<HopDongCuaToi />} />
         <Route path="/quan-ly" element={<ProtectedRoute allowedRoles={[1, 5]}><QuanLy /></ProtectedRoute>} />
         <Route path="/thanh-toan/ket-qua" element={<NapTienResult />} />
       </Routes>

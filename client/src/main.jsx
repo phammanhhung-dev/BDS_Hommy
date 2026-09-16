@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // 5 phút - data coi là fresh trong 5 phút
-      cacheTime: 10 * 60 * 1000, // 10 phút - data giữ trong cache 10 phút
+      gcTime: 10 * 60 * 1000, // 10 phút - data giữ trong cache 10 phút
       refetchOnWindowFocus: false, // Không refetch khi user quay lại tab
       retry: 1, // Retry 1 lần nếu request fail
       refetchOnMount: true, // Refetch khi component mount (nếu data stale)

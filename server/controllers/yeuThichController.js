@@ -110,3 +110,42 @@ exports.check = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
+exports.toggle = async (req, res) => {
+  const authUserId = getAuthenticatedUserId(req);
+  const reqUserId = parsePositiveInt(req.body?.NguoiDungID || req.body?.userId);
+  const userId = authUserId || reqUserId;
+  const tinDangId = parsePositiveInt(req.body?.TinDangID || req.body?.tinId);
+
+  if (!userId || !tinDangId) {
+    return res.status(400).json({ success: false, message: 'NguoiDungID và TinDangID là bắt buộc và phải hợp lệ' });
+  }
+
+  try {
+    const [rows] = await YT.existsFavorite(userId, tinDangId);
+    const exists = Array.isArray(rows) && rows.length > 0;
+
+    if (exists) {
+      await YT.removeFavorite(userId, tinDangId);
+      return res.json({
+        success: true,
+        isFavorite: false,
+        action: 'removed',
+        message: 'Đã xóa khỏi danh sách yêu thích',
+        TinDangID: tinDangId
+      });
+    } else {
+      await YT.addFavorite(userId, tinDangId);
+      return res.json({
+        success: true,
+        isFavorite: true,
+        action: 'added',
+        message: 'Đã thêm vào danh sách yêu thích',
+        TinDangID: tinDangId
+      });
+    }
+  } catch (err) {
+    console.error('[yeuThichController.toggle] error:', err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+};

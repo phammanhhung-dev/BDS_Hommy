@@ -15,6 +15,5 @@
 .ttc-qr { width: 320px; height: 320px; object-fit: contain; border: 1px solid #eee; border-radius: 8px; }
 
 .ttc-actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 8px; }
-.ttc-actions .btn { padding: 8px 14px; border-radius: 6px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
-.btn-primary { background: #2563eb; color: #496eb3 !important; border-color: #2563eb; }
+.ttc-actions .btn-primary { background: #2563eb; color: #ffffff !important; border-color: #2563eb; }
 .ttc-note { margin-top: 10px; color: #666; font-size: 13px; }

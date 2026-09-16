@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./naptien.css";
 import lichSuViApi from "../../api/lichSuViApi";
 import axios from "axios";
+import { buildApiUrl } from "../../config/api";
 import { useToast, ToastContainer } from "../../components/Toast/Toast";
 
 // Tạo chuỗi số ngẫu nhiên 5 chữ số
@@ -85,7 +86,7 @@ const NapTienPage = ({ onBack }) => {
           startPolling(noiDungChuyenKhoan, response.data.id, parseFloat(amount), userId);
         } else if (paymentMethod === "VNPAY") {
           setStatus("⏳ Đang chuyển hướng sang VNPAY...");
-          const resVnPay = await axios.post("http://localhost:5000/api/payment/vnpay/create", {
+          const resVnPay = await axios.post(buildApiUrl("/api/payment/vnpay/create"), {
             amount: parseFloat(amount),
             orderId: response.data.id,
             orderInfo: noiDungChuyenKhoan
@@ -97,7 +98,7 @@ const NapTienPage = ({ onBack }) => {
           }
         } else if (paymentMethod === "MOMO") {
           setStatus("⏳ Đang chuyển hướng sang MoMo...");
-          const resMomo = await axios.post("http://localhost:5000/api/payment/momo/create", {
+          const resMomo = await axios.post(buildApiUrl("/api/payment/momo/create"), {
             amount: parseFloat(amount),
             orderId: response.data.id,
             orderInfo: noiDungChuyenKhoan

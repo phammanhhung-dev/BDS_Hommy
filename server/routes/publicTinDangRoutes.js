@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const PublicTinDangController = require("../controllers/PublicTinDangController");
+const RecommendationController = require("../controllers/recommendationController");
 
 // GET /api/public/tin-dang (public - danh sách)
 router.get("/", PublicTinDangController.getDanhSachTinDang);
 
 // GET /api/public/tin-dang/stats (public - thống kê)
 router.get("/stats", PublicTinDangController.getThongKeTrangChu);
+
+// GET /api/public/tin-dang/recommended (public - gợi ý bất động sản)
+router.get("/recommended", RecommendationController.getRecommended);
 
 // POST /api/public/tin-dang/predict-price (public - định giá học máy)
 router.post("/predict-price", PublicTinDangController.predictPrice);

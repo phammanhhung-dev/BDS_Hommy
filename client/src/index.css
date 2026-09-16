@@ -71,7 +71,7 @@ a:hover {
 
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
   width: 100%;
   position: relative;
@@ -139,7 +139,6 @@ button:focus-visible {
 /* Dark mode adjustments tự động qua color-scheme */
 @media (prefers-color-scheme: dark) {
   button {
-    color: rgba(0, 0, 0, 0.9);
     --liquid-translucent: rgba(0, 0, 0, 0);
     --liquid-reflect: rgba(0, 0, 0, 0.1);
   }

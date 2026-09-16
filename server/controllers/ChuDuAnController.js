@@ -84,7 +84,7 @@ class ChuDuAnController {
         trangThai: req.query.trangThai,
         duAnId: req.query.duAnId,
         keyword: req.query.keyword,
-        limit: req.query.limit || 20
+        limit: req.query.limit || 500
       };
 
       const danhSach = await ChuDuAnModel.layDanhSachTinDang(chuDuAnId, filters);

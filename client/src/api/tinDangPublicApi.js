@@ -15,6 +15,9 @@ const tinDangPublicApi = {
 
   // POST /api/public/tin-dang/predict-price
   predictPrice: (data) => axiosClient.post("/public/tin-dang/predict-price", data),
+
+  // GET /api/properties/recommended
+  getRecommended: (params) => axiosClient.get("/properties/recommended", { params }),
 };
 
 export default tinDangPublicApi;

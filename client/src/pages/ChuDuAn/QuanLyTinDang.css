@@ -130,19 +130,23 @@
 /* === FILTERS === */
 .qtd-filters {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr auto;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.3fr) minmax(0, 1.1fr) auto;
   gap: 16px;
-  padding: 24px;
+  align-items: flex-end;
+  padding: 20px 24px;
   background: white;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   margin-bottom: 32px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .qtd-filter-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0; /* Cho phép co giãn tự do không tràn container */
 }
 
 .qtd-label {
@@ -150,23 +154,107 @@
   font-weight: 600;
   color: #374151;
   margin: 0;
+  white-space: nowrap;
+}
+
+/* Ô tìm kiếm có icon */
+.qtd-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.qtd-input-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.qtd-filter-search .qtd-input {
+  padding-left: 40px;
+  padding-right: 36px;
+}
+
+.qtd-input-clear {
+  position: absolute;
+  right: 10px;
+  background: #e5e7eb;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #4b5563;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.qtd-input-clear:hover {
+  background: #d1d5db;
+  color: #111827;
 }
 
 .qtd-input,
 .qtd-select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 44px;
   padding: 10px 14px;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
   background: white;
+  color: #1f2937;
+  text-overflow: ellipsis;
 }
 
 .qtd-input:focus,
 .qtd-select:focus {
   outline: none;
   border-color: #14532D;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(20, 83, 45, 0.12);
+}
+
+/* === NHÓM NÚT HÀNH ĐỘNG BỘ LỌC === */
+.qtd-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.qtd-filter-actions .qtd-btn,
+.qtd-filter-actions .qtd-btn-draft-toggle {
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Nút đặt lại bộ lọc */
+.qtd-btn-reset {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1.5px solid #e5e7eb;
+}
+
+.qtd-btn-reset:hover {
+  background: #e5e7eb;
+  color: #111827;
 }
 
 /* === NÚT TOGGLE TIN NHÁP === */
@@ -174,7 +262,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 10px 16px;
   border-radius: 10px;
   font-weight: 600;
   font-size: 0.95rem;
@@ -185,12 +273,11 @@
   background: white;
   color: #6b7280;
   white-space: nowrap;
-  width: 100%;
 }
 
 .qtd-btn-draft-toggle svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   transition: transform 0.2s ease;
 }
 
@@ -209,12 +296,12 @@
   background: linear-gradient(135deg, #14532D 0%, #0F766E 100%);
   border-color: #14532D;
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(20, 83, 45, 0.25);
 }
 
 .qtd-btn-draft-toggle.active:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px rgba(20, 83, 45, 0.35);
 }
 
 /* === STATS === */
@@ -769,8 +856,137 @@
   }
 }
 
+/* === PAGINATION === */
+.qtd-pagination {
+  margin-top: 36px;
+  padding: 16px 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.qtd-pagination-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #4b5563;
+  font-size: 0.925rem;
+}
+
+.qtd-pagination-info strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.qtd-pagination-pagesize {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.qtd-pagesize-select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  font-size: 0.875rem;
+  color: #374151;
+  background: white;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.qtd-pagesize-select:focus {
+  border-color: #14532D;
+  box-shadow: 0 0 0 2px rgba(20, 83, 45, 0.1);
+}
+
+.qtd-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qtd-page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qtd-page-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  background: white;
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.qtd-page-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #14532D;
+  color: #14532D;
+  transform: translateY(-1px);
+}
+
+.qtd-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+}
+
+.qtd-page-btn.active {
+  background: linear-gradient(135deg, #14532D 0%, #0F766E 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(20, 83, 45, 0.3);
+}
+
+.qtd-page-btn.active:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(20, 83, 45, 0.4);
+}
+
+.qtd-page-nav {
+  padding: 0 14px;
+}
+
+.qtd-page-nav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.qtd-page-ellipsis {
+  min-width: 32px;
+  text-align: center;
+  color: #9ca3af;
+  font-weight: 700;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 1200px) {
+  .qtd-filters {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
   .qtd-grid {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
@@ -788,6 +1004,33 @@
 
   .qtd-filters {
     grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .qtd-filter-actions {
+    flex-wrap: wrap;
+  }
+
+  .qtd-filter-actions .qtd-btn,
+  .qtd-filter-actions .qtd-btn-draft-toggle {
+    flex: 1;
+  }
+
+  .qtd-pagination {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  .qtd-pagination-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .qtd-pagination-controls {
+    justify-content: center;
+    width: 100%;
   }
 
   .qtd-stats {

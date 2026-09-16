@@ -16,7 +16,8 @@ import {
   HiOutlineCurrencyDollar,
   HiOutlineClock,
   HiOutlineExclamationTriangle,
-  HiArrowPath
+  HiArrowPath,
+  HiOutlineChevronRight
 } from 'react-icons/hi2';
 import {
   BarChart,
@@ -228,27 +229,51 @@ function DashboardOperator() {
           </div>
           <div className="dashboard-operator__metrics">
             {statCards.map((card, index) => {
+              const isCurrency = card.format === 'currency';
+              const formattedValue = isCurrency
+                ? formatCurrency(card.value)
+                : (typeof card.value === 'number' ? card.value.toLocaleString('vi-VN') : card.value);
+
               const cardContent = (
                 <>
-                  <div className="dashboard-operator__metric-icon">
-                    <IconOperator size={24} title={card.title}>
+                  <div className={`dashboard-operator__metric-icon dashboard-operator__metric-icon--${card.color || 'primary'}`}>
+                    <IconOperator size={22} title={card.title}>
                       {card.icon}
                     </IconOperator>
                   </div>
                   <div className="dashboard-operator__metric-content">
-                    <div className="dashboard-operator__metric-value">
-                      {card.format === 'currency' ? formatCurrency(card.value) : card.value}
+                    <div
+                      className={`dashboard-operator__metric-value ${isCurrency ? 'dashboard-operator__metric-value--currency' : ''}`}
+                      title={String(formattedValue)}
+                    >
+                      {formattedValue}
                     </div>
-                    <div className="dashboard-operator__metric-label">{card.title}</div>
+                    <div className="dashboard-operator__metric-label" title={card.title}>
+                      {card.title}
+                    </div>
                   </div>
+                  {isCurrency && card.link && (
+                    <div className="dashboard-operator__metric-action" aria-hidden="true">
+                      <span>Báo cáo</span>
+                      <HiOutlineChevronRight size={14} />
+                    </div>
+                  )}
                 </>
               );
+
+              const cardClasses = [
+                'operator-card',
+                'dashboard-operator__metric-card',
+                card.link ? 'dashboard-operator__metric-card--clickable' : '',
+                isCurrency ? 'dashboard-operator__metric-card--featured' : '',
+                'operator-stagger-item'
+              ].filter(Boolean).join(' ');
 
               return card.link ? (
                 <Link
                   key={index}
                   to={card.link}
-                  className="operator-card dashboard-operator__metric-card dashboard-operator__metric-card--clickable operator-stagger-item"
+                  className={cardClasses}
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
                   {cardContent}
@@ -256,7 +281,7 @@ function DashboardOperator() {
               ) : (
                 <div
                   key={index}
-                  className="operator-card dashboard-operator__metric-card operator-stagger-item"
+                  className={cardClasses}
                 >
                   {cardContent}
                 </div>

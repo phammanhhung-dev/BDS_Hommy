@@ -1,41 +1,79 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaHeart, FaRegHeart } from "react-icons/fa";
 import { getStaticUrl } from "../config/api";
+import "./RecommendedProperties.css";
 
 function ListingCard({ tinDang, onAddFavorite, t, lazy = false, disabled = false }) {
   const tinId = tinDang.TinDangID ?? tinDang.id ?? tinDang._id;
   const imgSrc = getListingImage(tinDang);
-  const areaText = tinDang.DienTich ? `${tinDang.DienTich} m²` : "—";
+  const areaText = tinDang.DienTich ? `${tinDang.DienTich} m²` : (tinDang.DienTichSuDung ? `${tinDang.DienTichSuDung} m²` : "—");
   const title = tinDang.TieuDe || "Tin đăng bất động sản";
   const detailUrl = `/tin-dang/${tinId}`;
+  const priceText = formatPrice(tinDang.GiaTien || tinDang.Gia);
+  const addressText = tinDang.full_display_address || tinDang.DiaChi || [tinDang.TenKhuVuc, tinDang.TenQuanHuyen, tinDang.TenTinh].filter(Boolean).join(', ') || "Đang cập nhật vị trí";
 
   return (
-    <article className="featured-card">
-      <div className="featured-card__image-wrap">
-        <Link to={detailUrl} className="featured-card__image" aria-label={`Xem chi tiết: ${title}`}>
-          <img src={imgSrc} alt={title} loading={lazy ? "lazy" : "eager"} decoding="async" />
+    <article
+      className="rec-card bg-white border border-gray-200 hover:border-gray-300 dark:bg-[#161f36] dark:border-slate-700 dark:hover:border-blue-500/40"
+    >
+      <div className="rec-card__image-wrap bg-gray-100 dark:bg-[#0b1329]">
+        <Link
+          to={detailUrl}
+          className="rec-card__image-link"
+          aria-label={`Xem chi tiết ${title}`}
+        >
+          <img
+            src={imgSrc}
+            alt={title}
+            className="rec-card__image"
+            loading={lazy ? "lazy" : "eager"}
+            decoding="async"
+          />
         </Link>
+
+        {/* Nút tim lưu nhanh */}
         <button
           type="button"
-          className="featured-card__favorite"
-          onClick={() => onAddFavorite(tinDang)}
+          className={`rec-card__favorite-btn bg-white/90 shadow-sm border border-gray-100 text-gray-600 hover:text-red-500 hover:border-gray-200 dark:bg-black/40 dark:border-white/20 dark:text-white/80 dark:hover:text-red-500 dark:hover:border-white/40 ${
+            tinDang.isFavorite ? "is-active text-red-500 border-red-500/40" : ""
+          }`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddFavorite && onAddFavorite(tinDang);
+          }}
           disabled={disabled}
-          aria-label={t("homepage.addToFavorites") || "Thêm vào yêu thích"}
+          aria-label={tinDang.isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
         >
-          ♥
+          {tinDang.isFavorite ? (
+            <FaHeart className="heart-icon heart-active text-[#ef4444]" aria-hidden="true" />
+          ) : (
+            <FaRegHeart className="heart-icon" aria-hidden="true" />
+          )}
         </button>
       </div>
-      <div className="featured-card__content">
-        <h3 className="featured-card__title">
-          <Link to={detailUrl}>{title}</Link>
+
+      <div className="rec-card__content">
+        <h3 className="rec-card__title">
+          <Link
+            to={detailUrl}
+            title={title}
+            className="text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+          >
+            {title}
+          </Link>
         </h3>
-        <div className="featured-card__meta-row">
-          <div className="featured-card__price">{formatPrice(tinDang.GiaTien || tinDang.Gia)}</div>
-          <div className="featured-card__area">{areaText}</div>
+
+        <div className="rec-card__meta-row">
+          <div className="rec-card__price text-rose-600 dark:text-rose-500 font-extrabold">{priceText}</div>
+          <div className="rec-card__area text-gray-600 bg-gray-100 border border-transparent dark:text-slate-400 dark:bg-white/10 dark:border-white/5">
+            {areaText}
+          </div>
         </div>
-        <address className="featured-card__location">
-          <FaMapMarkerAlt size={12} aria-hidden="true" /> {tinDang.full_display_address || tinDang.DiaChi || [tinDang.TenKhuVuc, tinDang.TenQuanHuyen, tinDang.TenTinh].filter(Boolean).join(', ') || "Đang cập nhật vị trí"}
+
+        <address className="rec-card__location text-gray-600 dark:text-slate-400" title={addressText}>
+          <FaMapMarkerAlt className="rec-card__pin-icon text-gray-400 dark:text-slate-500" aria-hidden="true" />
+          <span>{addressText}</span>
         </address>
       </div>
     </article>

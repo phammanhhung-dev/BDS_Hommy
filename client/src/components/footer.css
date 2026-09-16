@@ -122,24 +122,30 @@
 
 .subscribe-form input::placeholder { color: #9fb0c6; }
 
-.btn-primary {
-  padding: 10px 14px;
+.btn-primary,
+.subscribe-form button {
+  padding: 10px 18px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #405cf5, #2f4fd8);
+  background: #2563eb;
   border: none;
   cursor: pointer;
   min-width: 90px;
-  color: #ffffff;
+  color: #ffffff !important;
+  font-size: 14px;
   font-weight: 700;
   transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.subscribe-form button:hover {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, #5a73f8, #4361f2);
-  box-shadow: 0 10px 25px rgba(64, 92, 245, 0.24);
+  background: #1d4ed8;
+  color: #ffffff !important;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
 }
-.btn-primary:active { transform: translateY(1px); }
-.btn-primary:disabled { opacity: .7; cursor: default; }
+.btn-primary:active,
+.subscribe-form button:active { transform: translateY(1px); }
+.btn-primary:disabled,
+.subscribe-form button:disabled { opacity: .7; cursor: default; color: #ffffff !important; }
 
 .social-row { margin-top: 18px; display:flex; flex-wrap: wrap; gap:12px; align-items:center; }
 

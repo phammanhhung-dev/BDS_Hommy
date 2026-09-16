@@ -59,7 +59,7 @@ class PaymentController {
 
       let signData = qs.stringify(vnp_Params, { encode: false });
       let hmac = crypto.createHmac("sha512", vnp_HashSecret);
-      let signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest("hex"); 
+      let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex"); 
       vnp_Params['vnp_SecureHash'] = signed;
       
       let vnpUrl = vnp_Url;
@@ -83,7 +83,7 @@ class PaymentController {
       vnp_Params = sortObject(vnp_Params);
       let signData = qs.stringify(vnp_Params, { encode: false });
       let hmac = crypto.createHmac("sha512", vnp_HashSecret);
-      let signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest("hex");     
+      let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");     
 
       if (secureHash === signed) {
         let orderId = vnp_Params['vnp_TxnRef'];

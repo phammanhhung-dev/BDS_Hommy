@@ -130,7 +130,7 @@ class ChuDuAnModel {
       
       // Sử dụng string interpolation an toàn cho LIMIT (tránh lỗi với prepared statement)
       if (filters.limit) {
-        const safeLimit = Math.max(1, Math.min(100, parseInt(filters.limit) || 20));
+        const safeLimit = Math.max(1, Math.min(1000, parseInt(filters.limit) || 500));
         query += ` LIMIT ${safeLimit}`;
       }
       

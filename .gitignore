@@ -46,8 +46,9 @@ server/uploads/kyc/selfie/*
 server/public/uploads/*
 !server/public/uploads/.gitkeep
 
-# Presentation outputs
+# Presentation outputs & large demo media
 tools/presentation/*.pptx
+*.mp4
 
 # AI Models (Large files - Download separately)
 client/public/models/*.bin

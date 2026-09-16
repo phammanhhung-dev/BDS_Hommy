@@ -96,7 +96,7 @@ exports.register = async (req, res) => {
   const safeRoleId = allowedPublicRoles.includes(Number(roleId)) ? Number(roleId) : 1;
 
   try {
-    const matKhauHash = crypto.createHash('md5').update(String(password)).digest('hex');
+    const matKhauHash = await bcrypt.hash(String(password), 10);
     const [result] = await User.createNguoiDung(name, email, phone, matKhauHash, safeRoleId);
 
     const token = generateToken(result.insertId, safeRoleId);

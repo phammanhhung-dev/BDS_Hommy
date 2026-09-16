@@ -1,5 +1,6 @@
 const PublicTinDangModel = require("../models/PublicTinDangModel");
 const ChuDuAnModel = require("../models/ChuDuAnModel");
+const RecommendationService = require("../services/recommendationService");
 
 class PublicTinDangController {
   static async getDanhSachTinDang(req, res) {
@@ -71,6 +72,12 @@ class PublicTinDangController {
           message: 'Không tìm thấy tin đăng' 
         });
       }
+
+      // Tự động ghi nhận lượt xem cho BĐS (async non-blocking)
+      const currentUserId = req.user?.id || req.user?.userId || null;
+      RecommendationService.recordListingView(tinDangId, currentUserId).catch(err => {
+        console.warn('[PublicTinDangController] recordListingView error:', err.message);
+      });
 
       return res.json({ 
         success: true, 

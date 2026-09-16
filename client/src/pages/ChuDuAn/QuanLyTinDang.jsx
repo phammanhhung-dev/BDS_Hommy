@@ -25,7 +25,10 @@ import {
   HiOutlinePencil,
   HiOutlinePaperAirplane,
   HiOutlineTrash,
-  HiOutlineChartBar
+  HiOutlineChartBar,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
+  HiOutlineArrowPath
 } from 'react-icons/hi2';
 
 /**
@@ -43,6 +46,10 @@ const QuanLyTinDang = () => {
     keyword: ''
   });
   const [showDraftsOnly, setShowDraftsOnly] = useState(false);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(9); // Lưới 3 cột x 3 dòng
 
   // Modal state
   const [modalState, setModalState] = useState({
@@ -61,7 +68,7 @@ const QuanLyTinDang = () => {
   const layDanhSachTinDang = async () => {
     try {
       setLoading(true);
-      const response = await TinDangService.layDanhSach(filters);
+      const response = await TinDangService.layDanhSach({ ...filters, limit: 500 });
       if (response.success) {
         setTinDangs(response.data.tinDangs || response.data);
       }
@@ -71,6 +78,23 @@ const QuanLyTinDang = () => {
       setLoading(false);
     }
   };
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+    setCurrentPage(1);
+  };
+
+  const handleResetFilters = () => {
+    setFilters({
+      trangThai: '',
+      duAn: '',
+      keyword: ''
+    });
+    setShowDraftsOnly(false);
+    setCurrentPage(1);
+  };
+
+  const hasActiveFilters = Boolean(filters.keyword || filters.duAn || filters.trangThai || showDraftsOnly);
 
   const layDanhSachDuAn = async () => {
     try {
@@ -259,6 +283,69 @@ const QuanLyTinDang = () => {
     return b.TinDangID - a.TinDangID;
   });
 
+  // ===== PAGINATION LOGIC =====
+  const totalItems = tinDangsFiltered.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+  const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
+  const startIndex = (safeCurrentPage - 1) * pageSize;
+  const currentTinDangs = tinDangsFiltered.slice(startIndex, startIndex + pageSize);
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages || newPage === safeCurrentPage) return;
+    setCurrentPage(newPage);
+    const scrollTarget = document.querySelector('.qtd-stats') || document.querySelector('.qtd-filters');
+    if (scrollTarget) {
+      scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+
+      let start = Math.max(2, safeCurrentPage - 1);
+      let end = Math.min(totalPages - 1, safeCurrentPage + 1);
+
+      if (safeCurrentPage <= 3) {
+        start = 2;
+        end = 4;
+      } else if (safeCurrentPage >= totalPages - 2) {
+        start = totalPages - 3;
+        end = totalPages - 1;
+      }
+
+      if (start > 2) {
+        pages.push('ellipsis-start');
+      }
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+
+      if (end < totalPages - 1) {
+        pages.push('ellipsis-end');
+      }
+
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   if (loading) {
     return (
       <ChuDuAnLayout>
@@ -287,22 +374,39 @@ const QuanLyTinDang = () => {
 
         {/* Filters */}
         <div className="qtd-filters">
-          <div className="qtd-filter-group">
+          <div className="qtd-filter-group qtd-filter-search">
             <label className="qtd-label">Tìm kiếm</label>
-            <input
-              type="text"
-              className="qtd-input"
-              placeholder="Tìm theo tiêu đề..."
-              value={filters.keyword}
-              onChange={(e) => setFilters({ ...filters, keyword: e.target.value })}
-            />
+            <div className="qtd-input-wrapper">
+              <HiOutlineMagnifyingGlass className="qtd-input-icon" />
+              <input
+                type="text"
+                className="qtd-input"
+                placeholder="Tìm theo tiêu đề..."
+                value={filters.keyword}
+                onChange={(e) => handleFilterChange('keyword', e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') layDanhSachTinDang();
+                }}
+              />
+              {filters.keyword && (
+                <button
+                  type="button"
+                  className="qtd-input-clear"
+                  onClick={() => handleFilterChange('keyword', '')}
+                  title="Xóa từ khóa"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
+
           <div className="qtd-filter-group">
             <label className="qtd-label">Dự án</label>
             <select
               className="qtd-select"
               value={filters.duAn}
-              onChange={(e) => setFilters({ ...filters, duAn: e.target.value })}
+              onChange={(e) => handleFilterChange('duAn', e.target.value)}
             >
               <option value="">Tất cả dự án</option>
               {duAns.map(duAn => (
@@ -312,12 +416,13 @@ const QuanLyTinDang = () => {
               ))}
             </select>
           </div>
+
           <div className="qtd-filter-group">
             <label className="qtd-label">Trạng thái</label>
             <select
               className="qtd-select"
               value={filters.trangThai}
-              onChange={(e) => setFilters({ ...filters, trangThai: e.target.value })}
+              onChange={(e) => handleFilterChange('trangThai', e.target.value)}
             >
               <option value="">Tất cả trạng thái</option>
               <option value="ChoDuyet">Chờ duyệt</option>
@@ -326,21 +431,43 @@ const QuanLyTinDang = () => {
               <option value="TuChoi">Từ chối</option>
             </select>
           </div>
-          <div className="qtd-filter-group">
-            <label className="qtd-label">&nbsp;</label>
+
+          <div className="qtd-filter-actions">
             <button
+              type="button"
               className={`qtd-btn-draft-toggle ${showDraftsOnly ? 'active' : ''}`}
-              onClick={() => setShowDraftsOnly(!showDraftsOnly)}
+              onClick={() => {
+                setShowDraftsOnly(!showDraftsOnly);
+                setCurrentPage(1);
+              }}
               title={showDraftsOnly ? 'Hiện tất cả tin' : 'Chỉ hiện tin nháp'}
             >
               <HiOutlineDocumentText />
               <span>{showDraftsOnly ? 'Tất cả tin' : 'Tin nháp'}</span>
             </button>
+
+            <button
+              type="button"
+              className="qtd-btn qtd-btn-secondary"
+              onClick={layDanhSachTinDang}
+              title="Tìm kiếm"
+            >
+              <HiOutlineMagnifyingGlass className="qtd-btn-icon" />
+              <span>Tìm kiếm</span>
+            </button>
+
+            {hasActiveFilters && (
+              <button
+                type="button"
+                className="qtd-btn qtd-btn-reset"
+                onClick={handleResetFilters}
+                title="Đặt lại bộ lọc"
+              >
+                <HiOutlineArrowPath className="qtd-btn-icon" />
+                <span>Đặt lại</span>
+              </button>
+            )}
           </div>
-          <button className="qtd-btn qtd-btn-secondary" onClick={layDanhSachTinDang}>
-            <HiOutlineMagnifyingGlass className="qtd-btn-icon" />
-            <span>Tìm kiếm</span>
-          </button>
         </div>
 
         {/* Stats */}
@@ -376,201 +503,279 @@ const QuanLyTinDang = () => {
 
         {/* Listings Grid */}
         {tinDangsFiltered.length > 0 ? (
-          <div className="qtd-grid">
-            {tinDangsFiltered.map((tinDang) => {
-              const statusInfo = getTrangThaiInfo(tinDang.TrangThai);
-              const firstImage = getFirstImage(tinDang.URL);
-              const tienIch = getTienIch(tinDang.TienIch);
-              const thongTinPhong = getThongTinPhong(tinDang);
+          <>
+            <div className="qtd-grid">
+              {currentTinDangs.map((tinDang) => {
+                const statusInfo = getTrangThaiInfo(tinDang.TrangThai);
+                const firstImage = getFirstImage(tinDang.URL);
+                const tienIch = getTienIch(tinDang.TienIch);
+                const thongTinPhong = getThongTinPhong(tinDang);
 
-              return (
-                <div key={tinDang.TinDangID} className="qtd-card">
-                  {/* Image */}
-                  <div className="qtd-card-image">
-                    {firstImage ? (
-                      <img src={firstImage} alt={tinDang.TieuDe} />
-                    ) : (
-                      <div className="qtd-card-image-placeholder">🏠</div>
-                    )}
-                    <div className="qtd-card-badge" style={{ background: statusInfo.color }}>
-                      {statusInfo.label}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="qtd-card-content">
-                    {/* Title */}
-                    <h3 className="qtd-card-title">{tinDang.TieuDe}</h3>
-
-                    {/* Description */}
-                    {tinDang.MoTa && (
-                      <p className="qtd-card-desc">{tinDang.MoTa.substring(0, 80)}...</p>
-                    )}
-
-                    {/* Meta Info */}
-                    <div className="qtd-card-meta">
-                      <div className="qtd-meta-item">
-                        <HiOutlineHome className="qtd-meta-icon" />
-                        <span className="qtd-meta-text">{tinDang.TenDuAn || 'Không gắn dự án'}</span>
-                      </div>
-                      
-                      {/* Hiển thị thông minh theo loại phòng */}
-                      {thongTinPhong.loai === 'single' ? (
-                        <>
-                          {tinDang.Gia && (
-                            <div className="qtd-meta-item">
-                              <HiOutlineCurrencyDollar className="qtd-meta-icon" />
-                              <span className="qtd-meta-text qtd-price">{formatCurrency(tinDang.Gia)}</span>
-                            </div>
-                          )}
-                          {tinDang.DienTich && (
-                            <div className="qtd-meta-item">
-                              <HiOutlineSquare3Stack3D className="qtd-meta-icon" />
-                              <span className="qtd-meta-text">{tinDang.DienTich} m²</span>
-                            </div>
-                          )}
-                        </>
+                return (
+                  <div key={tinDang.TinDangID} className="qtd-card">
+                    {/* Image */}
+                    <div className="qtd-card-image">
+                      {firstImage ? (
+                        <img src={firstImage} alt={tinDang.TieuDe} />
                       ) : (
+                        <div className="qtd-card-image-placeholder">🏠</div>
+                      )}
+                      <div className="qtd-card-badge" style={{ background: statusInfo.color }}>
+                        {statusInfo.label}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="qtd-card-content">
+                      {/* Title */}
+                      <h3 className="qtd-card-title">{tinDang.TieuDe}</h3>
+
+                      {/* Description */}
+                      {tinDang.MoTa && (
+                        <p className="qtd-card-desc">{tinDang.MoTa.substring(0, 80)}...</p>
+                      )}
+
+                      {/* Meta Info */}
+                      <div className="qtd-card-meta">
                         <div className="qtd-meta-item">
-                          <HiOutlineMapPin className="qtd-meta-icon" />
-                          <span className="qtd-meta-text">{thongTinPhong.moTa}</span>
+                          <HiOutlineHome className="qtd-meta-icon" />
+                          <span className="qtd-meta-text">{tinDang.TenDuAn || 'Không gắn dự án'}</span>
+                        </div>
+                        
+                        {/* Hiển thị thông minh theo loại phòng */}
+                        {thongTinPhong.loai === 'single' ? (
+                          <>
+                            {tinDang.Gia && (
+                              <div className="qtd-meta-item">
+                                <HiOutlineCurrencyDollar className="qtd-meta-icon" />
+                                <span className="qtd-meta-text qtd-price">{formatCurrency(tinDang.Gia)}</span>
+                              </div>
+                            )}
+                            {tinDang.DienTich && (
+                              <div className="qtd-meta-item">
+                                <HiOutlineSquare3Stack3D className="qtd-meta-icon" />
+                                <span className="qtd-meta-text">{tinDang.DienTich} m²</span>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div className="qtd-meta-item">
+                            <HiOutlineMapPin className="qtd-meta-icon" />
+                            <span className="qtd-meta-text">{thongTinPhong.moTa}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Tiện ích */}
+                      {tienIch.length > 0 && (
+                        <div className="qtd-card-amenities">
+                          {tienIch.slice(0, 4).map((item, idx) => (
+                            <span key={idx} className="qtd-amenity-badge">{item}</span>
+                          ))}
+                          {tienIch.length > 4 && (
+                            <span className="qtd-amenity-more">+{tienIch.length - 4}</span>
+                          )}
                         </div>
                       )}
-                    </div>
 
-                    {/* Tiện ích */}
-                    {tienIch.length > 0 && (
-                      <div className="qtd-card-amenities">
-                        {tienIch.slice(0, 4).map((item, idx) => (
-                          <span key={idx} className="qtd-amenity-badge">{item}</span>
-                        ))}
-                        {tienIch.length > 4 && (
-                          <span className="qtd-amenity-more">+{tienIch.length - 4}</span>
-                        )}
-                      </div>
-                    )}
+                      {/* Chi phí phụ */}
+                      {(tinDang.GiaDien || tinDang.GiaNuoc || tinDang.GiaDichVu) && (
+                        <div className="qtd-card-fees">
+                          <div className="qtd-fees-title">Chi phí phụ:</div>
+                          {tinDang.GiaDien && (
+                            <div className="qtd-fee-item">
+                              <HiOutlineBolt className="qtd-fee-icon" />
+                              Điện: {formatCurrency(tinDang.GiaDien)}/kWh
+                            </div>
+                          )}
+                          {tinDang.GiaNuoc && (
+                            <div className="qtd-fee-item">
+                              <HiBeaker className="qtd-fee-icon" />
+                              Nước: {formatCurrency(tinDang.GiaNuoc)}/m³
+                            </div>
+                          )}
+                          {tinDang.GiaDichVu && (
+                            <div className="qtd-fee-item">
+                              <HiOutlineCog6Tooth className="qtd-fee-icon" />
+                              DV: {formatCurrency(tinDang.GiaDichVu)}/tháng
+                            </div>
+                          )}
+                        </div>
+                      )}
 
-                    {/* Chi phí phụ */}
-                    {(tinDang.GiaDien || tinDang.GiaNuoc || tinDang.GiaDichVu) && (
-                      <div className="qtd-card-fees">
-                        <div className="qtd-fees-title">Chi phí phụ:</div>
-                        {tinDang.GiaDien && (
-                          <div className="qtd-fee-item">
-                            <HiOutlineBolt className="qtd-fee-icon" />
-                            Điện: {formatCurrency(tinDang.GiaDien)}/kWh
+                      {/* Thông tin phòng thông minh */}
+                      {thongTinPhong.loai === 'multiple' ? (
+                        <div className="qtd-card-rooms-multiple">
+                          <div className="qtd-rooms-header">
+                            <span className="qtd-rooms-label">
+                              <HiOutlineMapPin className="qtd-rooms-icon" />
+                              {thongTinPhong.tongSo} phòng
+                            </span>
                           </div>
-                        )}
-                        {tinDang.GiaNuoc && (
-                          <div className="qtd-fee-item">
-                            <HiBeaker className="qtd-fee-icon" />
-                            Nước: {formatCurrency(tinDang.GiaNuoc)}/m³
+                          <div className="qtd-rooms-stats">
+                            <div 
+                              className="qtd-room-stat qtd-room-stat-available qtd-room-stat-clickable"
+                              onClick={() => moModalPreviewPhong(tinDang, 'conTrong')}
+                              title="Xem danh sách phòng trống"
+                            >
+                              <HiOutlineCheckCircle className="qtd-room-stat-icon" />
+                              <span className="qtd-room-stat-value">{thongTinPhong.soTrong}</span>
+                              <span className="qtd-room-stat-label">Còn trống</span>
+                            </div>
+                            <div 
+                              className="qtd-room-stat qtd-room-stat-rented qtd-room-stat-clickable"
+                              onClick={() => moModalPreviewPhong(tinDang, 'daThue')}
+                              title="Xem danh sách phòng đã thuê"
+                            >
+                              <HiOutlineHome className="qtd-room-stat-icon" />
+                              <span className="qtd-room-stat-value">{thongTinPhong.soDaThue}</span>
+                              <span className="qtd-room-stat-label">Đã thuê</span>
+                            </div>
+                            <div 
+                              className="qtd-room-stat qtd-room-stat-percent qtd-room-stat-clickable"
+                              onClick={() => moModalPreviewPhong(tinDang, 'tatCa')}
+                              title="Xem tất cả phòng"
+                            >
+                              <HiOutlineChartBar className="qtd-room-stat-icon" />
+                              <span className="qtd-room-stat-value">{thongTinPhong.tyLeTrong}%</span>
+                              <span className="qtd-room-stat-label">Tỷ lệ trống</span>
+                            </div>
                           </div>
-                        )}
-                        {tinDang.GiaDichVu && (
-                          <div className="qtd-fee-item">
-                            <HiOutlineCog6Tooth className="qtd-fee-icon" />
-                            DV: {formatCurrency(tinDang.GiaDichVu)}/tháng
+                          <div className="qtd-rooms-progress">
+                            <div 
+                              className="qtd-rooms-progress-bar" 
+                              style={{ width: `${thongTinPhong.tyLeTrong}%` }}
+                            ></div>
                           </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Thông tin phòng thông minh */}
-                    {thongTinPhong.loai === 'multiple' ? (
-                      <div className="qtd-card-rooms-multiple">
-                        <div className="qtd-rooms-header">
+                        </div>
+                      ) : (
+                        <div className="qtd-card-rooms-single">
                           <span className="qtd-rooms-label">
                             <HiOutlineMapPin className="qtd-rooms-icon" />
-                            {thongTinPhong.tongSo} phòng
+                            {thongTinPhong.moTa}
                           </span>
+                          {thongTinPhong.soPhong && (
+                            <span className={`qtd-rooms-status ${thongTinPhong.trangThai === 'Còn trống' ? 'available' : 'rented'}`}>
+                              {thongTinPhong.trangThai}
+                            </span>
+                          )}
                         </div>
-                        <div className="qtd-rooms-stats">
-                          <div 
-                            className="qtd-room-stat qtd-room-stat-available qtd-room-stat-clickable"
-                            onClick={() => moModalPreviewPhong(tinDang, 'conTrong')}
-                            title="Xem danh sách phòng trống"
-                          >
-                            <HiOutlineCheckCircle className="qtd-room-stat-icon" />
-                            <span className="qtd-room-stat-value">{thongTinPhong.soTrong}</span>
-                            <span className="qtd-room-stat-label">Còn trống</span>
-                          </div>
-                          <div 
-                            className="qtd-room-stat qtd-room-stat-rented qtd-room-stat-clickable"
-                            onClick={() => moModalPreviewPhong(tinDang, 'daThue')}
-                            title="Xem danh sách phòng đã thuê"
-                          >
-                            <HiOutlineHome className="qtd-room-stat-icon" />
-                            <span className="qtd-room-stat-value">{thongTinPhong.soDaThue}</span>
-                            <span className="qtd-room-stat-label">Đã thuê</span>
-                          </div>
-                          <div 
-                            className="qtd-room-stat qtd-room-stat-percent qtd-room-stat-clickable"
-                            onClick={() => moModalPreviewPhong(tinDang, 'tatCa')}
-                            title="Xem tất cả phòng"
-                          >
-                            <HiOutlineChartBar className="qtd-room-stat-icon" />
-                            <span className="qtd-room-stat-value">{thongTinPhong.tyLeTrong}%</span>
-                            <span className="qtd-room-stat-label">Tỷ lệ trống</span>
-                          </div>
-                        </div>
-                        <div className="qtd-rooms-progress">
-                          <div 
-                            className="qtd-rooms-progress-bar" 
-                            style={{ width: `${thongTinPhong.tyLeTrong}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="qtd-card-rooms-single">
-                        <span className="qtd-rooms-label">
-                          <HiOutlineMapPin className="qtd-rooms-icon" />
-                          {thongTinPhong.moTa}
-                        </span>
-                        {thongTinPhong.soPhong && (
-                          <span className={`qtd-rooms-status ${thongTinPhong.trangThai === 'Còn trống' ? 'available' : 'rented'}`}>
-                            {thongTinPhong.trangThai}
-                          </span>
-                        )}
-                      </div>
-                    )}
+                      )}
 
-                    {/* Footer */}
-                    <div className="qtd-card-footer">
-                      <div className="qtd-card-date">
-                        <HiOutlineClock className="qtd-date-icon" />
-                        {new Date(tinDang.TaoLuc).toLocaleDateString('vi-VN')}
-                      </div>
-                      <div className="qtd-card-actions">
-                        <button
-                          onClick={() => navigate(`/chu-du-an/tin-dang/${tinDang.TinDangID}`)}
-                          className="qtd-btn-icon"
-                          title="Xem chi tiết"
-                        >
-                          <HiOutlineEye />
-                        </button>
-                        <button
-                          onClick={() => navigate(`/chu-du-an/chinh-sua-tin-dang/${tinDang.TinDangID}`)}
-                          className="qtd-btn-icon"
-                          title="Chỉnh sửa"
-                        >
-                          <HiOutlinePencil />
-                        </button>
-                        {tinDang.TrangThai === 'Nhap' && (
+                      {/* Footer */}
+                      <div className="qtd-card-footer">
+                        <div className="qtd-card-date">
+                          <HiOutlineClock className="qtd-date-icon" />
+                          {new Date(tinDang.TaoLuc).toLocaleDateString('vi-VN')}
+                        </div>
+                        <div className="qtd-card-actions">
                           <button
-                            onClick={() => xacNhanGuiDuyet(tinDang)}
-                            className="qtd-btn-icon qtd-btn-icon-primary"
-                            title="Gửi duyệt"
+                            onClick={() => navigate(`/chu-du-an/tin-dang/${tinDang.TinDangID}`)}
+                            className="qtd-btn-icon"
+                            title="Xem chi tiết"
                           >
-                            <HiOutlinePaperAirplane />
+                            <HiOutlineEye />
                           </button>
-                        )}
+                          <button
+                            onClick={() => navigate(`/chu-du-an/chinh-sua-tin-dang/${tinDang.TinDangID}`)}
+                            className="qtd-btn-icon"
+                            title="Chỉnh sửa"
+                          >
+                            <HiOutlinePencil />
+                          </button>
+                          {tinDang.TrangThai === 'Nhap' && (
+                            <button
+                              onClick={() => xacNhanGuiDuyet(tinDang)}
+                              className="qtd-btn-icon qtd-btn-icon-primary"
+                              title="Gửi duyệt"
+                            >
+                              <HiOutlinePaperAirplane />
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+
+            {/* Pagination */}
+            {totalItems > 0 && (
+              <div className="qtd-pagination">
+                <div className="qtd-pagination-info">
+                  <span>
+                    Hiển thị <strong>{startIndex + 1} - {Math.min(startIndex + pageSize, totalItems)}</strong> trên tổng số <strong>{totalItems}</strong> tin đăng
+                  </span>
+                  <div className="qtd-pagination-pagesize">
+                    <label htmlFor="qtd-pagesize-select">Số tin/trang:</label>
+                    <select
+                      id="qtd-pagesize-select"
+                      value={pageSize}
+                      onChange={(e) => {
+                        setPageSize(Number(e.target.value));
+                        setCurrentPage(1);
+                      }}
+                      className="qtd-pagesize-select"
+                    >
+                      <option value={6}>6</option>
+                      <option value={9}>9</option>
+                      <option value={12}>12</option>
+                      <option value={18}>18</option>
+                    </select>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
+
+                {totalPages > 1 && (
+                  <div className="qtd-pagination-controls">
+                    <button
+                      type="button"
+                      className="qtd-page-btn qtd-page-nav"
+                      onClick={() => handlePageChange(safeCurrentPage - 1)}
+                      disabled={safeCurrentPage === 1}
+                      title="Trang trước"
+                    >
+                      <HiOutlineChevronLeft />
+                      <span className="qtd-nav-text">Trước</span>
+                    </button>
+
+                    <div className="qtd-page-numbers">
+                      {getPageNumbers().map((item, idx) => {
+                        if (typeof item === 'string') {
+                          return (
+                            <span key={`ellipsis-${idx}`} className="qtd-page-ellipsis">
+                              ...
+                            </span>
+                          );
+                        }
+                        return (
+                          <button
+                            key={`page-${item}`}
+                            type="button"
+                            className={`qtd-page-btn qtd-page-num ${safeCurrentPage === item ? 'active' : ''}`}
+                            onClick={() => handlePageChange(item)}
+                          >
+                            {item}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="qtd-page-btn qtd-page-nav"
+                      onClick={() => handlePageChange(safeCurrentPage + 1)}
+                      disabled={safeCurrentPage === totalPages}
+                      title="Trang sau"
+                    >
+                      <span className="qtd-nav-text">Sau</span>
+                      <HiOutlineChevronRight />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
         ) : (
           <div className="qtd-empty">
             <div className="qtd-empty-icon">

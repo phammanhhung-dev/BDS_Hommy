@@ -47,6 +47,7 @@ function Header() {
   const [unreadOnly, setUnreadOnly] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notifLoading, setNotifLoading] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const notificationCount = notifications.filter(n => n.unread).length;
 
   const { language, toggleLanguage } = useLanguage();
@@ -60,6 +61,16 @@ function Header() {
   const favRef = useRef(null);
   const notifRef = useRef(null);
   const navigate = useNavigate();
+
+  // Scroll listener để tạo hiệu ứng shadow nhẹ khi cuộn chuột
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -102,7 +113,7 @@ function Header() {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     setDarkMode(savedDarkMode);
     if (savedDarkMode) {
-      document.documentElement.classList.add('dark-mode');
+      document.documentElement.classList.add('dark-mode', 'dark');
     }
   }, []);
 
@@ -111,9 +122,9 @@ function Header() {
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
     if (newDarkMode) {
-      document.documentElement.classList.add('dark-mode');
+      document.documentElement.classList.add('dark-mode', 'dark');
     } else {
-      document.documentElement.classList.remove('dark-mode');
+      document.documentElement.classList.remove('dark-mode', 'dark');
     }
   };
 
@@ -143,10 +154,14 @@ function Header() {
     }
   }, []);
 
-  // load favorites khi có userId
+  // load favorites khi có userId & lắng nghe event favoritesUpdated
   useEffect(() => {
-    if (!currentUser?.NguoiDungID) return;
-    (async () => {
+    if (!currentUser?.NguoiDungID) {
+      setFavorites([]);
+      return;
+    }
+
+    const fetchFavs = async () => {
       setFavLoading(true);
       try {
         const res = await yeuThichApi.listWithTinDetails(
@@ -164,7 +179,31 @@ function Header() {
       } finally {
         setFavLoading(false);
       }
-    })();
+    };
+
+    fetchFavs();
+
+    // Lắng nghe sự kiện toggle yêu thích từ RecommendedProperties hoặc trang khác
+    const handleFavUpdated = (e) => {
+      if (e?.detail) {
+        const { tinId, isFavorite, tinDang } = e.detail;
+        setFavorites(prev => {
+          if (isFavorite) {
+            if (prev.some(f => (f.TinDangID ?? f.id) === tinId)) return prev;
+            return [tinDang || { TinDangID: tinId }, ...prev];
+          } else {
+            return prev.filter(f => (f.TinDangID ?? f.id) !== tinId);
+          }
+        });
+      } else {
+        fetchFavs();
+      }
+    };
+
+    window.addEventListener("favoritesUpdated", handleFavUpdated);
+    return () => {
+      window.removeEventListener("favoritesUpdated", handleFavUpdated);
+    };
   }, [currentUser]);
 
   // Helper: Định dạng thời gian thông báo
@@ -602,7 +641,8 @@ function Header() {
       <a href="#main-content" className="skip-link">
         Bỏ qua đến nội dung chính
       </a>
-      <div className="header__topbar">
+      <header className={`header-master-wrapper sticky top-0 z-50 w-full ${isScrolled ? 'is-scrolled' : ''}`}>
+        <div className="header__topbar">
         <div className="header__topbar-container">
           <div className="header__topbar-left">
             <a href="tel:0349195610" className="header__topbar-link">
@@ -649,7 +689,7 @@ function Header() {
         </div>
       </div>
 
-      <header className="header">
+      <nav className="header bg-white dark:bg-[#0b1329]" aria-label="Thanh điều hướng chính">
         <div className="header__container">
           <div className="header__left">
             <div className="header__logo">
@@ -1061,7 +1101,8 @@ function Header() {
             </button>
           </div>
         </div>
-      </header>
+      </nav>
+    </header>
 
       {/* Mobile Slide-out Drawer & Backdrop Overlay */}
       <div 

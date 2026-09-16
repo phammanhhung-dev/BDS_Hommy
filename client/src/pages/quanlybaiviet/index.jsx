@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import { buildApiUrl } from "../../config/api";
 import { 
   FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaTimes, FaSave, 
   FaHeading, FaTable, FaLightbulb, FaExclamationTriangle, FaQuoteLeft, 
@@ -142,7 +143,7 @@ function QuanLyBaiViet() {
   const fetchBaiViets = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/public/bai-viet");
+      const res = await axios.get(buildApiUrl("/api/public/bai-viet"));
       if (res.data.success) {
         setBaiViets(res.data.data);
       }
@@ -247,7 +248,7 @@ function QuanLyBaiViet() {
       if (currentBaiViet) {
         // Update
         await axios.put(
-          `http://localhost:5000/api/admin/bai-viet/${currentBaiViet.BaiVietID}`,
+          buildApiUrl(`/api/admin/bai-viet/${currentBaiViet.BaiVietID}`),
           formData,
           config
         );
@@ -255,7 +256,7 @@ function QuanLyBaiViet() {
       } else {
         // Create
         await axios.post(
-          "http://localhost:5000/api/admin/bai-viet",
+          buildApiUrl("/api/admin/bai-viet"),
           formData,
           config
         );
@@ -275,7 +276,7 @@ function QuanLyBaiViet() {
     if (!window.confirm("Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.")) return;
     try {
       const token = localStorage.getItem("token") || localStorage.getItem("authToken");
-      await axios.delete(`http://localhost:5000/api/admin/bai-viet/${id}`, {
+      await axios.delete(buildApiUrl(`/api/admin/bai-viet/${id}`), {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("Đã xóa bài viết thành công!");
